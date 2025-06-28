@@ -1,0 +1,11 @@
+baseURL = "https://vineetloomba.com/"
+languageCode = "en-us"
+title = "Vineet Loomba LMS"
+theme = "lms-theme"
+
+[params]
+  author = "Vineet Loomba"
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true

@@ -1,7 +1,7 @@
 baseURL = "https://vineetloomba.com/"
 languageCode = "en-us"
 title = "Vineet Loomba LMS"
-theme = "lms-theme"
+theme = "compose"
 
 [params]
   author = "Vineet Loomba"

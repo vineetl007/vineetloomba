@@ -1,17 +1,18 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: vineetl007/vineetloomba
   branch: main
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
 
 collections:
-  - name: "pages"
-    label: "Pages"
-    files:
-      - label: "Homepage"
-        name: "home"
-        file: "content/_index.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown" }
+  - name: "videos"
+    label: "Videos"
+    folder: "content/videos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "YouTube Link", name: "youtube", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }

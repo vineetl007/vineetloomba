@@ -6,11 +6,12 @@ media_folder: "static/uploads"
 public_folder: "/uploads"
 
 collections:
-  - name: "calculus"
-    label: "Calculus"
-    folder: "content/calculus"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Homepage"
+        name: "home"
+        file: "content/_index.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }

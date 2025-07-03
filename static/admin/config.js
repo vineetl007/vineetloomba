@@ -1,5 +1,3 @@
-import CMS from "https://unpkg.com/decap-cms@3.1.0/dist/decap-cms.js";
-
 CMS.init({
   config: {
     backend: {
@@ -11,8 +9,8 @@ CMS.init({
     public_folder: "/uploads",
     collections: [
       {
-        name: "chapters",
-        label: "Chapters",
+        name: "calculus",
+        label: "Calculus",
         folder: "content/calculus",
         create: true,
         slug: "{{slug}}",

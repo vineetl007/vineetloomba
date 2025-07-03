@@ -1,6 +1,5 @@
 ---
-title: "Welcome to Vineet Loomba Math LMS"
+title: "Vineet Loomba IIT JEE Math LMS"
 ---
 
-🧮 Select a chapter from the menu to start learning.  
-Each chapter contains concept-wise embedded YouTube videos.
+Welcome! Browse the chapter-wise math lessons below.

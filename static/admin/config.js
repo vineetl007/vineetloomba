@@ -9,17 +9,20 @@ CMS.init({
     media_folder: "static/uploads",
     public_folder: "/uploads",
     collections: [
-      {
-        name: "chapters",
-        label: "Chapters",
-        folder: "content/chapters",
-        create: true,
-        slug: "{{slug}}",
-        fields: [
-          { label: "Title", name: "title", widget: "string" },
-          { label: "Body", name: "body", widget: "markdown" },
-        ],
-      },
+  {
+    name: "chapters",
+    label: "Chapters",
+    folder: "content/chapters",
+    create: true,
+    slug: "{{slug}}/index",
+    path: "{{slug}}/_index",
+    format: "frontmatter",
+    extension: "md",
+    fields: [
+      { label: "Title", name: "title", widget: "string" },
+      { label: "Body", name: "body", widget: "markdown" },
     ],
+  },
+]
   },
 });

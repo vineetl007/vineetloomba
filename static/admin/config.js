@@ -12,7 +12,7 @@ CMS.init({
       {
         name: "chapters",
         label: "Chapters",
-        folder: "content/calculus",
+        folder: "content/chapters",
         create: true,
         slug: "{{slug}}",
         fields: [

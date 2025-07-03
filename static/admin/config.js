@@ -12,16 +12,16 @@ CMS.init({
         label: "Pages",
         files: [
           {
-            label: "Homepage",
-            name: "index",
+            label: "Home",
+            name: "home",
             file: "content/_index.md",
             fields: [
               { label: "Title", name: "title", widget: "string" },
-              { label: "Body", name: "body", widget: "markdown" },
+              { label: "Body", name: "body", widget: "markdown" }
             ],
-          },
-        ],
-      },
-    ],
-  },
+          }
+        ]
+      }
+    ]
+  }
 });

@@ -1,5 +1,3 @@
 ---
-title: "All Chapters"
+title: "Home"
 ---
-
-Welcome to the chapter-wise list of math lessons!

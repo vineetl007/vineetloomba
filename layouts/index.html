@@ -1,33 +1,11 @@
 {{ define "main" }}
-<div class="min-h-screen bg-black text-white font-sans">
-  <!-- Navigation Bar -->
-  <nav class="flex justify-between items-center px-6 py-4 border-b border-gray-700">
-    <div class="text-xl font-bold">Vineet Loomba</div>
-    <ul class="flex space-x-6 text-lg">
-      <li><a href="/" class="hover:text-yellow-400">Home</a></li>
-      <li><a href="/content/" class="hover:text-yellow-400">Content</a></li>
-      <li><a href="/about/" class="hover:text-yellow-400">About Me</a></li>
-    </ul>
-  </nav>
+<section style="background-color: black; color: white; padding: 100px 20px; text-align: center;">
+  <h1 style="font-size: 3rem;">Discover an IITian Within You</h1>
+  <a href="/content/" style="margin-top: 20px; display: inline-block; padding: 10px 20px; background-color: #ffcc00; color: black; text-decoration: none; font-weight: bold;">Start Learning</a>
+</section>
 
-  <!-- Hero Section -->
-  <section class="flex flex-col items-center justify-center text-center py-24 px-4">
-    <h1 class="text-4xl md:text-5xl font-bold mb-6">Discover an IITian within you</h1>
-    <a href="/content/" class="mt-4 bg-yellow-400 text-black font-semibold py-2 px-6 rounded-lg hover:bg-yellow-300">
-      Start Learning
-    </a>
-  </section>
-
-  <!-- About Me Section -->
-  <section class="max-w-4xl mx-auto px-4 pb-24">
-    <h2 class="text-3xl font-bold mb-4 border-b border-gray-700 pb-2">About Me</h2>
-    <div class="prose prose-invert max-w-none">
-      {{ with site.GetPage "about" }}
-        {{ .Content }}
-      {{ else }}
-        <p>Update the "about.md" page in content/about.md to show your profile here.</p>
-      {{ end }}
-    </div>
-  </section>
-</div>
+<section style="padding: 50px 20px; text-align: center;">
+  <h2>About Me</h2>
+  <p>I'm Vineet Loomba, an IIT JEE Maths Educator helping students crack one of the toughest exams in the world.</p>
+</section>
 {{ end }}

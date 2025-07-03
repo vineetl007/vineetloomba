@@ -1,0 +1,4 @@
+---
+title: binomial
+---
+binmial content

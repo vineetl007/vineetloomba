@@ -1,4 +1,4 @@
-import CMS from "https://unpkg.com/decap-cms@3.1.0/dist/decap-cms.js";
+// ✅ No import line needed. CMS is available globally after script tag in index.html
 
 CMS.init({
   config: {

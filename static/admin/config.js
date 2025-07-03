@@ -8,13 +8,13 @@ CMS.init({
     },
     media_folder: "static/uploads",
     public_folder: "/uploads",
-    collections: [
+   collections: [
   {
     name: "chapters",
     label: "Chapters",
     folder: "content/chapters",
     create: true,
-    slug: "{{slug}}/index",
+    slug: "{{slug}}",
     path: "{{slug}}/_index",
     format: "frontmatter",
     extension: "md",
@@ -24,5 +24,6 @@ CMS.init({
     ],
   },
 ]
+
   },
 });

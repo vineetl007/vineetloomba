@@ -1,4 +1,0 @@
----
-title: integration
----
-content integration

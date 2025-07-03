@@ -1,5 +1,5 @@
 ---
-title: "Vineet Loomba IIT JEE Math LMS"
+title: "All Chapters"
 ---
 
-Welcome! Browse the chapter-wise math lessons below.
+Welcome to the chapter-wise list of math lessons!

@@ -1,4 +1,0 @@
----
-title: "binomial "
----
-binmilia content

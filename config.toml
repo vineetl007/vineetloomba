@@ -15,3 +15,18 @@ paginate = 10
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Content"
+    url = "/content/"
+    weight = 2
+
+  [[menu.main]]
+    name = "About Me"
+    url = "/about/"
+    weight = 3

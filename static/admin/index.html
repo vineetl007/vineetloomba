@@ -5,11 +5,18 @@
     <title>Admin</title>
   </head>
   <body>
-    <!-- This is where the CMS will be mounted -->
+    <script>
+      // ✅ Prevent Decap from auto-initializing and looking for config.yml
+      window.CMS_MANUAL_INIT = true;
+    </script>
+
+    <!-- Load Decap CMS -->
     <script src="https://unpkg.com/decap-cms@3.1.0/dist/decap-cms.js"></script>
+
+    <!-- ✅ Load our config.js instead -->
     <script type="module" src="config.js"></script>
 
-    <!-- ✅ Add Netlify Identity Widget -->
+    <!-- ✅ Netlify Identity Widget for GitHub login -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
       if (window.netlifyIdentity) {

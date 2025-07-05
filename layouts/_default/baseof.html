@@ -5,6 +5,13 @@
   <title>{{ .Title }}</title>
 </head>
 <body>
+  <header class="bg-black text-white p-4 shadow-md">
+    <nav class="flex justify-center space-x-6 text-lg font-medium">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}" class="hover:text-gray-300">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </header>  
   {{ block "main" . }}{{ end }}
 </body>
 </html>

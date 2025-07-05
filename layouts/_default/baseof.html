@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ .Title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header class="bg-black text-white p-4 shadow-md">
-    <nav class="flex justify-center space-x-6 text-lg font-medium">
-      {{ range site.Menus.main }}
-        <a href="{{ .URL }}" class="hover:text-gray-300">{{ .Name }}</a>
-      {{ end }}
-    </nav>
-  </header>  
-  {{ block "main" . }}{{ end }}
+<body class="bg-white text-gray-900 font-sans">
+
+  <!-- Navigation -->
+  <header class="bg-gray-900 text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-xl font-bold">Vineet Loomba</div>
+      <nav class="space-x-6">
+        {{ range site.Menus.main }}
+          <a href="{{ .URL }}" class="hover:text-yellow-400 transition-colors duration-300 text-lg">{{ .Name }}</a>
+        {{ end }}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    {{ block "main" . }}{{ end }}
+  </main>
+
 </body>
 </html>

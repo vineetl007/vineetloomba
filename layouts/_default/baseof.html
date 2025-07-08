@@ -3,29 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title> <!--Chrome Tab Title-->
+  <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white text-gray-900 font-sans">
+<body class="bg-[#0d1117] text-white font-sans">
 
   <!-- Navigation -->
-<header class="bg-black text-white p-4 shadow-md flex justify-between items-center">
-  <a href="/" class="text-xl font-bold hover:text-gray-300">Vineet Loomba Sir</a>
-  <nav class="space-x-6 text-lg font-medium">
-    {{ range site.Menus.main }}
-      <a href="{{ .URL }}" class="hover:text-gray-300">{{ .Name }}</a>
-    {{ end }}
-  </nav>
-</header>
-
+  <header class="bg-black text-white p-4 shadow-md flex justify-between items-center">
+    <a href="/" class="text-xl font-bold hover:text-gray-300">Vineet Loomba Sir</a>
+    <nav class="space-x-6 text-lg font-medium">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}" class="hover:text-gray-300">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </header>
 
   <!-- Main content -->
-  <main class="w-full bg-white py-8">
-  <div class="max-w-full sm:max-w-6xl mx-auto px-2 sm:px-4">
-    {{ block "main" . }}{{ end }}
-  </div>
-</main>
-
+  <main class="w-full bg-[#0d1117] py-8">
+    <div class="max-w-full sm:max-w-6xl mx-auto px-2 sm:px-4">
+      {{ block "main" . }}{{ end }}
+    </div>
+  </main>
 
 </body>
 </html>

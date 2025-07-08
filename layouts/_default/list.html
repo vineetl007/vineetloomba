@@ -1,14 +1,19 @@
 {{ define "main" }}
-  <section class="max-w-7xl mx-auto px-8 py-8">
-    <h1 class="text-3xl font-bold mb-4">{{ .Title }}</h1>
-    <div>
+  <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+    <h1 class="text-3xl font-bold text-white mb-6">{{ .Title }}</h1>
+    
+    <div class="prose prose-invert max-w-none text-gray-300 mb-10">
       {{ .Content }}
     </div>
 
-    {{ range .Pages }}
-      <article class="mb-6">
-        <a class="text-xl font-semibold text-blue-600 hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
-      </article>
-    {{ end }}
+    <div class="space-y-6">
+      {{ range .Pages }}
+        <article>
+          <a href="{{ .RelPermalink }}" class="text-2xl font-semibold text-blue-400 hover:text-blue-300 transition duration-150">
+            {{ .Title }}
+          </a>
+        </article>
+      {{ end }}
+    </div>
   </section>
 {{ end }}

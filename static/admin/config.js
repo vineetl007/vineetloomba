@@ -20,6 +20,7 @@ CMS.init({
     extension: "md",
     fields: [
       { label: "Title", name: "title", widget: "string" },
+      { label: "Weight", name: "weight", widget: "number", default: 1 },
       { label: "Body", name: "body", widget: "markdown" },
     ],
   },

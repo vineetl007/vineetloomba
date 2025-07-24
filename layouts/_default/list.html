@@ -1,18 +1,29 @@
 {{ define "main" }}
-<section class="w-full bg-gray-900 py-12 text-white">
-  <div class="max-w-6xl mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-8 text-center">{{ .Title }}</h1>
+<section class="max-w-7xl mx-auto px-8 py-8 text-white">
 
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {{ range .Pages }}
-        <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-xl transition duration-300">
-          <h2 class="text-xl font-semibold mb-2">📘 {{ .Title }}</h2>
-          <p class="text-sm text-gray-400 mb-4">Dive into this topic with clarity and depth.</p>
-          <a href="{{ .RelPermalink }}" class="text-yellow-400 hover:underline font-medium">Start Learning →</a>
-        </div>
-      {{ end }}
+  <!-- Page Title -->
+  <h1 class="text-3xl font-bold mb-6">{{ .Title }}</h1>
+
+  <!-- Page Content (from _index.md) -->
+  {{ if .Content }}
+  <div class="prose prose-invert mb-10 max-w-full">
+    {{ .Content }}
+  </div>
+  {{ end }}
+
+  <!-- Subpages Tiles -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {{ range .Pages }}
+    <div class="bg-gray-800 rounded-lg shadow-md p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-semibold mb-4">{{ .Title }}</h2>
+      </div>
+      <a href="{{ .RelPermalink }}"
+        class="mt-auto inline-block bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-300">
+        Start Learning
+      </a>
     </div>
-
+    {{ end }}
   </div>
 </section>
 {{ end }}

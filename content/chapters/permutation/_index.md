@@ -3,6 +3,8 @@ title: Permutations and Combinations
 ---
 # **👉BASICS ONE SHOT**
 
+
+
 <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
   <iframe src="https://www.youtube.com/embed/ttrWXmKp7vg?"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"

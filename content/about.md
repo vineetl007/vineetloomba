@@ -3,8 +3,12 @@ title: "About Me"
 menu: main
 ---
 
-<section>
- <!-- Text -->
+<section class="bg-gray-900 py-16 text-white">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
+    <div class="md:w-1/3 w-full">
+      <img src="/images/your-image.jpg" alt="Vineet Loomba Sir" class="rounded-lg shadow-lg w-full h-auto">
+    </div>
+    <!-- Text -->
     <div class="md:w-2/3 w-full">
       <h2 class="text-3xl font-bold mb-6">🔥 About Vineet Loomba Sir 🔥</h2>
       <p class="mb-4 text-lg font-semibold text-yellow-300">B.Tech, IIT Roorkee | Top Educator for IIT JEE | 12+ Years of Teaching Experience</p>
@@ -14,4 +18,6 @@ menu: main
       <p class="mb-4">Through this platform, he aims to empower students nationwide with a planned, long-term strategy that turns their IIT dreams into reality.</p>
       <p><strong>He is widely regarded as one of India’s top JEE mentors.</strong></p>
     </div>
+
+  </div>
 </section>

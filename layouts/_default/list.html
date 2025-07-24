@@ -1,19 +1,18 @@
 {{ define "main" }}
-  <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8">
-    <h1 class="text-3xl font-bold text-white mb-6">{{ .Title }}</h1>
-    
-    <div class="prose prose-invert max-w-none text-gray-300 mb-10">
-      {{ .Content }}
-    </div>
+<section class="w-full bg-gray-900 py-12 text-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <h1 class="text-4xl font-bold mb-8 text-center">{{ .Title }}</h1>
 
-    <div class="space-y-6">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {{ range .Pages }}
-        <article>
-          <a href="{{ .RelPermalink }}" class="text-2xl font-semibold text-blue-400 hover:text-blue-300 transition duration-150">
-            {{ .Title }}
-          </a>
-        </article>
+        <div class="bg-gray-800 rounded-lg p-6 shadow hover:shadow-xl transition duration-300">
+          <h2 class="text-xl font-semibold mb-2">📘 {{ .Title }}</h2>
+          <p class="text-sm text-gray-400 mb-4">Dive into this topic with clarity and depth.</p>
+          <a href="{{ .RelPermalink }}" class="text-yellow-400 hover:underline font-medium">Start Learning →</a>
+        </div>
       {{ end }}
     </div>
-  </section>
+
+  </div>
+</section>
 {{ end }}

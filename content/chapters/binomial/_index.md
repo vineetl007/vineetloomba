@@ -2,4 +2,4 @@
 title: binomial
 weight: 3
 ---
-binmial content
+binomial content

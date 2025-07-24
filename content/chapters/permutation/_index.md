@@ -1,5 +1,6 @@
 ---
 title: Permutations and Combinations
+weight: 1
 ---
 # **👉BASICS ONE SHOT**
 

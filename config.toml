@@ -30,12 +30,12 @@ paginate = 10
   [[menu.main]]
     name = "About Me"
     url = "/about/"
-    weight = 3
+    weight = 4
 
   [[menu.main]]
-    name = "Contact"
-    url = "/contact/"
-    weight = 4
+  name = "Blog"
+  url = "/blog/"
+  weight = 3
 
   [[menu.main]]
     name = "YouTube"

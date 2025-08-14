@@ -24,6 +24,18 @@ CMS.init({
       { label: "Body", name: "body", widget: "markdown" },
     ],
   },
+  {
+  name: "blog",
+  label: "Blog",
+  folder: "content/blog",
+  create: true,
+  slug: "{{slug}}",
+  fields: [
+    { label: "Title", name: "title", widget: "string" },
+    { label: "Date", name: "date", widget: "datetime" },
+    { label: "Body", name: "body", widget: "markdown" },
+    ],
+  },
 ]
 
   },

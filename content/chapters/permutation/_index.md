@@ -2,7 +2,7 @@
 title: Permutations and Combinations
 weight: 10
 ---
-# **👉BASICS ONE SHOT**
+# **👉BASICS IN ONE SHOT**
 
 **<br>**
 

@@ -20,7 +20,7 @@ weight: 1
       based on patterns I’ve seen year after year in my classes.
     </p>
   </section>
-<img src="/images/high weightage chapters in physics for jee main 2025.jpeg" alt="Alt text for SEO" style="width: 100%; height: auto; display: block; margin: 0 auto;">
+<img src="/images/high weightage chapters in physics for jee main 2025.jpeg" alt="high weightage chapters in physics for jee main 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;">
 
   <section>
     <h2 style="color:#ffcc80;">🔥 Why Focus on High-Weightage Topics?</h2>

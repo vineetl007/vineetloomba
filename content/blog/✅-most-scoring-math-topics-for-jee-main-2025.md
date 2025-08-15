@@ -20,7 +20,7 @@ weight: 2
     <li><strong style="color:#ffd966;">Straight Lines & Circles</strong> – Direct formula-based problems, minimal surprises.</li>
     <li><strong style="color:#ffd966;">Matrices & Determinants</strong> – Compact syllabus, easy to master.</li>
     <li><strong style="color:#ffd966;">Probability</strong> – Small set of formulas, recurring patterns in PYQs.</li>
-    <li><strong style="color:#ffd966;">Mathematical Reasoning</strong> – Almost guaranteed marks for a short topic.</li>
+    <li><strong style="color:#ffd966;">Statistics</strong> – Almost guaranteed marks for a short topic.</li>
     <li><strong style="color:#ffd966;">Binomial Theorem</strong> – Formula recall and pattern spotting = quick solutions.</li>
     <li><strong style="color:#ffd966;">Vector & 3D Geometry</strong> – Sure-shot marks if you’re comfortable with basics.</li>
   </ul>

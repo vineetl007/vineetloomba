@@ -32,7 +32,7 @@ CMS.init({
   slug: "{{slug}}",
   fields: [
     { label: "Title", name: "title", widget: "string" },
-    { label: "Date", name: "date", widget: "datetime" },
+   { label: "Weight", name: "weight", widget: "number", default: 1 },
     { label: "Body", name: "body", widget: "markdown" },
     ],
   },

@@ -10,7 +10,7 @@ weight: 2
 
   <p>In the JEE Main exam, every mark counts. Some chapters demand weeks of deep study, while others quietly offer <span style="color:#9ae6b4;"><strong>easy marks</strong></span> if you know where to look. This post is all about those high-return topics where a few hours of focused practice can translate into a big jump in your percentile 🚀.</p>
 
-<img src="/images/Scoring maths chapters for jee 2025.jpeg" alt="Scoring maths chapters for jee 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;">
+<img src="/images/scoring maths chapters for jee 2025.jpeg" alt=" Most scoring maths chapters for jee main 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;">
 
   <h2 style="color: #ffb84d;">Why Focus on Scoring Topics? 🎯</h2>
   <p>One of my students last year was average in lengthy Calculus but targeted high-yield areas like Algebra and Coordinate Geometry. The result? A <span style="color:#9ae6b4;"><strong>30-mark jump</strong></span> in the actual paper — without increasing total study hours. Strategy matters just as much as hard work 💡.</p>

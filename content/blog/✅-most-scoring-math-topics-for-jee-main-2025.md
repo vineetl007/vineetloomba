@@ -2,81 +2,44 @@
 title: " ✅ Most Scoring Math Topics for JEE Main 2025"
 weight: 2
 ---
-<article style="color:#e0e0e0; background:transparent; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height:1.65;">
-  <header>
-    <h1 style="color:#ffbb66; font-size:2rem; margin:0 0 .5rem 0;">
-      ✅ Most Scoring Math Topics for JEE Main 2025 – Easy Marks You Shouldn’t Miss
-    </h1>
-    <p style="color:#bfbfbf; font-size:.95rem; margin:0 0 1.25rem 0;">
-      <em>By Vineet Loomba Sir — IIT JEE Educator </em>
-    </p>
-  </header>
+<article style="font-family: Arial, sans-serif; color: #e0e0e0; line-height: 1.6;">
 
-  <section style="margin-bottom:1.25rem;">
-    <p>
-      In <strong style="color:#ffd9a8;">JEE Main Math</strong>, some chapters quietly hand out <span style="color:#66e0cc; font-weight:600;">easy marks</span> if you prep them smartly. 
-      One of my students last year focused on these scoring areas and gained nearly <span style="color:#66e0cc; font-weight:600;">30 marks</span> without adding extra study hours. 
-      Here’s exactly what to target and how to use it.
-    </p>
-  </section>
+  <h1 style="color: #ffcc66; text-align: center;">Most Scoring Math Topics for JEE Main 2025 – Easy Marks You Shouldn’t Miss ✨📊</h1>
 
-  <section style="margin-bottom:1.25rem;">
-    <h2 style="color:#ffcc80; font-size:1.4rem; margin:.5rem 0;">Why focus on scoring topics?</h2>
-    <ul style="margin:.25rem 0 0 1rem;">
-      <li>Converts time to marks faster in the final months.</li>
-      <li>Boosts confidence early in the paper.</li>
-      <li>Frees up time for tougher problems later.</li>
-    </ul>
-  </section>
+  <p><em>By Vineet Loomba Sir – JEE Math Educator</em></p>
 
-  <section style="margin-bottom:1.25rem;">
-    <h2 style="color:#ffcc80; font-size:1.4rem; margin:.5rem 0;">Most Scoring Math Topics (2025)</h2>
+  <p>In the JEE Main exam, every mark counts. Some chapters demand weeks of deep study, while others quietly offer <span style="color:#9ae6b4;"><strong>easy marks</strong></span> if you know where to look. This post is all about those high-return topics where a few hours of focused practice can translate into a big jump in your percentile 🚀.</p>
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">1) Straight Lines & Circles</h3>
-    <p style="margin:.25rem 0 .5rem;">Direct, formula-based, predictable patterns. With practice, many questions are solvable in <strong style="color:#ffd9a8;">under a minute</strong>.</p>
+<img src="/images/Scoring maths chapters for jee 2025.jpeg" alt="Scoring maths chapters for jee 2025" style="width: 100%; height: auto; display: block; margin: 0 auto;">
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">2) Matrices & Determinants</h3>
-    <p style="margin:.25rem 0 .5rem;">Minimal theory, maximum application. Once properties and shortcuts are set, accuracy shoots up.</p>
+  <h2 style="color: #ffb84d;">Why Focus on Scoring Topics? 🎯</h2>
+  <p>One of my students last year was average in lengthy Calculus but targeted high-yield areas like Algebra and Coordinate Geometry. The result? A <span style="color:#9ae6b4;"><strong>30-mark jump</strong></span> in the actual paper — without increasing total study hours. Strategy matters just as much as hard work 💡.</p>
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">3) Probability</h3>
-    <p style="margin:.25rem 0 .5rem;">Concept-light yet high return. A small set of problem types covers a big chunk of questions.</p>
+  <h2 style="color: #ffb84d;">The Most Scoring Math Topics for JEE Main 2025 📚</h2>
+  <ul>
+    <li><strong style="color:#ffd966;">Straight Lines & Circles</strong> – Direct formula-based problems, minimal surprises.</li>
+    <li><strong style="color:#ffd966;">Matrices & Determinants</strong> – Compact syllabus, easy to master.</li>
+    <li><strong style="color:#ffd966;">Probability</strong> – Small set of formulas, recurring patterns in PYQs.</li>
+    <li><strong style="color:#ffd966;">Mathematical Reasoning</strong> – Almost guaranteed marks for a short topic.</li>
+    <li><strong style="color:#ffd966;">Binomial Theorem</strong> – Formula recall and pattern spotting = quick solutions.</li>
+    <li><strong style="color:#ffd966;">Vector & 3D Geometry</strong> – Sure-shot marks if you’re comfortable with basics.</li>
+  </ul>
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">4) Mathematical Reasoning</h3>
-    <p style="margin:.25rem 0 .5rem;">Shortest chapter; quick revision can secure a clean <span style="color:#66e0cc; font-weight:600;">4 marks</span>.</p>
+  <h2 style="color: #ffb84d;">How to Maximise Your Score 🏆</h2>
+  <div style="background-color:#1a1a1a; padding:10px; border-left:4px solid #9ae6b4; margin-bottom:8px;">
+    <strong>Tip 1:</strong> Keep a one-page formula sheet for these chapters.
+  </div>
+  <div style="background-color:#1a1a1a; padding:10px; border-left:4px solid #9ae6b4; margin-bottom:8px;">
+    <strong>Tip 2:</strong> Solve 10–15 short questions from these topics daily instead of long marathons.
+  </div>
+  <div style="background-color:#1a1a1a; padding:10px; border-left:4px solid #9ae6b4;">
+    <strong>Tip 3:</strong> Attempt these questions first in the exam to build confidence 😎.
+  </div>
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">5) Binomial Theorem</h3>
-    <p style="margin:.25rem 0 .5rem;">Pattern recognition + standard expansions = fast, reliable scoring.</p>
+  <h2 style="color: #ffb84d;">One of My Students’ Story 📖</h2>
+  <p>Last year, a student struggled with Integration but decided to focus on scoring topics in the last two weeks. On exam day, they solved these first, securing <span style="color:#9ae6b4;">a strong base score</span> before touching the tougher questions. The result? A percentile boost that surprised even them 🥳.</p>
 
-    <h3 style="color:#ffbb66; font-size:1.15rem; margin:.75rem 0 .25rem;">6) Vector & 3D Geometry</h3>
-    <p style="margin:.25rem 0 .5rem;">Master vector operations, plane/line equations, and direction cosines—highly repeatable question frames.</p>
-  </section>
+  <h2 style="color: #ffb84d;">Final Words 📝</h2>
+  <p>These topics are your <span style="color:#9ae6b4;"><strong>quick wins</strong></span>. Combine them with regular practice, and you’ll find your Math score climbing steadily. In the final weeks before JEE Main 2025, focus on efficiency — not just effort 💪.</p>
 
-  <section style="margin-bottom:1.25rem;">
-    <h2 style="color:#ffcc80; font-size:1.4rem; margin:.5rem 0;">How to maximise your score</h2>
-    <div style="background:#151515; border-left:4px solid #66e0cc; padding:.6rem .8rem; border-radius:6px; margin:.5rem 0;">
-      <strong style="color:#ffd9a8;">Tip 1:</strong> Build a one-page formula sheet for each topic and pin it near your desk.
-    </div>
-    <div style="background:#151515; border-left:4px solid #66e0cc; padding:.6rem .8rem; border-radius:6px; margin:.5rem 0;">
-      <strong style="color:#ffd9a8;">Tip 2:</strong> Practise 10–15 quick questions daily from two topics instead of long marathons.
-    </div>
-    <div style="background:#151515; border-left:4px solid #66e0cc; padding:.6rem .8rem; border-radius:6px; margin:.5rem 0;">
-      <strong style="color:#ffd9a8;">Tip 3:</strong> Watch for trap options—especially in direct formula questions.
-    </div>
-  </section>
-
-  <section style="margin-bottom:1.25rem;">
-    <h2 style="color:#ffcc80; font-size:1.4rem; margin:.5rem 0;">One of my students’ story</h2>
-    <p>
-      Two weeks before the exam, one student shifted focus to these scoring chapters. On exam day, they solved these first, 
-      secured a strong <span style="color:#66e0cc; font-weight:600;">base score</span>, and then used the remaining time for longer Calculus problems—leaving the hall confident.
-    </p>
-  </section>
-
-  <section>
-    <h2 style="color:#ffcc80; font-size:1.4rem; margin:.5rem 0;">Final words</h2>
-    <p>
-      These topics aren’t a replacement for the full syllabus—but they’re your <span style="color:#66e0cc; font-weight:600;">quick wins</span>. 
-      Prioritise them in the final stretch, revise consistently, and let the easy marks stack up.
-    </p>
-  </section>
 </article>

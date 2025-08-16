@@ -1,3 +1,9 @@
+/* custom.css */
+
+.font-concert {
+  font-family: 'Concert One', cursive;
+}
+
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */
 h1, h2, h3, h4, h5, h6 {

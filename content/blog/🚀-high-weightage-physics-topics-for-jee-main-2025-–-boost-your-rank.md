@@ -4,9 +4,6 @@ weight: 1
 ---
 <article>
   <header>
-    <h1 style="color:#ffb84d; font-size:2.2rem;">
-      🚀 High-Weightage Physics Topics for JEE Main 2025 – Boost Your Rank!
-    </h1>
     <p style="color:#bbbbbb; font-size:1rem;">
       <em>By Vineet Loomba Sir – IIT JEE Educator </em>
     </p>

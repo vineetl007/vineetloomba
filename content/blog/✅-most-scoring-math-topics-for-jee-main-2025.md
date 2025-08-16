@@ -1,11 +1,8 @@
 ---
-title: " ✅ Most Scoring Math Topics for JEE Main 2025"
+title: 🚀 Most Scoring Math Topics for JEE Main 2025
 weight: 2
 ---
 <article style="font-family: Arial, sans-serif; color: #e0e0e0; line-height: 1.6;">
-
-  <h1 style="color: #ffcc66; text-align: center;">Most Scoring Math Topics for JEE Main 2025 – Easy Marks You Shouldn’t Miss ✨📊</h1>
-
   <p><em>By Vineet Loomba Sir – JEE Math Educator</em></p>
 
   <p>In the JEE Main exam, every mark counts. Some chapters demand weeks of deep study, while others quietly offer <span style="color:#9ae6b4;"><strong>easy marks</strong></span> if you know where to look. This post is all about those high-return topics where a few hours of focused practice can translate into a big jump in your percentile 🚀.</p>

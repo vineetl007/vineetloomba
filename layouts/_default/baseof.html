@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-<style>
- .font-concert {
-  font-family: 'Concert One', cursive;
-}
-</style>
+  <!-- custome css --->
+  {{ $custom := resources.Get "css/custom.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $custom.Permalink }}">
+
  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>

@@ -7,6 +7,12 @@
     font-family: 'Anton', sans-serif;
   }
 </style>
+
+  <!-- Custom CSS Code --->
+  {{ $styles := resources.Get "css/custom.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $styles.Permalink }}">
+  <!-- Custom CSS Code --->
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>

@@ -4,7 +4,7 @@ weight: 1
 ---
 <article>
   <header>
-    <h1 style="color:#ffb84d; font-family: 'Anton', sans-serif; font-size:2.2rem;">
+    <h1 style="color:#ffb84d; font-size:2.2rem;">
       🚀 High-Weightage Physics Topics for JEE Main 2025 – Boost Your Rank!
     </h1>
     <p style="color:#bbbbbb; font-size:1rem;">

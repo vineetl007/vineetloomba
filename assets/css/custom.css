@@ -11,6 +11,36 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+/* Make headings distinct sizes */
+h1, .prose h1 {
+  font-size: 2.2rem;   /* big for main title */
+  line-height: 1.3;
+}
+
+h2, .prose h2 {
+  font-size: 1.8rem;
+  line-height: 1.4;
+}
+
+h3, .prose h3 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+h4, .prose h4 {
+  font-size: 1.25rem;
+}
+
+h5, .prose h5 {
+  font-size: 1.1rem;
+}
+
+h6, .prose h6 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .post-title {
   color: #ffb84d;
 }

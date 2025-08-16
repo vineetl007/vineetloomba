@@ -19,7 +19,7 @@ weight: 3
       margin: auto;
     }
     h1, h2, h3 {
-      color: #ffcc70;
+      color: #ffb84d;
     }
     strong {
       color: #ff9966;
@@ -41,9 +41,6 @@ weight: 3
   </style>
 </head>
 <body>
-
-  <h1>🔬 Important Chemistry Chapters for JEE Main 2025 – Rank Booster Guide 🚀</h1>
-
   <p>
     Chemistry often feels like the <em>“scoring weapon”</em> in JEE Main. Many aspirants say that solving Chemistry
     questions gives them the confidence boost they need to maximize their score.  

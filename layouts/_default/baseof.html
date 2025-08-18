@@ -16,11 +16,12 @@
   <!-- Navigation -->
   <header class="bg-black text-white p-4 shadow-md flex justify-between items-center">
     <a href="/" class="text-xl font-bold hover:text-gray-300">Vineet Loomba Sir</a>
-    <nav class="space-x-6 text-lg font-medium">
-      {{ range site.Menus.main }}
-        <a href="{{ .URL }}" class="hover:text-gray-300">{{ .Name }}</a>
-      {{ end }}
+    <nav class="space-x-6 text-lg font-medium nav-font">
+  {{ range site.Menus.main }}
+    <a href="{{ .URL }}" class="hover:text-yellow-400">{{ .Name }}</a>
+  {{ end }}
     </nav>
+
   </header>
 
   <!-- Main content -->

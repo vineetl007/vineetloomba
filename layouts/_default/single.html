@@ -5,5 +5,36 @@
     <div class="prose prose-invert max-w-none">     
       {{ .Content }}
     </div>
+    <!-- Show YouTube video only for chapters -->
+    {{ if eq .Section "chapters" }}
+      {{ with .Params.youtubeID }}
+        <div class="mt-8">
+          {{< youtube . >}}
+        </div>
+
+        <!-- Schema JSON-LD for video -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          "name": "{{ $.Title }}",
+          "description": "{{ with $.Params.description }}{{ . }}{{ else }}{{ $.Summary }}{{ end }}",
+          "thumbnailUrl": "https://img.youtube.com/vi/{{ . }}/hqdefault.jpg",
+          "uploadDate": "{{ $.Date.Format "2006-01-02" }}",
+          "contentUrl": "https://www.youtube.com/watch?v={{ . }}",
+          "embedUrl": "https://www.youtube.com/embed/{{ . }}",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Vineet Loomba",
+            "url": "https://vineetloomba.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://vineetloomba.com/logo.png"
+            }
+          }
+        }
+        </script>
+      {{ end }}
+    {{ end }}
     </section>
 {{ end }}

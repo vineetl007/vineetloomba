@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-  <!-- custome css --->
-  {{ $custom := resources.Get "css/custom.css" | resources.Minify | resources.Fingerprint }}
-<link rel="stylesheet" href="{{ $custom.Permalink }}">
-
- <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google tag (gtag.js) -->
+   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFH2Y30QGP"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -20,6 +11,15 @@
   gtag('config', 'G-RFH2Y30QGP');
 </script>
   
+  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <!-- custome css --->
+  {{ $custom := resources.Get "css/custom.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $custom.Permalink }}">
+
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#0d1117] text-white font-sans">
 

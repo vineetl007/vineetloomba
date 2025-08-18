@@ -25,14 +25,28 @@
     </div>
     {{ end }}
   </div>
-   <!-- Back Button -->
-{{ if and (eq .Kind "section") (eq .Section "chapters") }}
-<div class="mt-10">
-  <a href="/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
-    ← Back to Home
-  </a>
-</div>
+
+{{/* Show buttons only for the chapters section */}}
+{{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/chapters/") }}
+
+  {{ if eq .RelPermalink "/chapters/" }}
+    <!-- On /chapters/ → Back to Home -->
+    <div class="mt-10">
+      <a href="/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
+        ← Back to Home
+      </a>
+    </div>
+  {{ else }}
+    <!-- On /chapters/<chapter>/ → Back to All Chapters -->
+    <div class="mt-10">
+      <a href="/chapters/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
+        ← Back to All Chapters
+      </a>
+    </div>
+  {{ end }}
+
 {{ end }}
+
 
   <!-- Blog Button -->
   <div class="mt-10">

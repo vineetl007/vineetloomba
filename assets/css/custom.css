@@ -50,3 +50,7 @@ h6, .prose h6 {
 .post-title {
   color: #ffb84d;
 }
+
+.nav-font {
+  font-family: 'Concert One', cursive;
+}

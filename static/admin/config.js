@@ -21,6 +21,7 @@ CMS.init({
     fields: [
       { label: "Title", name: "title", widget: "string" },
       { label: "Weight", name: "weight", widget: "number", default: 1 },
+      { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
       { label: "Body", name: "body", widget: "markdown" },
       
     ],

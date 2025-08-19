@@ -1,10 +1,48 @@
 {{ define "main" }}
-  <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">
-    <h1 class="text-3xl text-white mb-6">{{ .Title }}</h1>
-    
-    <div class="prose prose-invert max-w-none">     
-      {{ .Content }}
-    </div>
+<section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">
+  <h1 class="text-3xl text-white mb-6">{{ .Title }}</h1>
   
-    </section>
+  <div class="prose prose-invert max-w-none">     
+    {{ .Content }}
+  </div>
+
+  <!-- Show YouTube video only for chapters -->
+  {{ if eq .Section "chapters" }}
+    {{ with .Params.youtubeID }}
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:2rem;">
+        <iframe src="https://www.youtube.com/embed/{{ . }}?"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="{{ $.Title }}"></iframe>
+      </div>
+
+      <!-- Schema JSON-LD for video -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "{{ $.Title }}",
+        "description": "{{ with $.Params.description }}{{ . }}{{ else }}{{ $.Summary }}{{ end }}",
+        "thumbnailUrl": "https://img.youtube.com/vi/{{ . }}/hqdefault.jpg",
+        "uploadDate": "{{ $.Date.Format "2006-01-02" }}",
+        "contentUrl": "https://www.youtube.com/watch?v={{ . }}",
+        "embedUrl": "https://www.youtube.com/embed/{{ . }}",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Vineet Loomba",
+          "url": "https://vineetloomba.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vineetloomba.com/logo.png"
+          }
+        }
+      }
+      </script>
+    {{ end }}
+  {{ end }}
+
+</section>
 {{ end }}

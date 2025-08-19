@@ -4,4 +4,4 @@ weight: 24
 ---
 # Lecture 1 
 
-{{< yt 4qIikjZcjZU >}}
+{{< yt "4qIikjZcjZU" "Basics of Integration" >}}

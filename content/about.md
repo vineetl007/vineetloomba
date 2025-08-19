@@ -6,7 +6,7 @@ menu: main
 <section class="bg-gray-900 py-16 text-white">
   <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
     <div class="md:w-1/3 w-full">
-      <img src="/images/your-image.jpg" alt="Vineet Loomba Sir" class="rounded-lg shadow-lg w-full h-auto">
+      <img src="/images/vineet-loomba-sir.jpg" alt="Vineet Loomba Sir" class="rounded-lg shadow-lg w-full h-auto">
     </div>
     <!-- Text -->
     <div class="md:w-2/3 w-full">

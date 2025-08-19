@@ -10,7 +10,24 @@
     "name": "Vineet Loomba",
     "sameAs": "https://vineetloomba.com/"
   },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ .Permalink }}" }
+  "offers": {
+    "@type": "Offer",
+    "category": "Free",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "self-paced",
+    "location": {
+      "@type": "VirtualLocation",
+      "url": "{{ .Permalink }}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
 }
 </script>
 {{ end }}

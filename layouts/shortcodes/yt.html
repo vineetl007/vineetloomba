@@ -5,6 +5,28 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           referrerpolicy="strict-origin-when-cross-origin"
-          title="{{ .Get 1 }}">
-  </iframe>
+          title="{{ .Get 1 }}"></iframe>
 </div>
+
+<!-- JSON-LD schema for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "{{ .Get 1 }}",
+  "description": "Video content for {{ $.Title }}",
+  "thumbnailUrl": "https://img.youtube.com/vi/{{ .Get 0 }}/hqdefault.jpg",
+  "uploadDate": "{{ $.Date.Format "2006-01-02" }}",
+  "contentUrl": "https://www.youtube.com/watch?v={{ .Get 0 }}",
+  "embedUrl": "https://www.youtube.com/embed/{{ .Get 0 }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Vineet Loomba",
+    "url": "https://vineetloomba.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vineetloomba.com/logo.png"
+    }
+  }
+}
+</script>

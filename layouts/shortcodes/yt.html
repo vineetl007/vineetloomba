@@ -15,8 +15,8 @@
   "name": "{{ .Get 1 }}",
   "description": "Video content for {{ .Page.Title }}",
   "thumbnailUrl": "https://img.youtube.com/vi/{{ .Get 0 }}/hqdefault.jpg",
-  "datePublished": "{{ with .PublishDate }}{{ .Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
-  "uploadDate": "{{ with .Date }}{{ .Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+  "datePublished": "{{ with .PublishDate }}{{ .Format `2006-01-02T15:04:05Z07:00` }}{{ else }}{{ now.Format `2006-01-02T15:04:05Z07:00` }}{{ end }}",
+  "uploadDate": "{{ with .Date }}{{ .Format `2006-01-02T15:04:05Z07:00` }}{{ else }}{{ now.Format `2006-01-02T15:04:05Z07:00` }}{{ end }}",
   "contentUrl": "https://www.youtube.com/watch?v={{ .Get 0 }}",
   "embedUrl": "https://www.youtube.com/embed/{{ .Get 0 }}",
   "publisher": {

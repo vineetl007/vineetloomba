@@ -18,12 +18,13 @@
     }
   },
   "datePublished": "{{ with .Date }}{{ .Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  },
-  "image": "{{ with .Params.featured_image }}{{ . }}{{ else }}https://vineetloomba.com/logo.png{{ end }}",
-  "url": "{{ .Permalink }}"
+"mainEntityOfPage": { 
+  "@type": "WebPage", 
+  "@id": "https://vineetloomba.com{{ .RelPermalink }}" 
+},
+"url": "https://vineetloomba.com{{ .RelPermalink }}",
+ "image": "{{ with .Params.featured_image }}{{ . }}{{ else }}https://vineetloomba.com/logo.png{{ end }}",
+
 }
 </script>
 {{ end }}

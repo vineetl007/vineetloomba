@@ -1,3 +1,16 @@
+{{ define "extra_head" }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ .Title | jsonify }},
+    "description": {{ (or .Params.description "Default description") | jsonify }},
+    "author": { "@type": "Person", "name": "Vineet Loomba" },
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ .Permalink }}" }
+  }
+  </script>
+{{ end }}
 {{ define "main" }}
   <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">
     <h1 class="text-3xl mb-6 post-title">{{ .Title }}</h1>

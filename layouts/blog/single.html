@@ -21,10 +21,13 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
-  }
+  },
+  "image": "{{ with .Params.featured_image }}{{ . }}{{ else }}https://vineetloomba.com/logo.png{{ end }}",
+  "url": "{{ .Permalink }}"
 }
 </script>
 {{ end }}
+
 {{ define "main" }}
   <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">
     <h1 class="text-3xl mb-6 post-title">{{ .Title }}</h1>

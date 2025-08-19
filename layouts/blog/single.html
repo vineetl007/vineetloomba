@@ -1,15 +1,29 @@
 {{ define "extra_head" }}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": {{ .Title | jsonify }},
-    "description": {{ (or .Params.description "Default description") | jsonify }},
-    "author": { "@type": "Person", "name": "Vineet Loomba" },
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ .Permalink }}" }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ (or .Params.description "Insights and strategies for JEE Mathematics preparation by Vineet Loomba.") | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": "Vineet Loomba"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Vineet Loomba",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://vineetloomba.com/logo.png"
+    }
+  },
+  "datePublished": "{{ with .Date }}{{ .Format "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
   }
-  </script>
+}
+</script>
 {{ end }}
 {{ define "main" }}
   <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">

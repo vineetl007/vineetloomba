@@ -1,6 +1,6 @@
 baseURL = "https://vineetloomba.com/"
 languageCode = "en-us"
-title = "Vineet Loomba - IIT JEE Math LMS"
+title = "Vineet Loomba - IIT JEE Math Free Preparation"
 theme = "compose"
 enableRobotsTXT = true
 paginate = 10

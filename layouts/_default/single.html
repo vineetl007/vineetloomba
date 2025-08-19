@@ -1,3 +1,20 @@
+{{ define "extra_head" }}
+  {{ block "extra_head" . }}{{ end }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ .Title }}",
+    "datePublished": "{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}",
+    "dateModified": "{{ .Lastmod.Format `2006-01-02T15:04:05Z07:00` }}",
+    "author": {
+      "@type": "Person",
+      "name": "Vineet Loomba"
+    }
+  }
+  </script>
+{{ end }}
+
 {{ define "main" }}
 <section class="max-w-7xl mx-auto px-4 sm:px-8 py-8 text-gray-300">
   <h1 class="text-3xl text-white mb-6">{{ .Title }}</h1>

@@ -14,8 +14,6 @@ weight: 3
       color: #e0e0e0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.7;
-      padding: 20px;
-      margin: auto;
     }
     h1, h2, h3 {
       color: #ffb84d;

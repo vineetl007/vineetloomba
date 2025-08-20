@@ -1,23 +1,23 @@
 <div class="max-w-lg mx-auto my-12 p-8 bg-gray-900 rounded-2xl shadow-lg">
   <h2 class="text-2xl text-[#ffb84d] mb-4 text-center">
-    📩 Subscribe for JEE Updates
+    📩 Subscribe to Crack JEE
   </h2>
   <p class="text-gray-300 text-center mb-6">
-    Get notified when I publish new lessons, blogs, and videos.
+    Get free Tips, strategy & updates directly from Vineet Loomba Sir
   </p>
 
   <form id="subscribe-form" class="space-y-4">
-    <input 
-      type="text" 
-      name="name" 
-      placeholder="Your Name (optional)" 
-      class="w-full px-4 py-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#ffb84d]" 
-    />
     <input 
       type="email" 
       name="email" 
       placeholder="Your Email *" 
       required 
+      class="w-full px-4 py-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#ffb84d]" 
+    />
+    <input 
+      type="text" 
+      name="name" 
+      placeholder="Your Name (optional)" 
       class="w-full px-4 py-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#ffb84d]" 
     />
     <button 
@@ -51,7 +51,7 @@ document.getElementById("subscribe-form").addEventListener("submit", async funct
       body: JSON.stringify(formData)
     });
 
-    document.getElementById("form-message").innerText = "✅ Thank you for subscribing!";
+    document.getElementById("form-message").innerText = "✅ Success! You are now one step closer to cracking JEE";
     form.reset();
   } catch (error) {
     document.getElementById("form-message").innerText = "❌ Something went wrong. Please try again.";

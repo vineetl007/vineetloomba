@@ -1,5 +1,5 @@
 <div class="max-w-lg mx-auto my-12 p-8 bg-gray-900 rounded-2xl shadow-lg">
-  <h2 class="text-2xl text-[#ffb84d] mb-4 text-center">
+  <h2 class="text-2xl text-[#ffb84d] mb-4 text-center whitespace-nowrap">
     📩 Subscribe to Crack JEE
   </h2>
   <p class="text-gray-300 text-center mb-6">
@@ -51,7 +51,7 @@ document.getElementById("subscribe-form").addEventListener("submit", async funct
       body: JSON.stringify(formData)
     });
 
-    document.getElementById("form-message").innerText = "✅ Success! You are now one step closer to cracking JEE";
+    document.getElementById("form-message").innerText = "✅ Success! You are now one step closer to cracking JEE 💪";
     form.reset();
   } catch (error) {
     document.getElementById("form-message").innerText = "❌ Something went wrong. Please try again.";

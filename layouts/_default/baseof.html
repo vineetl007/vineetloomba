@@ -53,15 +53,31 @@
 <body class="bg-[#0d1117] text-white font-sans">
 
   <!-- Navigation -->
-  <header class="bg-black/90 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50 shadow-md backdrop-blur-sm">
+<header class="bg-black/90 text-white p-4 shadow-md sticky top-0 z-50 shadow-md backdrop-blur-sm">
+  <div class="flex justify-between items-center">
+    <!-- Logo -->
     <a href="/" class="text-xl nav-font hover:text-yellow-400 whitespace-nowrap">vineetloomba.com</a>
-    <nav class="space-x-6 text-lg font-medium nav-font">
-  {{ range site.Menus.main }}
-    <a href="{{ .URL }}" class="hover:text-yellow-400">{{ .Name }}</a>
-  {{ end }}
-    </nav>
 
-  </header>
+    <!-- Hamburger Button (mobile only) -->
+    <button id="menu-toggle" class="sm:hidden text-2xl focus:outline-none">☰</button>
+
+    <!-- Desktop Menu -->
+    <nav id="menu" class="hidden sm:flex space-x-6 text-lg font-medium nav-font">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}" class="hover:text-yellow-400">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+ <div id="mobile-menu" 
+     class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out flex-col space-y-4 mt-2 sm:hidden text-lg font-medium nav-font">
+    {{ range site.Menus.main }}
+      <a href="{{ .URL }}" class="block hover:text-yellow-400">{{ .Name }}</a>
+    {{ end }}
+  </div>
+</header>
+
 
   <!-- Main content -->
   <main class="w-full bg-[#0d1117] py-8">

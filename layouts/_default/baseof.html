@@ -88,6 +88,44 @@
     </div>
   </main>
 
+    <!-- hamburger menu behavior -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("menu-toggle");
+    const menuIcon = document.getElementById("menu-icon");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuLinks = mobileMenu.querySelectorAll("a");
+
+    function openMenu() {
+      mobileMenu.classList.remove("max-h-0");
+      mobileMenu.classList.add("max-h-96");
+      menuIcon.textContent = "✖";
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove("max-h-96");
+      mobileMenu.classList.add("max-h-0");
+      menuIcon.textContent = "☰";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      if (mobileMenu.classList.contains("max-h-0")) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
+    });
+
+    // Auto-close menu when a link is clicked
+    menuLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        closeMenu();
+      });
+    });
+  });
+</script>
+
+  
   {{ partial "footer.html" . }}
 
 </body>

@@ -6,7 +6,7 @@ enableRobotsTXT = true
 paginate = 10
 
 [params]
-  homeTitle = "Welcome to Vineet Loomba's LMS"
+  homeTitle = "Welcome to Vineet Loomba's Free IIT JEE Preparation Website"
   homeSubtitle = "IIT JEE Mathematics Chapterwise Learning Portal"
   description = "Organized IIT JEE Math videos chapterwise and conceptwise"
   mainSections = ["chapters"]

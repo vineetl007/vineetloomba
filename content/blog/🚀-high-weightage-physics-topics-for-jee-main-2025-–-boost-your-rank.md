@@ -1,6 +1,9 @@
 ---
 title: 🚀 High-Weightage Physics Topics for JEE Main 2025 – Boost Your Rank!
 weight: 1
+description: Crack JEE Main 2025 with high-weightage Physics chapters. Learn key
+  scoring topics, smart strategies, and boost your rank with focused
+  preparation.
 ---
 <article>
   <header>

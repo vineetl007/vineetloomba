@@ -1,6 +1,9 @@
 ---
 title: 🚀 Most Scoring Math Topics for JEE Main 2025
 weight: 2
+description: Maximize your JEE Main 2025 score with the most scoring Math
+  topics. Learn easy-to-master chapters, shortcuts, and strategies for higher
+  marks.
 ---
 <article style="font-family: Arial, sans-serif; color: #e0e0e0; line-height: 1.6;">
   <p><em>By Vineet Loomba Sir – JEE Math Educator</em></p>

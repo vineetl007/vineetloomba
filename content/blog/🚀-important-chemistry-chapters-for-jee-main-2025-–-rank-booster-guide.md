@@ -1,6 +1,8 @@
 ---
 title: "🚀 Important Chemistry Chapters for JEE Main 2025 – Rank Booster Guide "
 weight: 3
+description: Ace JEE Main 2025 Chemistry with high-yield chapters. Focus on easy
+  and important topics to score faster and secure a top rank in the exam.
 ---
 <!DOCTYPE html>
 <html lang="en">

@@ -10,6 +10,15 @@
  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ if .IsHome }}vineetloomba.com{{ else }}{{ .Title }} | vineetloomba.com{{ end }}</title>
+  <!--Meta Description front matter--->
+  {{ if .IsHome }}
+  <meta name="description" content="Learn IIT JEE Mathematics with structured video lectures, concept-wise chapters, and insights from Vineet Loomba.">
+{{ else if .Description }}
+  <meta name="description" content="{{ .Description }}">
+{{ else }}
+  <meta name="description" content="{{ .Summary | plainify | truncate 160 }}">
+{{ end }}
+
   <script src="https://cdn.tailwindcss.com"></script>
    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFH2Y30QGP"></script>

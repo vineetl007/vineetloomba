@@ -43,11 +43,13 @@ document.getElementById("subscribe-form").addEventListener("submit", async funct
   e.preventDefault();
   const form = e.target;
   const btn = document.getElementById("subscribe-btn");
-  const messageEl = document.getElementById("form-message");
-
-  // disable button to prevent multiple clicks
+  const btnText = document.getElementById("btn-text");
+  const btnSpinner = document.getElementById("btn-spinner");
+  
+  // Disable button + show spinner
   btn.disabled = true;
-  btn.innerText = "Submitting...";
+  btnText.innerText = "Submitting...";
+  btnSpinner.classList.remove("hidden");
 
   const formData = {
     name: form.name.value,
@@ -64,14 +66,15 @@ document.getElementById("subscribe-form").addEventListener("submit", async funct
       body: JSON.stringify(formData)
     });
 
-    messageEl.innerText = "✅ Success! You are now one step closer to cracking JEE 💪";
+    document.getElementById("form-message").innerText = "✅ Success! You are now one step closer to cracking JEE 💪";
     form.reset();
   } catch (error) {
-    messageEl.innerText = "❌ Something went wrong. Please try again.";
-  } finally {
-    // re-enable button after response
-    btn.disabled = false;
-    btn.innerText = "Subscribe";
+    document.getElementById("form-message").innerText = "❌ Something went wrong. Please try again.";
   }
+
+  // Re-enable button + hide spinner
+  btn.disabled = false;
+  btnText.innerText = "Subscribe";
+  btnSpinner.classList.add("hidden");
 });
 </script>` | safeHTML }}

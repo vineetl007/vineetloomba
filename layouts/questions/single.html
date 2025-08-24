@@ -9,9 +9,17 @@
   <p class="text-sm text-gray-400 mb-2">Difficulty: {{ . }}</p>
   {{ end }}
 
-  {{ with .Params.tags }}
-  <p class="text-sm text-gray-400 mb-6">Tags: {{ delimit . ", " }}</p>
+ {{ with .Params.tags }}
+<div class="mb-6 flex flex-wrap gap-2">
+  {{ range . }}
+    <a href="/tags/{{ . | urlize }}/" 
+       class="bg-yellow-400 text-black text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
+       {{ . }}
+    </a>
   {{ end }}
+</div>
+{{ end }}
+
 
   <!-- Question Content -->
   <div class="prose prose-invert mb-6 max-w-full">

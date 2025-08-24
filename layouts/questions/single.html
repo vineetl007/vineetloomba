@@ -1,39 +1,62 @@
 {{ define "main" }}
-<article class="max-w-3xl mx-auto px-4 py-8 prose prose-invert">
+<section class="max-w-7xl mx-auto px-8 py-8 text-white">
 
-  <!-- Title -->
-  <h1 class="text-3xl font-bold mb-4">{{ .Title }}</h1>
+  <!-- Question Title -->
+  <h1 class="text-3xl mb-6">{{ .Title }}</h1>
 
-  <!-- Difficulty -->
-  {{ if .Params.difficulty }}
-  <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-4
-    {{ if eq .Params.difficulty "Easy" }} bg-green-600 text-white
-    {{ else if eq .Params.difficulty "Medium" }} bg-yellow-500 text-black
-    {{ else if eq .Params.difficulty "Hard" }} bg-red-600 text-white
-    {{ end }}">
-    Difficulty: {{ .Params.difficulty }}
-  </span>
+  <!-- Difficulty & Tags -->
+  {{ with .Params.difficulty }}
+  <p class="text-sm text-gray-400 mb-2">Difficulty: {{ . }}</p>
   {{ end }}
 
-  <!-- Tags -->
-  {{ if .Params.tags }}
-  <div class="mb-6">
-    {{ range .Params.tags }}
-      <span class="inline-block bg-gray-700 text-white text-xs px-2 py-1 rounded-full mr-2">{{ . }}</span>
-    {{ end }}
-  </div>
+  {{ with .Params.tags }}
+  <p class="text-sm text-gray-400 mb-6">Tags: {{ delimit . ", " }}</p>
   {{ end }}
 
-  <!-- Question content (supports LaTeX via MathJax/KaTeX) -->
-  <div class="question-content mb-6">
+  <!-- Question Content -->
+  <div class="prose prose-invert mb-6 max-w-full">
     {{ .Content }}
   </div>
 
-  <!-- YouTube Video -->
-{{ if .Params.video }}
-  {{ $vidID := replaceRE ".*v=([a-zA-Z0-9_-]+).*" "$1" .Params.video }}
-  {{< yt $vidID "Video Solution for " .Title >}}
-{{ end }}
+  <!-- JSON-LD Schema for Question & Video -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Question",
+    "name": "{{ .Title }}",
+    "text": "{{ with .Content | plainify }}{{ . | safeJS }}{{ end }}",
+    "answerCount": 1,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "See solution above. Video solution available if embedded."
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Vineet Loomba"
+    },
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    {{ if .Params.video }}
+    "suggestedAnswer": {
+      "@type": "VideoObject",
+      "name": "Video Solution for {{ .Title }}",
+      "description": "Video solution for {{ .Title }}",
+      "thumbnailUrl": "https://img.youtube.com/vi/{{ .Params.video }}/hqdefault.jpg",
+      "uploadDate": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+      "contentUrl": "https://www.youtube.com/watch?v={{ .Params.video }}",
+      "embedUrl": "https://www.youtube.com/embed/{{ .Params.video }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Vineet Loomba",
+        "url": "https://vineetloomba.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://vineetloomba.com/images/logo.png"
+        }
+      }
+    }
+    {{ end }}
+  }
+  </script>
 
-</article>
+</section>
 {{ end }}

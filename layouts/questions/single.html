@@ -31,10 +31,9 @@
 
   <!-- YouTube Video -->
 {{ if .Params.video }}
-<h2 class="text-xl font-semibold mt-8 mb-3">📹 Video Solution</h2>
-<div class="mb-8">
-  {{< yt id=.Params.video >}}
-</div>
+  {{ $vidID := replaceRE ".*v=([a-zA-Z0-9_-]+).*" "$1" .Params.video }}
+  {{< youtube $vidID "Video Solution for " .Title >}}
 {{ end }}
+
 </article>
 {{ end }}

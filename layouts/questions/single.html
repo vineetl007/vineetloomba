@@ -1,0 +1,29 @@
+{{ define "main" }}
+<article class="prose prose-invert max-w-3xl mx-auto py-8">
+  <h1 class="text-3xl font-bold mb-6">{{ .Title }}</h1>
+
+  <div class="text-gray-300 mb-6">
+    <span class="mr-3">Difficulty: <strong>{{ .Params.difficulty }}</strong></span>
+    <span>Tags: 
+      {{ range .Params.tags }}
+        <span class="bg-gray-700 text-sm px-2 py-1 rounded mr-1">{{ . }}</span>
+      {{ end }}
+    </span>
+  </div>
+
+  <div class="mb-6">
+    {{ .Content }}
+  </div>
+
+  {{ with .Params.video }}
+  <div class="mt-8 p-4 bg-gray-800 rounded-xl">
+    <p class="mb-2">🎥 You can also watch the video solution:</p>
+    <iframe class="w-full aspect-video rounded-xl"
+            src="{{ . | replace "watch?v=" "embed/" }}"
+            frameborder="0"
+            allowfullscreen>
+    </iframe>
+  </div>
+  {{ end }}
+</article>
+{{ end }}

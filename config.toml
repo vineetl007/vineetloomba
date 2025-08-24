@@ -5,6 +5,9 @@ theme = "compose"
 enableRobotsTXT = true
 paginate = 10
 
+[taxonomies]
+  tag = "tags"
+
 [params]
   homeTitle = "Welcome to Vineet Loomba's Free IIT JEE Preparation Website"
   homeSubtitle = "IIT JEE Mathematics Chapterwise Learning Portal"
@@ -15,6 +18,7 @@ paginate = 10
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
 [menu]
 
   [[menu.main]]

@@ -32,7 +32,7 @@
   <!-- YouTube Video -->
 {{ if .Params.video }}
   {{ $vidID := replaceRE ".*v=([a-zA-Z0-9_-]+).*" "$1" .Params.video }}
-  {{< youtube $vidID "Video Solution for " .Title >}}
+  {{< yt $vidID "Video Solution for " .Title >}}
 {{ end }}
 
 </article>

@@ -5,10 +5,6 @@
   <h1 class="text-3xl mb-6">{{ .Title }}</h1>
 
   <!-- Difficulty & Tags -->
-  {{ with .Params.difficulty }}
-  <p class="text-sm text-gray-400 mb-2">Difficulty: {{ . }}</p>
-  {{ end }}
-
  {{ with .Params.tags }}
 <div class="mb-6 flex flex-wrap gap-2">
   {{ range . }}

@@ -59,6 +59,7 @@ CMS.init({
       label: "Slug", 
       name: "slug", 
       widget: "string", 
+      required: false,
       hint: "Auto-generated from question text, used in URL",
       default: "{{question | slugify}}" 
     },

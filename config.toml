@@ -5,9 +5,6 @@ theme = "compose"
 enableRobotsTXT = true
 paginate = 10
 
-[permalinks]
-  questions = "/questions/jee-math/:chapter/:dpp/:slug/"
-
 [taxonomies]
   tag = "tags"
   difficulty = "difficulty"

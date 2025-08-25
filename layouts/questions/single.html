@@ -10,7 +10,7 @@
   {{ range . }}
     <a href="/tags/{{ . | urlize }}/" 
        class="bg-yellow-400 text-black text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition"> 
-      Difficulty: {{ . }}
+      {{ . }}
     </a>
   {{ end }}
 </div>
@@ -20,7 +20,7 @@
 <div class="mb-6 flex flex-wrap gap-2">
   <a href="/difficulty/{{ . | urlize }}/" 
      class="bg-blue-500 text-white text-sm px-3 py-1 rounded-full hover:bg-blue-400 transition">
-     {{ . }}
+    Difficulty: {{ . }}
   </a>
 </div>
 {{ end }}

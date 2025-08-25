@@ -99,13 +99,11 @@ CMS.init({
 {
   label: "Numerical Answer",
   name: "numerical_answer",
-  widget: "number",
+  widget: "string",   // use string instead of number for full flexibility
   required: false,
-  hint: "Enter your answer directly (decimals, negatives allowed)",
-  value_type: "float",
-  min: null,
-  max: null
+  hint: "Enter your answer directly (decimals, fractions, negatives allowed)",
 },
+
 
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }

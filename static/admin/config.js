@@ -39,7 +39,19 @@ CMS.init({
     { label: "Body", name: "body", widget: "markdown" },
     ],
   },
+  
+     {name: "questions",
+    label: "Questions",
+    folder: "content/questions",
+    create: true,
+    slug: "{{slug}}",
+    fields: [
+      { label: "Title", name: "title", widget: "string" },
+     { label: "Difficulty", name: "difficulty", widget: "select", options: ["Easy", "Medium", "Hard"] },
+     { label: "Tags", name: "tags", widget: "list", default: [] },
+     { label: "Body", name: "body", widget: "markdown" },
+       ],
+     },
 ]
-
-  },
+},
 });

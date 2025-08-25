@@ -96,16 +96,15 @@ CMS.init({
     },
 
     // Integer answer field
-/*  {
+  {
   label: "Numerical Answer",
   name: "numerical_answer",
   widget: "number",
   required: false,
   hint: "Enter your answer directly (decimals, fractions, negatives allowed)",
-  step: "any"
+  step: "any",
+  conditional: { field: "question_type", value: ["Integer"] } // optional
   },
-*/
-
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }
   ]

@@ -45,23 +45,15 @@ CMS.init({
   label: "Questions",
   folder: "content/questions/jee-math",
   create: true,
- // File will be saved as q1.md, q2.md... (entered manually)
-  slug: "{{title}}",
-  path: "{{chapter}}/{{slug}}",
+   slug: "{{title}}",   // 👈 file name (q1, q2 etc.)
+  path: "questions/jee-math/{{chapter}}/{{question | slugify}}", 
+  // 👆 full path & URL structure directly from config
   fields: [
     { 
       label: "Title (File Name)", 
       name: "title", 
       widget: "string",
       hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
-    },
-    { 
-      label: "Slug", 
-      name: "slug", 
-      widget: "string", 
-      required: false,
-      hint: "Auto-generated from question text, used in URL",
-      default: "{{question | slugify}}" 
     },
     {
       label: "Chapter",

@@ -45,8 +45,11 @@ CMS.init({
   label: "Questions",
   folder: "content/questions/jee-math",
   create: true,
-  slug: "{{question | slugify}}", // Auto-generate slug from question text
-  path: "{{chapter}}/{{slug}}",    // URL structure: /questions/jee-math/chapter/slug/
+  // File name controlled by 'title' (q1, q2 etc.)
+  slug: "{{title}}",     
+
+  // URL path uses the question text as slug
+  path: "{{chapter}}/{{question | slugify}}", 
   fields: [
     { 
       label: "Title (File Name)", 

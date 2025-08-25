@@ -58,6 +58,7 @@ CMS.init({
       label: "Slug", 
       name: "slug", 
       widget: "string", 
+      required: false,
       hint: "Optional: Override auto-generated slug"
     },
     {

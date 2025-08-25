@@ -45,8 +45,8 @@ CMS.init({
   label: "Questions",
   folder: "content/questions/jee-math",
   create: true,
-  slug: "{{slug}}",   // manual slug for SEO-friendly URL
-  path: "{{chapter}}/{{slug}}", // DPP info is a field, not folder
+  slug: "{{question | slugify}}", // Auto-generate slug from question text
+  path: "{{chapter}}/{{slug}}",    // URL structure: /questions/jee-math/chapter/slug/
   fields: [
     { label: "Title", name: "title", widget: "string" },
     { label: "Slug", name: "slug", widget: "string", hint: "Enter URL slug manually" },

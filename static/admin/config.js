@@ -46,7 +46,7 @@ CMS.init({
   folder: "content/questions/jee-math",
   create: true,
   slug: "{{slug}}",   // manual slug for SEO-friendly URL
-  path: "{{chapter}}/{{slug}}", // DPP info will be a field, not folder
+  path: "{{chapter}}/{{slug}}", // DPP info is a field, not folder
   fields: [
     { label: "Title", name: "title", widget: "string" },
     { label: "Slug", name: "slug", widget: "string", hint: "Enter URL slug manually" },
@@ -69,24 +69,45 @@ CMS.init({
       widget: "select",
       options: ["Easy", "Medium", "Hard"],
     },
-    {
-      label: "Question Type",
-      name: "question_type",
-      widget: "select",
-      options: ["single", "multiple", "integer"],
-      default: "single"
-    },
+    { label: "Question Type", name: "question_type", widget: "select", options: ["Single Choice", "Multiple Choice", "Integer Type"], default: "Single Choice" },
     { label: "Question Text", name: "question", widget: "markdown" },
+
+    // Options field for Single or Multiple Choice
     { 
       label: "Options", 
       name: "options", 
       widget: "list", 
-      field: { label: "Option", name: "option", widget: "string" } 
+      field: { label: "Option", name: "option", widget: "string" },
+      required: false,
+      hint: "Only for Single or Multiple Choice questions",
+      pattern: [".*", "Enter at least one option"],
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
     },
-    { label: "Correct Option Index", name: "correctIndex", widget: "number", min: 0 },
-    { label: "Solution / Explanation", name: "solution", widget: "markdown" },
-  ],
-},
+
+    // Correct indices for Single or Multiple Choice
+    { 
+      label: "Correct Option Index(es)", 
+      name: "correctIndices", 
+      widget: "list", 
+      field: { label: "Index", name: "index", widget: "number", min: 0 },
+      required: false,
+      hint: "Single number for single choice, multiple numbers for multiple choice",
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
+    },
+
+    // Integer answer field
+    { 
+      label: "Integer Answer", 
+      name: "integer_answer", 
+      widget: "number", 
+      required: false,
+      hint: "Only for Integer type questions",
+      conditional: { field: "question_type", value: ["Integer Type"] }
+    },
+
+    { label: "Solution / Explanation", name: "solution", widget: "markdown" }
+  ]
+}
 
 ]
 },

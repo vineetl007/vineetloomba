@@ -1,12 +1,15 @@
-<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:1.5rem;margin-bottom:1.5rem;">
-  <iframe src="https://www.youtube.com/embed/{{ .Get 0 }}?"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"
-          title="{{ .Get 1 }}"></iframe>
+<div style="max-width:800px;margin:0 auto;">
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:1.5rem;margin-bottom:1.5rem;">
+    <iframe src="https://www.youtube.com/embed/{{ .Get 0 }}?"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+            title="{{ .Get 1 }}"></iframe>
+  </div>
 </div>
+
 
 <script type="application/ld+json">
 {

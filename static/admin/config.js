@@ -96,14 +96,18 @@ CMS.init({
     },
 
     // Integer answer field
-    { 
-      label: "Integer Answer", 
-      name: "integer_answer", 
-      widget: "number", 
-      required: false,
-      hint: "Only for Integer type questions",
-      conditional: { field: "question_type", value: ["Integer Type"] }
-    },
+{ 
+  label: "Numerical Answer", 
+  name: "numerical_answer", 
+  widget: "number", 
+  required: false,
+  hint: "Enter your answer directly (decimals, fractions, negatives allowed)",
+  step: "any",   // allows any number, including decimals
+  min: null,
+  max: null,
+  conditional: { field: "question_type", value: ["Numerical Type"] }
+},
+
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }
   ]

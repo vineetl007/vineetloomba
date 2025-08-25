@@ -40,18 +40,38 @@ CMS.init({
     ],
   },
   
-     {name: "questions",
-    label: "Questions",
-    folder: "content/questions",
-    create: true,
-    slug: "{{slug}}",
-    fields: [
-      { label: "Title", name: "title", widget: "string" },
-     { label: "Difficulty", name: "difficulty", widget: "select", options: ["Easy", "Medium", "Hard"] },
-     { label: "Tags", name: "tags", widget: "list", default: [] },
-     { label: "Body", name: "body", widget: "markdown" },
-       ],
-     },
+    {
+  name: "questions",
+  label: "Questions – JEE Math",
+  folder: "content/questions/jee-math",
+  create: true,
+  slug: "{{slug}}",
+  fields: [
+    { label: "Title", name: "title", widget: "string" },
+    { label: "Question", name: "body", widget: "markdown" },
+    {
+      label: "Chapter",
+      name: "chapter",
+      widget: "select",
+      options: ["Circles", "Straight Lines", "Parabola", "Ellipse", "Hyperbola"],
+    },
+    {
+      label: "DPP",
+      name: "dpp",
+      widget: "select",
+      options: ["DPP-1", "DPP-2", "DPP-3", "DPP-4", "DPP-5"],
+    },
+    {
+      label: "Difficulty",
+      name: "difficulty",
+      widget: "select",
+      options: ["Easy", "Medium", "Hard"],
+    },
+    { label: "Tags", name: "tags", widget: "list" },
+    { label: "Video ID", name: "video", widget: "string", required: false },
+  ],
+},
+
 ]
 },
 });

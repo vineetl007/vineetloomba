@@ -40,7 +40,7 @@ CMS.init({
     ],
   },
   
-  {
+{
   name: "questions",
   label: "Questions",
   folder: "content/questions/jee-math",
@@ -48,8 +48,18 @@ CMS.init({
   slug: "{{question | slugify}}", // Auto-generate slug from question text
   path: "{{chapter}}/{{slug}}",    // URL structure: /questions/jee-math/chapter/slug/
   fields: [
-    { label: "Title", name: "title", widget: "string" },
-    { label: "Slug", name: "slug", widget: "string", hint: "Enter URL slug manually" },
+    { 
+      label: "Title (File Name)", 
+      name: "title", 
+      widget: "string",
+      hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
+    },
+    { 
+      label: "Slug", 
+      name: "slug", 
+      widget: "string", 
+      hint: "Optional: Override auto-generated slug"
+    },
     {
       label: "Chapter",
       name: "chapter",
@@ -69,10 +79,16 @@ CMS.init({
       widget: "select",
       options: ["Easy", "Medium", "Hard"],
     },
-    { label: "Question Type", name: "question_type", widget: "select", options: ["Single Choice", "Multiple Choice", "Integer Type"], default: "Single Choice" },
+    { 
+      label: "Question Type", 
+      name: "question_type", 
+      widget: "select", 
+      options: ["Single Choice", "Multiple Choice", "Integer Type"], 
+      default: "Single Choice" 
+    },
     { label: "Question Text", name: "question", widget: "markdown" },
 
-    // Options field for Single or Multiple Choice
+    // Options for Single or Multiple Choice
     { 
       label: "Options", 
       name: "options", 
@@ -80,7 +96,6 @@ CMS.init({
       field: { label: "Option", name: "option", widget: "string" },
       required: false,
       hint: "Only for Single or Multiple Choice questions",
-      pattern: [".*", "Enter at least one option"],
       conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
     },
 
@@ -95,16 +110,14 @@ CMS.init({
       conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
     },
 
-    // Integer answer field
-{
-  label: "Numerical Answer",
-  name: "numerical_answer",
-  widget: "string",   // use string instead of number for full flexibility
-  required: false,
-  hint: "Enter your answer directly (decimals, fractions, negatives allowed)",
-},
-
-
+    // Numerical answer for Integer / Decimal type
+    {
+      label: "Numerical Answer",
+      name: "numerical_answer",
+      widget: "string",   // string allows decimals, fractions, negatives
+      required: false,
+      hint: "Enter your answer directly"
+    },
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }
   ]

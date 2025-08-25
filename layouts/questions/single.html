@@ -1,6 +1,6 @@
 {{ define "main" }}
 <section class="max-w-7xl mx-auto px-8 py-8 text-white">
-  <!-- generate url dynamically 
+  <!-- generate url dynamically -->
   {{ $questionURL := printf "/questions/jee-math/%s/%s/" .Params.chapter .Params.slug | relURL }}
 <link rel="canonical" href="{{ $questionURL }}" /> 
 

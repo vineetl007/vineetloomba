@@ -41,36 +41,36 @@ CMS.init({
   },
   
     {
-  name: "questions",
-  label: "Questions – JEE Math",
-  folder: "content/questions/jee-math",
-  create: true,
-  slug: "{{slug}}",
-  fields: [
-    { label: "Title", name: "title", widget: "string" },
-    { label: "Question", name: "body", widget: "markdown" },
-    {
-      label: "Chapter",
-      name: "chapter",
-      widget: "select",
-      options: ["Circles", "Straight Lines", "Parabola", "Ellipse", "Hyperbola"],
+      name: "questions",
+      label: "Questions",
+      folder: "content/questions/jee-math",
+      create: true,
+      slug: "{{slug}}",   // use the slug you set manually
+      fields: [
+        { label: "Title", name: "title", widget: "string" },
+        { label: "Slug", name: "slug", widget: "string", hint: "Enter URL slug manually" },
+        {
+          label: "Chapter",
+          name: "chapter",
+          widget: "select",
+          options: ["circles", "straight-lines", "parabola"],
+        },
+        {
+          label: "DPP",
+          name: "dpp",
+          widget: "select",
+          options: ["dpp-1", "dpp-2", "dpp-3"],
+        },
+        { label: "Tags", name: "tags", widget: "list" },
+        {
+          label: "Difficulty",
+          name: "difficulty",
+          widget: "select",
+          options: ["Easy", "Medium", "Hard"],
+        },
+        { label: "Body", name: "body", widget: "markdown" },
+      ],
     },
-    {
-      label: "DPP",
-      name: "dpp",
-      widget: "select",
-      options: ["DPP-1", "DPP-2", "DPP-3", "DPP-4", "DPP-5"],
-    },
-    {
-      label: "Difficulty",
-      name: "difficulty",
-      widget: "select",
-      options: ["Easy", "Medium", "Hard"],
-    },
-    { label: "Tags", name: "tags", widget: "list" },
-    { label: "Video ID", name: "video", widget: "string", required: false },
-  ],
-},
 
 ]
 },

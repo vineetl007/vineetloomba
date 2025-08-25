@@ -46,6 +46,7 @@ CMS.init({
       folder: "content/questions/jee-math",
       create: true,
       slug: "{{slug}}",   // use the slug you set manually
+      path: "{{chapter}}/{{dpp}}/{{slug}}", // Defines folder structure
       fields: [
         { label: "Title", name: "title", widget: "string" },
         { label: "Slug", name: "slug", widget: "string", hint: "Enter URL slug manually" },

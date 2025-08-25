@@ -45,8 +45,8 @@ CMS.init({
   label: "Questions",
   folder: "content/questions/jee-math",
   create: true,
-   slug: "{{title}}",   // 👈 file name (q1, q2 etc.)
-  path: "questions/jee-math/{{chapter}}/{{question | slugify}}", 
+   slug: "{{question | slugify}}",   // 👈 file name (q1, q2 etc.)
+  path: "{{chapter}}/{{title}}", 
   // 👆 full path & URL structure directly from config
   fields: [
     { 

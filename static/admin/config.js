@@ -96,7 +96,7 @@ CMS.init({
     },
 
     // Integer answer field
-  {
+/*  {
   label: "Numerical Answer",
   name: "numerical_answer",
   widget: "number",
@@ -104,7 +104,7 @@ CMS.init({
   hint: "Enter your answer directly (decimals, fractions, negatives allowed)",
   step: "any"
   },
-
+*/
 
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }

@@ -7,6 +7,7 @@ paginate = 10
 
 [taxonomies]
   tag = "tags"
+difficulty = "difficulty"
 
 [params]
   homeTitle = "Welcome to Vineet Loomba's Free IIT JEE Preparation Website"

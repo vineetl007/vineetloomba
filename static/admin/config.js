@@ -40,7 +40,7 @@ CMS.init({
     ],
   },
   
-    {
+  {
   name: "questions",
   label: "Questions",
   folder: "content/questions/jee-math",
@@ -69,6 +69,13 @@ CMS.init({
       widget: "select",
       options: ["Easy", "Medium", "Hard"],
     },
+    {
+      label: "Question Type",
+      name: "question_type",
+      widget: "select",
+      options: ["single", "multiple", "integer"],
+      default: "single"
+    },
     { label: "Question Text", name: "question", widget: "markdown" },
     { 
       label: "Options", 
@@ -80,6 +87,7 @@ CMS.init({
     { label: "Solution / Explanation", name: "solution", widget: "markdown" },
   ],
 },
+
 ]
 },
 });

@@ -13,11 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2 class="font-semibold mb-3">Q${index + 1}. ${q.question}</h2>
         <ul class="space-y-2">
           ${q.options.map((opt, i) => `
-            <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
-                data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
-              ${opt}
-            </li>
-          `).join("")}
+  <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
+      data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
+    ${opt}
+  </li>
+`).join("")}
+
         </ul>
         <div class="solution mt-4 hidden text-green-700">
           <strong>Solution:</strong> ${q.solution}

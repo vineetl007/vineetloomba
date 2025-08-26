@@ -7,14 +7,11 @@ tags:
   - jeeadv
 difficulty: Hard
 question_type: Single Choice
-question: |-
-  The general equation of a circle is
-
-  $$x^2 + y^2 + 2gx + 2fy + c = 0$$
+question: The general equation of a circle is $x^2 + y^2 + 2gx + 2fy + c = 0$
 options:
   - a
   - b
-  - $$x^2 + y^2 + 2gx + 2fy + c = 0$$
+  - $x^2 + y^2 + 2gx + 2fy + c = 0$
   - D
 correctIndices:
   - 2

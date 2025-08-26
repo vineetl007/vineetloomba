@@ -7,7 +7,7 @@
 /* Mobile-friendly MathJax scaling */
 @media (max-width: 768px) {
   .MathJax, .MathJax_Display {
-    font-size: 1.3em !important;   /* increase size */
+    font-size: 1.2em !important;   /* increase size */
     line-height: 1.4 !important;
   }
 }

@@ -121,6 +121,35 @@ CMS.init({
     },
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }
+      ]
+    },
+
+     {
+  name: "practice",
+  label: "Practice Pages",
+  folder: "content/practice",
+  create: true,
+  slug: "{{chapter}}-{{dpp}}",   // e.g., circles-dpp-1
+  fields: [
+    { label: "Title", name: "title", widget: "string" },
+    { 
+      label: "Chapter", 
+      name: "chapter", 
+      widget: "select", 
+      options: ["circles", "straight-lines", "parabola"] 
+    },
+    { 
+      label: "DPP", 
+      name: "dpp", 
+      widget: "select", 
+      options: ["dpp-1", "dpp-2", "dpp-3"] 
+    },
+    { 
+      label: "Layout", 
+      name: "layout", 
+      widget: "hidden", 
+      default: "practice" 
+    }
   ]
 }
 

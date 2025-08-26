@@ -1,6 +1,6 @@
 ---
 title: q12
-chapter: straight-lines
+chapter: circles
 dpp: dpp-1
 tags:
   - jeemain

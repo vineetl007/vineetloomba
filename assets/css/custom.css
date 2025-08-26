@@ -4,6 +4,14 @@
   font-family: 'Concert One', cursive;
 }
 
+/* Mobile-friendly MathJax scaling */
+@media (max-width: 768px) {
+  .MathJax, .MathJax_Display {
+    font-size: 1.3em !important;   /* increase size */
+    line-height: 1.4 !important;
+  }
+}
+
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */
 h1, h2, h3, h4, h5, h6 {

@@ -47,6 +47,7 @@ CMS.init({
   create: true,
    slug: "{{title}}",                  // file name (q1, q2…)
   path: "{{chapter}}/{{question | slugify}}",   // SEO-friendly URL from question
+    fields: [
     { 
       label: "Title (File Name)", 
       name: "title", 

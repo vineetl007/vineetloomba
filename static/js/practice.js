@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-semibold mb-3">Q${index + 1}. ${q.question}</h2>
         <ul class="space-y-2">
-          ${q.options.map((opt, i) => `
+       ${q.options.map((opt, i) => `
   <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
       data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
-    ${opt}
+    <span class="latex-option">${opt}</span>
   </li>
 `).join("")}
 

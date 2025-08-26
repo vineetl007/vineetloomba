@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderQuestion(index) {
     const q = questions[index];
+
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-semibold mb-3">Q${index + 1}. ${q.question}</h2>
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${q.options.map((opt, i) => `
             <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
                 data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
-              ${opt}
+              ${typeof opt === 'string' ? opt : JSON.stringify(opt)}
             </li>
           `).join("")}
         </ul>
@@ -30,6 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;
+
+    // Trigger MathJax (if using LaTeX)
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
 
     // Add option click behavior
     app.querySelectorAll(".option").forEach(opt => {

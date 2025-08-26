@@ -30,22 +30,32 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Add option click behavior
-    app.querySelectorAll(".option").forEach(opt => {
-      opt.addEventListener("click", () => {
-        const questionDiv = opt.closest(".question");
-        const solution = questionDiv.querySelector(".solution");
-        const correct = opt.dataset.correct === "true";
+// Add option click behavior
+app.querySelectorAll(".option").forEach(opt => {
+  opt.addEventListener("click", () => {
+    const questionDiv = opt.closest(".question");
+    const solution = questionDiv.querySelector(".solution");
+    const correct = opt.dataset.correct === "true";
 
-        if (correct) {
-          opt.classList.add("bg-green-100", "border-green-400");
-        } else {
-          opt.classList.add("bg-red-100", "border-red-400");
-        }
-
-        solution.classList.remove("hidden");
-      });
+    // Remove any previously applied borders
+    questionDiv.querySelectorAll(".option").forEach(o => {
+      o.classList.remove("border-green-400", "border-red-400", "bg-green-100", "bg-red-100");
     });
+
+    if (correct) {
+      opt.classList.add("border-green-400");
+    } else {
+      opt.classList.add("border-red-400");
+
+      // highlight the correct option
+      const correctOption = Array.from(questionDiv.querySelectorAll(".option"))
+        .find(o => o.dataset.correct === "true");
+      if (correctOption) correctOption.classList.add("border-green-400");
+    }
+
+    solution.classList.remove("hidden");
+  });
+});
 
     // Navigation buttons
     app.querySelector("#prev-btn")?.addEventListener("click", () => {

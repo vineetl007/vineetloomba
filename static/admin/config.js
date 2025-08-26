@@ -45,9 +45,8 @@ CMS.init({
   label: "Questions",
   folder: "content/questions/jee-math",
   create: true,
-  // Use this: let slug be optional; Hugo will generate from question if empty
-  slug: "{{slug}}", // Optional in Decap
-  path: "{{chapter}}/{{title}}", // File path based on chapter + title (q1, q2, etc.)
+  slug: "{{question | slugify}}",   // auto-generate SEO-friendly slug from question
+  path: "{{chapter}}/{{title}}",    // file saved as title (q1, q2, …)
   fields: [
     { 
       label: "Title (File Name)", 
@@ -55,12 +54,12 @@ CMS.init({
       widget: "string",
       hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
     },
-    {
-      label: "Slug (Optional)",
-      name: "slug",
+    { 
+      label: "Slug (URL)", 
+      name: "slug", 
       widget: "string",
       required: false,
-      hint: "Leave empty to auto-generate URL slug from question text in Hugo"
+      hint: "Auto-generated from question text for URL"
     },
     {
       label: "Chapter",

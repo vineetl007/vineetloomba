@@ -12,13 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-semibold mb-3">Q${index + 1}. ${q.question}</h2>
         <ul class="space-y-2">
-       ${q.options.map((opt, i) => `
-  <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
-      data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
-    <span class="latex-option">${opt}</span>
-  </li>
-`).join("")}
-
+          ${q.options.map((opt, i) => `
+            <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100"
+                data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
+              <span class="latex-option">${opt}</span>
+            </li>
+          `).join("")}
         </ul>
         <div class="solution mt-4 hidden text-green-700">
           <strong>Solution:</strong> ${q.solution}
@@ -26,22 +25,49 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="flex justify-between mt-6">
-        <button id="prev-btn" ${index === 0 ? "disabled" : ""}>Previous</button>
-        <button id="next-btn" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
+        <button id="prev-btn" class="px-4 py-2 bg-gray-200 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;
+
+    // Add option click behavior
+    app.querySelectorAll(".option").forEach(opt => {
+      opt.addEventListener("click", () => {
+        const questionDiv = opt.closest(".question");
+        const solution = questionDiv.querySelector(".solution");
+        const correct = opt.dataset.correct === "true";
+
+        if (correct) {
+          opt.classList.add("bg-green-100", "border-green-400");
+        } else {
+          opt.classList.add("bg-red-100", "border-red-400");
+        }
+
+        solution.classList.remove("hidden");
+      });
+    });
+
+    // Navigation buttons
+    app.querySelector("#prev-btn")?.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion(currentIndex);
+      }
+    });
+
+    app.querySelector("#next-btn")?.addEventListener("click", () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion(currentIndex);
+      }
+    });
+
+    // Render LaTeX after HTML is added
     if (window.MathJax) {
-  MathJax.typesetPromise(); // process all LaTeX in the new content
-}
+      MathJax.typesetPromise();
+    }
   }
 
+  // Render first question
   renderQuestion(currentIndex);
-  <script>
-MathJax = {
-  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-  svg: { fontCache: 'global' }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-
 });

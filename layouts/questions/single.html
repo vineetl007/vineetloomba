@@ -51,14 +51,16 @@
   <ul class="list-decimal list-inside space-y-2">
     {{ range $i, $opt := .Params.options }}
       {{ $isCorrect := in $.Params.correctIndices $i }}
-      <li class="p-3 rounded-lg {{ if $isCorrect }}bg-green-600 font-bold{{ else }}bg-gray-800{{ end }}">
+      <li class="p-3 rounded-lg 
+                 {{ if $isCorrect }}bg-green-200 font-semibold text-green-800{{ else }}bg-gray-100 text-gray-900{{ end }}">
         {{ $opt | markdownify }}
-        {{ if $isCorrect }} ✔️{{ end }}
+        {{ if $isCorrect }} <span class="ml-2 text-green-700">✔️</span>{{ end }}
       </li>
     {{ end }}
   </ul>
 </div>
 {{ end }}
+
 
 
  <!-- Numerical Answer -->

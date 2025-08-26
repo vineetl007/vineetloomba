@@ -50,9 +50,9 @@
 <div class="mb-6">
   <ul class="list-decimal list-inside space-y-2">
     {{ range $i, $opt := .Params.options }}
-      {{ $isCorrect := in $.Params.correctIndices (printf "%d" $i) }}
+      {{ $isCorrect := in $.Params.correctIndices $i }}
       <li class="p-3 rounded-lg {{ if $isCorrect }}bg-green-600 font-bold{{ else }}bg-gray-800{{ end }}">
-        {{ $opt }}
+        {{ $opt | markdownify }}
         {{ if $isCorrect }} ✔️{{ end }}
       </li>
     {{ end }}

@@ -14,18 +14,19 @@
     <div id="practice-app" class="min-h-[400px]"></div>
 
     <script type="application/json" id="practice-data">
-      [
-        {{- range $index, $q := $questions -}}
-          {
-            "id": {{ $index }},
-            "question": {{ $q.Params.question | jsonify }},
-            "options": {{ $q.Params.options | jsonify }},
-            "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-            "solution": {{ $q.Params.solution | jsonify }}
-          }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
-        {{- end -}}
-      ]
-    </script>
+[
+  {{- range $index, $q := $questions -}}
+    {
+      "id": {{ $index }},
+      "question": {{ $q.Params.question | jsonify }},
+      "options": [{{ range $i, $opt := $q.Params.options }}{{ $opt | jsonify }}{{ if not (eq (add $i 1) (len $q.Params.options)) }},{{ end }}{{ end }}],
+      "correctIndices": {{ $q.Params.correctIndices | jsonify }},
+      "solution": {{ $q.Params.solution | jsonify }}
+    }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
+  {{- end -}}
+]
+</script>
+
 
     <script src="/js/practice.js"></script>
 

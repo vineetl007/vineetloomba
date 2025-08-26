@@ -95,8 +95,10 @@
 
     "answerCount": 1,
     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "See solution above. Video solution available if embedded."
+    "@type": "Answer",
+  "text": "{{ with .Params.solution | plainify }}{{ . | safeJS }}{{ end }}"
+},
+
     },
     "author": {
       "@type": "Person",
@@ -106,7 +108,7 @@
     {{ if .Params.video }}
     "suggestedAnswer": {
       "@type": "VideoObject",
-           "name": "Video Solution for {{ .Params.question | plainify }}",
+      "name": "Video Solution for {{ .Params.question | plainify }}",
       "description": "Video solution for {{ .Params.question | plainify }}",
       "thumbnailUrl": "https://img.youtube.com/vi/{{ .Params.video }}/hqdefault.jpg",
       "uploadDate": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",

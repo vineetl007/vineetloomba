@@ -1,7 +1,7 @@
 ---
 title: q12
 chapter: straight-lines
-dpp: dpp-2
+dpp: dpp-1
 tags:
   - jeemain
   - jeeadv

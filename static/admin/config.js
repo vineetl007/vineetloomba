@@ -46,7 +46,7 @@ CMS.init({
   folder: "content/questions/jee-math",
   create: true,
   slug: "{{question | slugify}}",   // auto-generate SEO-friendly slug from question
-  path: "{{chapter}}/{{title}}",    // file saved as title (q1, q2, …)
+  path: "{{chapter}}/{{slug}}",    // file saved as title (q1, q2, …)
   fields: [
     { 
       label: "Title (File Name)", 

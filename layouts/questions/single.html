@@ -87,24 +87,23 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-"url": "{{ .Permalink }}",
+    "url": "{{ .Permalink }}",
     "@type": "Question",
 
-"name": "{{ .Params.question | plainify }}",
-"text": "{{ .Params.question | plainify }}",
+    "name": "{{ .Params.question | plainify }}",
+    "text": "{{ .Params.question | plainify }}",
 
     "answerCount": 1,
     "acceptedAnswer": {
-    "@type": "Answer",
-  "text": "{{ with .Params.solution | plainify }}{{ . | safeJS }}{{ end }}"
-},
+      "@type": "Answer",
+      "text": "{{ with .Params.solution | plainify }}{{ . | safeJS }}{{ end }}"
+    },
 
-    }
     "author": {
       "@type": "Person",
       "name": "Vineet Loomba"
     },
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}"{{ if .Params.video }},{{ end }}
     {{ if .Params.video }}
     "suggestedAnswer": {
       "@type": "VideoObject",
@@ -127,6 +126,7 @@
     {{ end }}
   }
   </script>
+
 
 </section>
 {{ end }}

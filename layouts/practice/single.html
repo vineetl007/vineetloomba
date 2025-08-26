@@ -19,7 +19,11 @@
           {
             "id": {{ $index }},
             "question": {{ $q.Params.question | jsonify }},
-            "options": {{ $q.Params.options | jsonify }},
+            "options": [
+              {{- range $i, $opt := $q.Params.options -}}
+                { "option": {{ $opt | jsonify }} }{{ if not (eq (add $i 1) (len $q.Params.options)) }},{{ end }}
+              {{- end -}}
+            ],
             "correctIndices": {{ $q.Params.correctIndices | jsonify }},
             "solution": {{ $q.Params.solution | jsonify }}
           }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}

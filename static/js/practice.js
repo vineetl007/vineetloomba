@@ -25,48 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="flex justify-between mt-6">
-        <button id="prev-btn" class="px-4 py-2 bg-gray-200 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
-        <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
+        <button id="prev-btn" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <button id="next-btn" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;
-
-    // Render MathJax for question and options
-    if (window.MathJax) {
-      MathJax.typesetPromise();
-    }
-
-    // Option click behavior
-    app.querySelectorAll(".option").forEach(opt => {
-      opt.addEventListener("click", () => {
-        let correct = opt.dataset.correct === "true";
-        if (correct) {
-          opt.classList.add("bg-green-100", "border-green-400");
-        } else {
-          opt.classList.add("bg-red-100", "border-red-400");
-        }
-        app.querySelector(".solution").classList.remove("hidden");
-        if (window.MathJax) {
-          MathJax.typesetPromise();
-        }
-      });
-    });
-
-    // Navigation buttons
-    app.querySelector("#prev-btn")?.addEventListener("click", () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        renderQuestion(currentIndex);
-      }
-    });
-
-    app.querySelector("#next-btn")?.addEventListener("click", () => {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        renderQuestion(currentIndex);
-      }
-    });
   }
 
-  // Initial render
   renderQuestion(currentIndex);
 });

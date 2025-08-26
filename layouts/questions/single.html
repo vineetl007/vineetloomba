@@ -49,9 +49,10 @@
  {{ if .Params.options }}
  <div class="mb-6">
    <ul class="list-decimal list-inside space-y-2">
-     {{ range .Params.options }}
-       <li class="bg-gray-800 p-3 rounded-lg">{{ .option }}</li>
-     {{ end }}
+{{ range .Params.options }}
+  <li class="bg-gray-800 p-3 rounded-lg">{{ . }}</li>
+{{ end }}
+
    </ul>
  </div>
  {{ end }}

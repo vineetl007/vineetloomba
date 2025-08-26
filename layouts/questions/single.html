@@ -45,17 +45,21 @@
    {{ .Params.question | markdownify }}
  </div>
 
- <!-- Options -->
- {{ if .Params.options }}
- <div class="mb-6">
-   <ul class="list-decimal list-inside space-y-2">
-{{ range .Params.options }}
-  <li class="bg-gray-800 p-3 rounded-lg">{{ . }}</li>
+<!-- Options -->
+{{ if .Params.options }}
+<div class="mb-6">
+  <ul class="list-decimal list-inside space-y-2">
+    {{ range .Params.options }}
+      <li class="
+        p-3 rounded-lg 
+        {{ if eq . $.Params.correct_answer }} bg-green-600 {{ else }} bg-gray-800 {{ end }}
+      ">
+        {{ . }}
+      </li>
+    {{ end }}
+  </ul>
+</div>
 {{ end }}
-
-   </ul>
- </div>
- {{ end }}
 
  <!-- Numerical Answer -->
  {{ with .Params.numerical_answer }}

@@ -1,8 +1,10 @@
 {{ define "main" }}
 <section class="max-w-7xl mx-auto px-8 py-8 text-white">
-  <!-- generate url dynamically -->
-  {{ $questionURL := printf "/questions/jee-math/%s/%s/" .Params.chapter .Params.slug | relURL }}
-<link rel="canonical" href="{{ $questionURL }}" /> 
+  <!-- generate URL using title for file name and fallback to slugify question if slug not set -->
+{{ $slug := cond (ne .Params.slug "") .Params.slug (.Params.question | urlize) }}
+{{ $questionURL := printf "/questions/jee-math/%s/%s/" .Params.chapter $slug | relURL }}
+<link rel="canonical" href="{{ $questionURL }}" />
+
 
   <!-- Question Title -->
   <h1 class="text-3xl mb-6">{{ .Title }}</h1>

@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <button id="next-btn" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;
+    if (window.MathJax) {
+  MathJax.typesetPromise(); // process all LaTeX in the new content
+}
   }
 
   renderQuestion(currentIndex);

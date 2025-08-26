@@ -6,7 +6,7 @@
 
 
   <!-- Question Title -->
-  <h1 class="text-3xl mb-6">{{ .Title }}</h1>
++ <h1 class="text-3xl mb-6">{{ .Params.question | markdownify }}</h1>
 
   <!-- Difficulty & Tags -->
  {{ with .Params.tags }}
@@ -42,9 +42,48 @@
   
 
   <!-- Question Content -->
-  <div class="prose prose-invert mb-6 max-w-full">
-    {{ .Content }}
-  </div>
+
++ <div class="prose prose-invert mb-6 max-w-full">
++   {{ .Params.question | markdownify }}
++ </div>
+
++ <!-- Options -->
++ {{ if .Params.options }}
++ <div class="mb-6">
++   <ul class="list-decimal list-inside space-y-2">
++     {{ range .Params.options }}
++       <li class="bg-gray-800 p-3 rounded-lg">{{ .option }}</li>
++     {{ end }}
++   </ul>
++ </div>
++ {{ end }}
+
++ <!-- Numerical Answer -->
++ {{ with .Params.numerical_answer }}
++ <div class="mb-6 bg-gray-800 p-4 rounded-lg">
++   <strong>Numerical Answer:</strong> {{ . }}
++ </div>
++ {{ end }}
+
++ <!-- Solution -->
++ {{ with .Params.solution }}
++ <div class="prose prose-invert mt-8">
++   <h2 class="text-xl font-bold mb-3">Solution</h2>
++   {{ . | markdownify }}
++ </div>
++ {{ end }}
+
++ <!-- Video Solution -->
++ {{ with .Params.video }}
++ <div class="mt-8 aspect-video">
++   <iframe 
++     src="https://www.youtube.com/embed/{{ . }}" 
++     class="w-full h-full rounded-xl" 
++     frameborder="0" 
++     allowfullscreen>
++   </iframe>
++ </div>
++ {{ end }}
 
   <!-- JSON-LD Schema for Question & Video -->
   <script type="application/ld+json">

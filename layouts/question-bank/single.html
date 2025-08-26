@@ -1,0 +1,81 @@
+{{ define "main" }}
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">Practice: {{ .Title }}</h1>
+
+  {{/* Collect questions matching chapter + dpp */}}
+  {{ $chapter := .Params.chapter }}
+  {{ $dpp := .Params.dpp }}
+  {{ $questions := where (where site.RegularPages "Section" "questions") ".Params.chapter" $chapter | intersect (where site.RegularPages ".Params.dpp" $dpp) }}
+
+  <div id="practice-app" class="space-y-6">
+    <!-- Question container will be rendered by JS -->
+  </div>
+</div>
+
+<script>
+  const questions = [
+    {{ range $i, $q := $questions }}
+    {
+      text: {{ $q.Params.question | jsonify }},
+      options: {{ $q.Params.options | jsonify }},
+      correct: {{ $q.Params.correctIndices | jsonify }},
+      solution: {{ $q.Params.solution | jsonify }}
+    }{{ if lt (add $i 1) (len $questions) }},{{ end }}
+    {{ end }}
+  ];
+
+  let current = 0;
+  const container = document.getElementById("practice-app");
+
+  function renderQuestion() {
+    const q = questions[current];
+    container.innerHTML = `
+      <div class="bg-white shadow rounded-lg p-6">
+        <p class="mb-4 font-medium">${q.text}</p>
+        <div class="space-y-2">
+          ${q.options.map((opt, i) => `
+            <label class="block p-2 border rounded cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="q${current}" value="${i}" onchange="checkAnswer(${i})">
+              ${opt}
+            </label>
+          `).join("")}
+        </div>
+        <div id="solution" class="mt-4 hidden p-3 border-l-4 border-green-500 bg-green-50 rounded">
+          <p><strong>Solution:</strong></p>
+          <div>${q.solution}</div>
+        </div>
+        <div class="flex justify-between mt-6">
+          <button onclick="prevQ()" ${current === 0 ? "disabled" : ""} class="px-4 py-2 bg-gray-200 rounded">Previous</button>
+          <button onclick="nextQ()" ${current === questions.length - 1 ? "disabled" : ""} class="px-4 py-2 bg-blue-600 text-white rounded">Next</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function checkAnswer(i) {
+    const q = questions[current];
+    if (q.correct.includes(i)) {
+      event.target.parentElement.classList.add("bg-green-100", "border-green-500");
+    } else {
+      event.target.parentElement.classList.add("bg-red-100", "border-red-500");
+    }
+    document.getElementById("solution").classList.remove("hidden");
+  }
+
+  function nextQ() {
+    if (current < questions.length - 1) {
+      current++;
+      renderQuestion();
+    }
+  }
+
+  function prevQ() {
+    if (current > 0) {
+      current--;
+      renderQuestion();
+    }
+  }
+
+  renderQuestion();
+</script>
+{{ end }}

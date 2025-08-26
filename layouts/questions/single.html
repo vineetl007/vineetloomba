@@ -91,8 +91,8 @@
     "@context": "https://schema.org",
     "url": "{{ $questionURL }}",
     "@type": "Question",
-    "name": "{{ .Title }}",
-    "text": "{{ with .Content | plainify }}{{ . | safeJS }}{{ end }}",
+   "name": "{{ .Params.question | plainify }}",
+    "text": "{{ .Params.question | plainify }}",,
     "answerCount": 1,
     "acceptedAnswer": {
       "@type": "Answer",
@@ -106,8 +106,8 @@
     {{ if .Params.video }}
     "suggestedAnswer": {
       "@type": "VideoObject",
-      "name": "Video Solution for {{ .Title }}",
-      "description": "Video solution for {{ .Title }}",
+           "name": "Video Solution for {{ .Params.question | plainify }}",
+      "description": "Video solution for {{ .Params.question | plainify }}",
       "thumbnailUrl": "https://img.youtube.com/vi/{{ .Params.video }}/hqdefault.jpg",
       "uploadDate": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
       "contentUrl": "https://www.youtube.com/watch?v={{ .Params.video }}",

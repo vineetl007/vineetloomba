@@ -7,7 +7,18 @@
   {{ $dpp := .Params.dpp }}
 
   {{/* Fetch questions with matching chapter + dpp */}}
-  {{ $questions := where (where .Site.RegularPages "Section" "questions") "Params.chapter" $chapter | where "Params.dpp" $dpp }}
+{{ $chapter := .Params.chapter }}
+{{ $dpp := .Params.dpp }}
+
+{{/* Step 1: filter questions section */}}
+{{ $allQs := where .Site.RegularPages "Section" "questions" }}
+
+{{/* Step 2: filter by chapter */}}
+{{ $qsByChapter := where $allQs "Params.chapter" $chapter }}
+
+{{/* Step 3: filter by dpp */}}
+{{ $questions := where $qsByChapter "Params.dpp" $dpp }}
+
 
   {{ if gt (len $questions) 0 }}
     <div id="practice-questions">

@@ -19,11 +19,7 @@
           {
             "id": {{ $index }},
             "question": {{ $q.Params.question | jsonify }},
-            "options": [
-              {{- range $i, $opt := $q.Params.options -}}
-                { "option": {{ $opt | jsonify }} }{{ if not (eq (add $i 1) (len $q.Params.options)) }},{{ end }}
-              {{- end -}}
-            ],
+            "options": {{ $q.Params.options | jsonify }},
             "correctIndices": {{ $q.Params.correctIndices | jsonify }},
             "solution": {{ $q.Params.solution | jsonify }}
           }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
@@ -36,4 +32,11 @@
     <p>No questions found for this DPP.</p>
   {{ end }}
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.MathJax) MathJax.typeset();
+});
+</script>
+
 {{ end }}

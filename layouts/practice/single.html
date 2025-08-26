@@ -2,34 +2,32 @@
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl font-bold mb-4">{{ .Title }}</h1>
 
-  {{/* Get current chapter + dpp */}}
+  {{/* Get current chapter + dpp from frontmatter */}}
   {{ $chapter := .Params.chapter }}
   {{ $dpp := .Params.dpp }}
 
-  {{/* Filter questions */}}
+  {{/* Fetch questions with matching chapter + dpp */}}
   {{ $allQs := where .Site.RegularPages "Section" "questions" }}
   {{ $qsByChapter := where $allQs "Params.chapter" $chapter }}
   {{ $questions := where $qsByChapter "Params.dpp" $dpp }}
 
   {{ if gt (len $questions) 0 }}
-    <!-- App container -->
-    <div id="practice-app"></div>
+    <div id="practice-app" class="min-h-[400px]"></div>
 
-    <!-- Embed questions as JSON -->
-    <script id="questions-data" type="application/json">
+    <script type="application/json" id="practice-data">
       [
-        {{- range $i, $q := $questions -}}
+        {{- range $index, $q := $questions -}}
           {
+            "id": {{ $index }},
             "question": {{ $q.Params.question | jsonify }},
             "options": {{ $q.Params.options | jsonify }},
             "correctIndices": {{ $q.Params.correctIndices | jsonify }},
             "solution": {{ $q.Params.solution | jsonify }}
-          }{{ if lt (add $i 1) (len $questions) }},{{ end }}
+          }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
         {{- end -}}
       ]
     </script>
 
-    <!-- Load practice logic -->
     <script src="/js/practice.js"></script>
   {{ else }}
     <p>No questions found for this DPP.</p>

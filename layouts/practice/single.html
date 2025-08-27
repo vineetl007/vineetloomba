@@ -24,7 +24,7 @@
      "solution": "{{ $q.Params.solution | safeJS }}",
       "question_type": "{{ $q.Params.question_type }}",
       "numerical_answer": "{{ $q.Params.numerical_answer }}",
-  "difficulty": {{ if $q.Params.difficulty }}{{ printf %q $q.Params.difficulty }}{{ else }}""{{ end }}
+  "difficulty": {{ if $q.Params.difficulty }}{{ printf "%q" $q.Params.difficulty }}{{ else }}""{{ end }}
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}
 ]

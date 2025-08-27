@@ -41,85 +41,84 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-// -------------------
-// Choice Questions (Single & Multiple) — delegated + local lock (safe)
-// -------------------
-if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
-  const questionDiv = app.querySelector(".question");
-  const solution = questionDiv.querySelector(".solution");
+    // -------------------
+    // Choice Questions (Single & Multiple)
+    // -------------------
+    if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
+      const questionDiv = app.querySelector(".question");
+      const solution = questionDiv.querySelector(".solution");
 
-  const correctSet = new Set((q.correctIndices || []).map(Number));
-  const selectedCorrect = new Set();
-  let locked = false; // local lock variable — will not affect buttons or other elements
+      const correctSet = new Set((q.correctIndices || []).map(Number));
+      const selectedCorrect = new Set();
+      let locked = false; // only for this question
 
-  // Delegated handler attached to questionDiv
-  const onClick = (e) => {
-    const opt = e.target.closest(".option");
-    if (!opt || !questionDiv.contains(opt) || locked) return;
+      questionDiv.addEventListener("click", (e) => {
+        const opt = e.target.closest(".option");
+        if (!opt) return; // ✅ guard to prevent null errors
+        if (locked) return;
 
-    const idx = Number(opt.dataset.index);
+        const idx = Number(opt.dataset.index);
 
-    // WRONG pick -> reveal all corrects, show solution, lock
-    if (!correctSet.has(idx)) {
-      opt.classList.add("border-red-400");
-      correctSet.forEach(ci => {
-        const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-        if (correctOpt) correctOpt.classList.add("border-green-400");
+        // ❌ Wrong answer
+        if (!correctSet.has(idx)) {
+          opt.classList.add("bg-red-100", "border-red-400");
+          correctSet.forEach(ci => {
+            const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+            if (correctOpt) correctOpt.classList.add("bg-green-100", "border-green-400");
+          });
+          solution.classList.remove("hidden");
+          locked = true;
+          if (window.MathJax) MathJax.typesetPromise();
+          return;
+        }
+
+        // ✅ Correct answer
+        if (!selectedCorrect.has(idx)) {
+          selectedCorrect.add(idx);
+          opt.classList.add("bg-green-100", "border-green-400");
+        }
+
+        // If all corrects are picked, reveal solution
+        let allPicked = true;
+        correctSet.forEach(ci => {
+          if (!selectedCorrect.has(ci)) allPicked = false;
+        });
+
+        if (allPicked) {
+          solution.classList.remove("hidden");
+          locked = true;
+          if (window.MathJax) MathJax.typesetPromise();
+        }
       });
-      solution.classList.remove("hidden");
-      locked = true;
-      return;
     }
-
-    // CORRECT pick -> mark it (accumulate)
-    if (!selectedCorrect.has(idx)) {
-      selectedCorrect.add(idx);
-      opt.classList.add("border-green-400");
-    }
-
-    // If all corrects selected -> show solution & lock
-    let allPicked = true;
-    correctSet.forEach(ci => { if (!selectedCorrect.has(ci)) allPicked = false; });
-    if (allPicked) {
-      solution.classList.remove("hidden");
-      locked = true;
-    }
-  };
-
-  questionDiv.addEventListener("click", onClick);
-}
 
     // -------------------
     // Integer Type
     // -------------------
-   if (q.question_type === "Integer Type") {
-  const solution = app.querySelector(".solution");
-  const inputEl = app.querySelector(".integer-input");
-  const btn = app.querySelector(".check-int");
+    if (q.question_type === "Integer Type") {
+      const solution = app.querySelector(".solution");
+      const inputEl = app.querySelector(".integer-input");
+      const btn = app.querySelector(".check-int");
 
-  btn?.addEventListener("click", () => {
-    // prevent repeat attempts after reveal
-    if (!solution.classList.contains("hidden")) return;
+      btn?.addEventListener("click", () => {
+        if (!solution.classList.contains("hidden")) return;
 
-    const val = (inputEl.value || "").trim();
-    inputEl.classList.remove("border-green-400", "border-red-400");
+        const val = (inputEl.value || "").trim();
+        inputEl.classList.remove("border-green-400", "border-red-400");
 
-    if (val === (q.numerical_answer || "").toString()) {
-      inputEl.classList.add("border-green-400");
-    } else {
-      inputEl.classList.add("border-red-400");
+        if (val === (q.numerical_answer || "").toString()) {
+          inputEl.classList.add("border-green-400");
+        } else {
+          inputEl.classList.add("border-red-400");
+        }
+
+        solution.classList.remove("hidden");
+        inputEl.disabled = true;
+        btn.disabled = true;
+
+        if (window.MathJax) MathJax.typesetPromise();
+      });
     }
-
-    solution.classList.remove("hidden");
-
-    // lock input & button so it can't be changed
-    inputEl.disabled = true;
-    btn.disabled = true;
-
-    if (window.MathJax) MathJax.typesetPromise();
-  });
-}
-
 
     // -------------------
     // Navigation buttons

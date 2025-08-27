@@ -50,7 +50,7 @@ const correctIndices = correctIndicesRaw.map(Number);
       </div>
     `;
 
-   // -------------------
+  // -------------------
 // Single Choice
 // -------------------
 if (q.question_type === "Single Choice") {
@@ -124,6 +124,7 @@ if (q.question_type === "Multiple Choice") {
     }
   });
 }
+
 
     // -------------------
     // Integer Type

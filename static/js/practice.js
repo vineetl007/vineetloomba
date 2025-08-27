@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderQuestion(index) {
     const q = questions[index];
+    const tags = Array.isArray(q.tags) ? q.tags : [];
     const isMulti = q.question_type === "Multiple Choice";
     const isInteger = q.question_type === "Integer Type";  // ✅ added
     let selectedIndices = [];

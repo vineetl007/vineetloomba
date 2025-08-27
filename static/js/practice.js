@@ -1,55 +1,117 @@
 // /js/practice.js
 document.addEventListener("DOMContentLoaded", () => {
   const dataEl = document.getElementById("practice-data");
-  if (!dataEl) return;
+  if (!dataEl) {
+    console.warn("practice.js: #practice-data not found");
+    return;
+  }
 
   let questions = [];
   try {
     questions = JSON.parse(dataEl.textContent || "[]");
   } catch (err) {
-    console.error("Failed to parse practice-data JSON:", err);
-    questions = [];
+    console.error("practice.js: JSON parse error for #practice-data:", err);
+    return;
   }
 
   const app = document.getElementById("practice-app");
   if (!app) return;
 
-  let currentIndex = 0;
-
-  // Normalize correctIndices into zero-based numeric indices
-  function normalizeCorrectIndices(raw, optionCount) {
+  // Robust normalizer with fallbacks
+  function normalizeCorrectIndices(raw, optionCount, options) {
     if (raw == null) return [];
-    const arr = Array.isArray(raw) ? raw.slice() : [raw];
 
-    const mapped = arr.map(v => {
-      if (typeof v === "number" && Number.isFinite(v)) return v;
-      if (typeof v === "string") {
-        const s = v.trim();
-        // Single letter like "A", "b" -> 0-based index
-        if (/^[A-Za-z]$/.test(s)) {
-          return s.toUpperCase().charCodeAt(0) - "A".charCodeAt(0);
-        }
-        const n = Number(s);
-        if (Number.isFinite(n)) return n;
+    // If raw is object like {"0": true, "2": true}, prefer the keys where value truthy
+    if (typeof raw === "object" && !Array.isArray(raw)) {
+      const keys = Object.keys(raw || {});
+      const truthyKeys = keys.filter(k => {
+        const v = raw[k];
+        return v === true || v === "true" || v === 1 || v === "1" || v === "on";
+      });
+      if (truthyKeys.length) {
+        raw = truthyKeys;
       }
-      return NaN;
-    }).filter(n => Number.isFinite(n));
-
-    if (mapped.length === 0) return [];
-
-    const allWithinOneBased = mapped.every(n => n >= 1 && n <= optionCount);
-    const allWithinZeroBased = mapped.every(n => n >= 0 && n < optionCount);
-    const hasZero = mapped.some(n => n === 0);
-
-    let indices = mapped.slice();
-    // If values look 1-based (1..optionCount) and there is no 0 value, shift down
-    if (!hasZero && allWithinOneBased && !allWithinZeroBased) {
-      indices = indices.map(n => n - 1);
     }
 
-    // Keep only valid indices and dedupe
-    return Array.from(new Set(indices.filter(n => n >= 0 && n < optionCount)));
+    // Turn into token list (split strings with comma/semicolon)
+    let tokens = [];
+    if (Array.isArray(raw)) {
+      raw.forEach(item => {
+        if (typeof item === "string" && /[,;]+/.test(item)) {
+          tokens.push(...item.split(/[,;]\s*/).map(s => s.trim()).filter(Boolean));
+        } else tokens.push(item);
+      });
+    } else if (typeof raw === "string") {
+      if (/[,;]+/.test(raw)) {
+        tokens = raw.split(/[,;]\s*/).map(s => s.trim()).filter(Boolean);
+      } else {
+        tokens = [raw];
+      }
+    } else {
+      tokens = [raw];
+    }
+
+    const candidates = [];
+
+    tokens.forEach(tok => {
+      if (tok == null) return;
+      if (typeof tok === "number" && Number.isFinite(tok)) {
+        candidates.push(tok);
+        return;
+      }
+      const s = String(tok).trim();
+      if (s === "") return;
+
+      // Single letter like "A" -> 0
+      if (/^[A-Za-z]$/.test(s)) {
+        candidates.push(s.toUpperCase().charCodeAt(0) - 65);
+        return;
+      }
+
+      // Numeric string
+      const n = Number(s);
+      if (!Number.isNaN(n) && Number.isFinite(n)) {
+        candidates.push(n);
+        return;
+      }
+
+      // Try exact option text match (case-insensitive)
+      if (Array.isArray(options)) {
+        const exact = options.findIndex(o => (o || "").toString().trim().toLowerCase() === s.toLowerCase());
+        if (exact !== -1) {
+          candidates.push(exact);
+          return;
+        }
+        // substring match fallback
+        const sub = options.findIndex(o => (o || "").toString().toLowerCase().includes(s.toLowerCase()));
+        if (sub !== -1) {
+          candidates.push(sub);
+          return;
+        }
+      }
+
+      // If nothing worked, ignore token
+    });
+
+    const numeric = candidates.filter(x => Number.isFinite(x)).map(Number);
+
+    if (numeric.length === 0) return [];
+
+    const allWithinOneBased = numeric.every(n => n >= 1 && n <= optionCount);
+    const allWithinZeroBased = numeric.every(n => n >= 0 && n < optionCount);
+    const hasZero = numeric.some(n => n === 0);
+
+    let final = numeric.slice();
+    // convert 1-based to 0-based when it's the likely case
+    if (!hasZero && allWithinOneBased && !allWithinZeroBased) {
+      final = final.map(n => n - 1);
+    }
+
+    final = Array.from(new Set(final.filter(n => n >= 0 && n < optionCount)));
+    return final;
   }
+
+  let currentIndex = 0;
 
   function renderQuestion(index) {
     const q = questions[index];
@@ -58,17 +120,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const optionCount = Array.isArray(q.options) ? q.options.length : 0;
-    const correctIndices = normalizeCorrectIndices(q.correctIndices, optionCount);
+    const options = Array.isArray(q.options) ? q.options : [];
+    const optionCount = options.length;
+    const normalized = normalizeCorrectIndices(q.correctIndices, optionCount, options);
 
-    // Render HTML
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4" data-qtype="${q.question_type || ""}">
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question || ""}</h2>
 
-        ${q.question_type === "Single Choice" || q.question_type === "Multiple Choice" ? `
+        ${(q.question_type === "Single Choice" || q.question_type === "Multiple Choice") ? `
           <ul class="space-y-2">
-            ${(q.options || []).map((opt, i) => `
+            ${options.map((opt, i) => `
               <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
                   data-index="${i}">
                 <span class="latex-option">${opt}</span>
@@ -87,6 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="solution mt-4 hidden">
           <strong>Solution:</strong> ${q.solution || ""}
         </div>
+
+        <div class="debug mt-2 text-xs text-gray-400">
+          <pre id="debug-info" style="white-space:pre-wrap;"></pre>
+        </div>
       </div>
 
       <div class="flex justify-between mt-6">
@@ -98,29 +164,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const questionDiv = app.querySelector(".question");
     const solutionEl = questionDiv.querySelector(".solution");
     const optionEls = Array.from(questionDiv.querySelectorAll(".option"));
+    const debugInfo = questionDiv.querySelector("#debug-info");
 
-    // Small debug log — remove if you don't want console messages
-    // console.log("Rendering Q", index, "correctIndices(normalized) =", correctIndices);
+    // show debug info on page and console
+    const debugObj = {
+      raw_correctIndices: q.correctIndices,
+      normalized_indices: normalized,
+      optionCount: optionCount,
+      options: options
+    };
+    if (debugInfo) debugInfo.textContent = JSON.stringify(debugObj, null, 2);
+    console.log("practice debug:", debugObj);
 
-    // Helper to reveal all correct options (marks green)
     function revealAllCorrect() {
-      correctIndices.forEach(ci => {
+      normalized.forEach(ci => {
         const co = questionDiv.querySelector(`.option[data-index="${ci}"]`);
         if (co) co.classList.add("border-green-400", "bg-green-100");
       });
     }
 
-    // ---------- Single Choice ----------
+    // Single Choice behaviour
     if (q.question_type === "Single Choice") {
       let locked = false;
-      const correctIndex = correctIndices[0]; // may be undefined if not provided
+      const correctIndex = normalized[0]; // undefined if not available
 
       optionEls.forEach(optEl => {
         optEl.addEventListener("click", () => {
           if (locked) return;
           const idx = Number(optEl.dataset.index);
 
-          // If there is no correctIndex, treat any click as "wrong" (but reveal nothing)
           if (typeof correctIndex === "number") {
             if (idx === correctIndex) {
               optEl.classList.add("border-green-400", "bg-green-100");
@@ -129,20 +201,21 @@ document.addEventListener("DOMContentLoaded", () => {
               revealAllCorrect();
             }
           } else {
-            // no correct provided: mark clicked as red and show solution
+            // no correct found in data — mark clicked as red and reveal nothing (but show solution)
             optEl.classList.add("border-red-400", "bg-red-100");
           }
 
           solutionEl.classList.remove("hidden");
           locked = true;
+          if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise().catch(()=>{});
         });
       });
     }
 
-    // ---------- Multiple Choice ----------
+    // Multiple Choice behaviour
     if (q.question_type === "Multiple Choice") {
       let locked = false;
-      const correctSet = new Set(correctIndices);
+      const correctSet = new Set(normalized);
       const selectedCorrect = new Set();
 
       optionEls.forEach(optEl => {
@@ -150,81 +223,32 @@ document.addEventListener("DOMContentLoaded", () => {
           if (locked) return;
           const idx = Number(optEl.dataset.index);
 
-          // Wrong choice clicked -> mark wrong, reveal all corrects, show solution, lock
           if (!correctSet.has(idx)) {
+            // wrong clicked
             optEl.classList.add("border-red-400", "bg-red-100");
             revealAllCorrect();
             solutionEl.classList.remove("hidden");
             locked = true;
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise().catch(()=>{});
             return;
           }
 
-          // Correct choice -> mark green and allow continuing
+          // correct
           if (!selectedCorrect.has(idx)) {
             selectedCorrect.add(idx);
             optEl.classList.add("border-green-400", "bg-green-100");
           }
 
-          // If all correct picked -> reveal solution & lock
+          // if all correct selected => show solution & lock
           if (selectedCorrect.size === correctSet.size && correctSet.size > 0) {
             solutionEl.classList.remove("hidden");
             locked = true;
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise().catch(()=>{});
           }
         });
       });
     }
 
-    // ---------- Integer Type ----------
+    // Integer type
     if (q.question_type === "Integer Type") {
-      const inputEl = questionDiv.querySelector(".integer-input");
-      const btn = questionDiv.querySelector(".check-int");
-      btn?.addEventListener("click", () => {
-        if (!solutionEl.classList.contains("hidden")) return;
-
-        const val = (inputEl.value || "").trim();
-        inputEl.classList.remove("border-green-400", "border-red-400");
-
-        const expected = (q.numerical_answer || "").toString().trim();
-        if (expected !== "" && val === expected) {
-          inputEl.classList.add("border-green-400");
-        } else {
-          inputEl.classList.add("border-red-400");
-        }
-
-        solutionEl.classList.remove("hidden");
-        inputEl.disabled = true;
-        btn.disabled = true;
-
-        if (window.MathJax && MathJax.typesetPromise) {
-          MathJax.typesetPromise().catch(() => {});
-        }
-      });
-    }
-
-    // ---------- Navigation ----------
-    const prevBtn = app.querySelector("#prev-btn");
-    const nextBtn = app.querySelector("#next-btn");
-
-    prevBtn?.addEventListener("click", () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        renderQuestion(currentIndex);
-      }
-    });
-
-    nextBtn?.addEventListener("click", () => {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        renderQuestion(currentIndex);
-      }
-    });
-
-    // Re-render LaTeX if MathJax is present
-    if (window.MathJax && MathJax.typesetPromise) {
-      MathJax.typesetPromise().catch(() => {});
-    }
-  }
-
-  // initial render
-  renderQuestion(currentIndex);
-});
+      const inputEl = questionDiv.querySele

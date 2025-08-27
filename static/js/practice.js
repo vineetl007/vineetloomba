@@ -41,58 +41,78 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // -------------------
-    // Single Choice
-    // -------------------
-    if (q.question_type === "Single Choice") {
-      app.querySelectorAll(".option").forEach(opt => {
-        opt.addEventListener("click", () => {
-          const idx = parseInt(opt.dataset.index);
-          const questionDiv = opt.closest(".question");
-          const solution = questionDiv.querySelector(".solution");
+// -------------------
+// Single Choice
+// -------------------
+if (q.question_type === "Single Choice") {
+  app.querySelectorAll(".option").forEach(opt => {
+    opt.addEventListener("click", () => {
+      const idx = parseInt(opt.dataset.index);
+      const questionDiv = opt.closest(".question");
+      const solution = questionDiv.querySelector(".solution");
 
-          // clear old highlights
-          questionDiv.querySelectorAll(".option").forEach(o => {
-            o.classList.remove("border-green-400", "border-red-400");
-          });
+      // 🔒 if already answered, block further clicks
+      if (!solution.classList.contains("hidden")) return;
 
-          if (q.correctIndices.includes(idx)) {
-            opt.classList.add("border-green-400");
-          } else {
-            opt.classList.add("border-red-400");
-            q.correctIndices.forEach(ci => {
-              const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-              if (correctOpt) correctOpt.classList.add("border-green-400");
-            });
-          }
-          solution.classList.remove("hidden");
-        });
+      // clear old highlights
+      questionDiv.querySelectorAll(".option").forEach(o => {
+        o.classList.remove("border-green-400", "border-red-400");
       });
-    }
 
-    // -------------------
-    // Multiple Choice
-    // -------------------
-    if (q.question_type === "Multiple Choice") {
-      const solution = app.querySelector(".solution");
-      app.querySelectorAll(".option").forEach(opt => {
-        opt.addEventListener("click", () => {
-          opt.classList.toggle("bg-gray-200");
+      if (q.correctIndices.includes(idx)) {
+        // correct chosen → highlight and show solution immediately
+        opt.classList.add("border-green-400");
+      } else {
+        // wrong chosen → highlight wrong + reveal ALL corrects + show solution
+        opt.classList.add("border-red-400");
+        q.correctIndices.forEach(ci => {
+          const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+          if (correctOpt) correctOpt.classList.add("border-green-400");
         });
-      });
-      app.querySelector("#next-btn")?.addEventListener("click", () => {
-        app.querySelectorAll(".option").forEach(opt => {
-          const idx = parseInt(opt.dataset.index);
-          if (q.correctIndices.includes(idx)) {
-            opt.classList.add("border-green-400");
-          } else if (opt.classList.contains("bg-gray-200")) {
-            opt.classList.add("border-red-400");
-          }
-        });
-        solution.classList.remove("hidden");
-      });
-    }
+      }
+      solution.classList.remove("hidden"); // show solution
+    });
+  });
+}
 
+// -------------------
+// Multiple Choice
+// -------------------
+if (q.question_type === "Multiple Choice") {
+  const questionDiv = app.querySelector(".question");
+  const solution = questionDiv.querySelector(".solution");
+  const selectedCorrect = new Set();
+
+  app.querySelectorAll(".option").forEach(opt => {
+    opt.addEventListener("click", () => {
+      // 🔒 if already answered, block further clicks
+      if (!solution.classList.contains("hidden")) return;
+
+      const idx = parseInt(opt.dataset.index);
+
+      // if wrong option chosen → reveal all corrects + solution immediately
+      if (!q.correctIndices.includes(idx)) {
+        opt.classList.add("border-red-400");
+        q.correctIndices.forEach(ci => {
+          const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+          if (correctOpt) correctOpt.classList.add("border-green-400");
+        });
+        solution.classList.remove("hidden"); // lock
+        return;
+      }
+
+      // if correct option chosen
+      opt.classList.add("border-green-400");
+      selectedCorrect.add(idx);
+
+      // check if all corrects have been selected
+      const allCorrectSelected = q.correctIndices.every(ci => selectedCorrect.has(ci));
+      if (allCorrectSelected) {
+        solution.classList.remove("hidden"); // lock
+      }
+    });
+  });
+}
     // -------------------
     // Integer Type
     // -------------------

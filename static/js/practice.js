@@ -44,75 +44,101 @@ document.addEventListener("DOMContentLoaded", () => {
 // -------------------
 // Single Choice
 // -------------------
+// -------------------
+// Single Choice (new behavior + lock)
+// -------------------
 if (q.question_type === "Single Choice") {
+  const questionDiv = app.querySelector(".question");
+  const solution = questionDiv.querySelector(".solution");
+  // make set of correct indices (handle strings/numbers)
+  const correctSet = new Set((q.correctIndices || []).map(Number));
+  // mark unlocked initially
+  questionDiv.dataset.locked = "false";
+
   app.querySelectorAll(".option").forEach(opt => {
     opt.addEventListener("click", () => {
-      const idx = parseInt(opt.dataset.index);
-      const questionDiv = opt.closest(".question");
-      const solution = questionDiv.querySelector(".solution");
+      // if already answered, ignore
+      if (questionDiv.dataset.locked === "true") return;
 
-      // 🔒 if already answered, block further clicks
-      if (!solution.classList.contains("hidden")) return;
+      const idx = Number(opt.dataset.index);
 
-      // clear old highlights
+      // clear previous borders
       questionDiv.querySelectorAll(".option").forEach(o => {
         o.classList.remove("border-green-400", "border-red-400");
       });
 
-      if (q.correctIndices.includes(idx)) {
-        // correct chosen → highlight and show solution immediately
+      if (correctSet.has(idx)) {
+        // correct -> highlight it immediately
         opt.classList.add("border-green-400");
       } else {
-        // wrong chosen → highlight wrong + reveal ALL corrects + show solution
+        // wrong -> mark wrong, reveal ALL correct options
         opt.classList.add("border-red-400");
-        q.correctIndices.forEach(ci => {
+        correctSet.forEach(ci => {
           const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
           if (correctOpt) correctOpt.classList.add("border-green-400");
         });
       }
-      solution.classList.remove("hidden"); // show solution
+
+      // show solution and lock
+      solution.classList.remove("hidden");
+      questionDiv.dataset.locked = "true";
+
+      // re-typeset any LaTeX if present
+      if (window.MathJax) MathJax.typesetPromise();
     });
   });
 }
-
 // -------------------
-// Multiple Choice
+// Multiple Choice (aggregate-correct until wrong OR all chosen, then lock)
 // -------------------
 if (q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
+  const correctSet = new Set((q.correctIndices || []).map(Number));
   const selectedCorrect = new Set();
+  questionDiv.dataset.locked = "false";
 
   app.querySelectorAll(".option").forEach(opt => {
     opt.addEventListener("click", () => {
-      // 🔒 if already answered, block further clicks
-      if (!solution.classList.contains("hidden")) return;
+      // if already answered, ignore
+      if (questionDiv.dataset.locked === "true") return;
 
-      const idx = parseInt(opt.dataset.index);
+      const idx = Number(opt.dataset.index);
 
-      // if wrong option chosen → reveal all corrects + solution immediately
-      if (!q.correctIndices.includes(idx)) {
+      // if user picks a wrong option -> reveal all correct answers & solution immediately
+      if (!correctSet.has(idx)) {
         opt.classList.add("border-red-400");
-        q.correctIndices.forEach(ci => {
+        correctSet.forEach(ci => {
           const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
           if (correctOpt) correctOpt.classList.add("border-green-400");
         });
-        solution.classList.remove("hidden"); // lock
+        solution.classList.remove("hidden");
+        questionDiv.dataset.locked = "true";
+        if (window.MathJax) MathJax.typesetPromise();
         return;
       }
 
-      // if correct option chosen
-      opt.classList.add("border-green-400");
-      selectedCorrect.add(idx);
+      // picking a correct option: idempotent add (no deselect)
+      if (!selectedCorrect.has(idx)) {
+        selectedCorrect.add(idx);
+        opt.classList.add("border-green-400");
+      }
 
-      // check if all corrects have been selected
-      const allCorrectSelected = q.correctIndices.every(ci => selectedCorrect.has(ci));
-      if (allCorrectSelected) {
-        solution.classList.remove("hidden"); // lock
+      // check whether all correct options are picked
+      let allPicked = true;
+      correctSet.forEach(ci => {
+        if (!selectedCorrect.has(ci)) allPicked = false;
+      });
+
+      if (allPicked) {
+        solution.classList.remove("hidden");
+        questionDiv.dataset.locked = "true";
+        if (window.MathJax) MathJax.typesetPromise();
       }
     });
   });
 }
+
     // -------------------
     // Integer Type
     // -------------------

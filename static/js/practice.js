@@ -1,110 +1,83 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("practice-app");
-  if (!container) return;
+  const dataEl = document.getElementById("practice-data");
+  if (!dataEl) return;
 
-  let questions = [];
-  let current = 0;
+  const questions = JSON.parse(dataEl.textContent);
+  let currentIndex = 0;
+  const app = document.getElementById("practice-app");
 
-  try {
-    const rawData = document.getElementById("practice-data").textContent;
-    console.log("Raw Data:", rawData);
-    questions = JSON.parse(rawData);
+  function renderQuestion(index) {
+    const q = questions[index];
+    app.innerHTML = `
+      <div class="question border rounded-lg p-4 shadow mb-4">
+        <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
+        <ul class="space-y-2">
+          ${q.options.map((opt, i) => `
+            <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
+                data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
+              <span class="latex-option">${opt}</span>
+            </li>
+          `).join("")}
+        </ul>
+        <div class="solution mt-4 hidden text-green-700">
+          <strong>Solution:</strong> ${q.solution}
+        </div>
+      </div>
 
-    // Normalize all correctIndices
-    questions = questions.map((q, idx) => {
-      console.log("Before normalization Q", idx, q.correctIndices);
-      if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
-        const options = Array.isArray(q.options) ? q.options : [];
-        const optionCount = options.length;
-        q.correctIndices = normalizeCorrectIndices(q.correctIndices, optionCount, options);
-      }
-      console.log("After normalization Q", idx, q.correctIndices);
-      return q;
+      <div class="flex justify-between mt-6">
+        <button id="prev-btn" class="px-4 py-2 bg-gray-200 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
+      </div>
+    `;
+
+// Add option click behavior
+app.querySelectorAll(".option").forEach(opt => {
+  opt.addEventListener("click", () => {
+    const questionDiv = opt.closest(".question");
+    const solution = questionDiv.querySelector(".solution");
+    const correct = opt.dataset.correct === "true";
+
+    // Remove any previously applied borders
+    questionDiv.querySelectorAll(".option").forEach(o => {
+      o.classList.remove("border-green-400", "border-red-400", "bg-green-100", "bg-red-100");
     });
 
-  } catch (e) {
-    console.error("Error parsing questions:", e);
-    container.innerHTML = `<p class="text-red-500">Error loading questions.</p>`;
-    return;
-  }
+    if (correct) {
+      opt.classList.add("border-green-400");
+    } else {
+      opt.classList.add("border-red-400");
 
-  if (!questions.length) {
-    container.innerHTML = `<p>No questions found.</p>`;
-    return;
-  }
-
-  renderQuestion();
-
-  // ----------------- FUNCTIONS -------------------
-
-  function normalizeCorrectIndices(correctIndices, optionCount, options) {
-    if (!correctIndices) return [];
-    let normalized = [];
-
-    if (typeof correctIndices === "number") return [correctIndices];
-
-    if (typeof correctIndices === "string") {
-      const num = parseInt(correctIndices, 10);
-      if (!isNaN(num)) return [num];
-      const letterMatch = correctIndices.trim().match(/^[A-Za-z]$/);
-      if (letterMatch) return [letterMatch[0].toUpperCase().charCodeAt(0) - 65];
+      // highlight the correct option
+      const correctOption = Array.from(questionDiv.querySelectorAll(".option"))
+        .find(o => o.dataset.correct === "true");
+      if (correctOption) correctOption.classList.add("border-green-400");
     }
 
-    if (Array.isArray(correctIndices)) {
-      correctIndices.forEach(ci => {
-        if (typeof ci === "number") normalized.push(ci);
-        else if (typeof ci === "string") {
-          const num = parseInt(ci, 10);
-          if (!isNaN(num)) normalized.push(num);
-          else {
-            const letterMatch = ci.trim().match(/^[A-Za-z]$/);
-            if (letterMatch) normalized.push(letterMatch[0].toUpperCase().charCodeAt(0) - 65);
-          }
-        } else if (typeof ci === "object" && ci.index !== undefined) {
-          normalized.push(parseInt(ci.index, 10));
-        }
-      });
-    }
+    solution.classList.remove("hidden");
+  });
+});
 
-    normalized = normalized.filter(n => !isNaN(n) && n >= 0 && n < optionCount);
-    return normalized;
+    // Navigation buttons
+    app.querySelector("#prev-btn")?.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion(currentIndex);
+      }
+    });
+
+    app.querySelector("#next-btn")?.addEventListener("click", () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion(currentIndex);
+      }
+    });
+
+    // Render LaTeX after HTML is added
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
   }
 
-  function renderQuestion() {
-    const q = questions[current];
-    console.log("Rendering question:", q);
-    const normalized = q.correctIndices || [];
-
-    let html = `
-      <div class="p-4 border rounded shadow mb-4 bg-white">
-        <div class="mb-3 font-medium">${q.question}</div>
-    `;
-
-    if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
-      html += `<div class="space-y-2">`;
-      q.options.forEach((opt, idx) => {
-        html += `
-          <button data-idx="${idx}" class="w-full text-left px-3 py-2 border rounded hover:bg-gray-50">
-            ${opt}
-          </button>`;
-      });
-      html += `</div>`;
-    }
-
-    html += `
-      <div id="solution" class="hidden mt-3 p-2 border-t">${q.solution}</div>
-      <div class="flex justify-between mt-4">
-        <button id="prev" class="px-3 py-1 bg-gray-200 rounded">Prev</button>
-        <button id="next" class="px-3 py-1 bg-gray-200 rounded">Next</button>
-      </div>
-    </div>
-    `;
-
-    container.innerHTML = html;
-
-    // Attach button logic safely
-    if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
-      const buttons = container.querySelectorAll("button[data-idx]");
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          console.log("Clicked:", btn.dataset.idx, "C
+  // Render first question
+  renderQuestion(currentIndex);
+});

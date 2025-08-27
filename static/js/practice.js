@@ -42,67 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
 // -------------------
-// Single Choice (show correct immediately on wrong, lock after reveal)
+// Choice Questions (Single & Multiple)
 // -------------------
-if (q.question_type === "Single Choice") {
+if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  const correctSet = new Set((q.correctIndices || []).map(Number));
-  questionDiv.dataset.locked = "false";
 
-  questionDiv.querySelectorAll(".option").forEach(opt => {
-    opt.addEventListener("click", () => {
-      // ignore if already locked
-      if (questionDiv.dataset.locked === "true") return;
-
-      const idx = Number(opt.dataset.index);
-
-      // clear previous borders
-      questionDiv.querySelectorAll(".option").forEach(o => {
-        o.classList.remove("border-green-400", "border-red-400");
-      });
-
-      if (correctSet.has(idx)) {
-        // correct -> highlight selected
-        opt.classList.add("border-green-400");
-      } else {
-        // wrong -> mark wrong and reveal ALL corrects
-        opt.classList.add("border-red-400");
-        correctSet.forEach(ci => {
-          const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-          if (correctOpt) correctOpt.classList.add("border-green-400");
-        });
-      }
-
-      // reveal solution and lock interactions
-      solution.classList.remove("hidden");
-      questionDiv.dataset.locked = "true";
-      questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
-
-      if (window.MathJax) MathJax.typesetPromise();
-    });
-  });
-}
-
-// -------------------
-// Multiple Choice (accumulate corrects; wrong -> reveal all & lock)
-// -------------------
-if (q.question_type === "Multiple Choice") {
-  const questionDiv = app.querySelector(".question");
-  const solution = questionDiv.querySelector(".solution");
+  // Normalize correct answers
   const correctSet = new Set((q.correctIndices || []).map(Number));
   const selectedCorrect = new Set();
   questionDiv.dataset.locked = "false";
 
-  questionDiv.querySelectorAll(".option").forEach(opt => {
+  app.querySelectorAll(".option").forEach(opt => {
     opt.addEventListener("click", () => {
       // ignore if locked
       if (questionDiv.dataset.locked === "true") return;
 
       const idx = Number(opt.dataset.index);
 
-      // if wrong chosen -> show all corrects and lock
       if (!correctSet.has(idx)) {
+        // ❌ Wrong -> highlight wrong, reveal all corrects, show solution, lock
         opt.classList.add("border-red-400");
         correctSet.forEach(ci => {
           const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
@@ -110,29 +69,31 @@ if (q.question_type === "Multiple Choice") {
         });
         solution.classList.remove("hidden");
         questionDiv.dataset.locked = "true";
-        questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
         if (window.MathJax) MathJax.typesetPromise();
         return;
       }
 
-      // correct chosen -> mark it (no deselect)
+      // ✅ Correct -> highlight it
       if (!selectedCorrect.has(idx)) {
         selectedCorrect.add(idx);
         opt.classList.add("border-green-400");
       }
 
-      // if all correct options picked -> reveal solution & lock
+      // if all corrects chosen, reveal solution + lock
       let allPicked = true;
-      correctSet.forEach(ci => { if (!selectedCorrect.has(ci)) allPicked = false; });
+      correctSet.forEach(ci => {
+        if (!selectedCorrect.has(ci)) allPicked = false;
+      });
+
       if (allPicked) {
         solution.classList.remove("hidden");
         questionDiv.dataset.locked = "true";
-        questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
         if (window.MathJax) MathJax.typesetPromise();
       }
     });
   });
 }
+
 
     // -------------------
     // Integer Type

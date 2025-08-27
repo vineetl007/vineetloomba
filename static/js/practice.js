@@ -8,7 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderQuestion(index) {
     const q = questions[index];
-    const tags = Array.isArray(q.tags) ? q.tags : [];
+ const tags = Array.isArray(q.tags)
+  ? q.tags
+  : (typeof q.tags === "string" && q.tags.trim())
+    ? q.tags.split(",").map(s => s.trim()).filter(Boolean)
+    : [];
     const isMulti = q.question_type === "Multiple Choice";
     const isInteger = q.question_type === "Integer Type";  // ✅ added
     let selectedIndices = [];
@@ -19,8 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
 
   <div class="mb-4 flex flex-wrap gap-2">
-${Array.isArray(q.tags) && q.tags.length ? q.tags.map(tag => `
-  <a href="/tags/${tag}/" 
+${tags.length ? tags.map(tag => `
+  <a href="/tags/${encodeURIComponent(tag.toLowerCase())}/"
      class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
     ${tag}
   </a>

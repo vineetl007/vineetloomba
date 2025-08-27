@@ -48,7 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const questionDiv = app.querySelector(".question");
       const solution = questionDiv.querySelector(".solution");
 
-      const correctSet = new Set((q.correctIndices || []).map(Number));
+      let correctIndices = q.correctIndices || [];
+if (!Array.isArray(correctIndices)) {
+  correctIndices = [correctIndices];
+}
+const correctSet = new Set(correctIndices.map(Number));
+
       const selectedCorrect = new Set();
       let locked = false; // only for this question
 

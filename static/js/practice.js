@@ -19,12 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
 
         <div class="mb-4 flex flex-wrap gap-2">
-  ${q.tags ? q.tags.map(tag => `
-    <a href="/tags/${tag}/" 
-       class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
-      ${tag}
-    </a>
-  `).join('') : ''}
+  ${tags.length ? tags.map(tag => `
+  <a href="/tags/${tag}/" 
+     class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
+    ${tag}
+  </a>
+`).join('') : ''}
 
   ${q.difficulty ? `
     <a href="/difficulty/${q.difficulty}/" 

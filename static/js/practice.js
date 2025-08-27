@@ -18,13 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
 
-        <div class="mb-4 flex flex-wrap gap-2">
-  ${tags.length ? tags.map(tag => `
+  <div class="mb-4 flex flex-wrap gap-2">
+${Array.isArray(q.tags) && q.tags.length ? q.tags.map(tag => `
   <a href="/tags/${tag}/" 
      class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
     ${tag}
   </a>
 `).join('') : ''}
+
 
   ${q.difficulty ? `
     <a href="/difficulty/${q.difficulty}/" 

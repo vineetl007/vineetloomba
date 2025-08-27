@@ -50,77 +50,77 @@ const correctIndices = correctIndicesRaw.map(Number);
       </div>
     `;
 
-    // -------------------
-    // Choice Questions (Single & Multiple)
-    // -------------------
+   // -------------------
+// Single Choice
+// -------------------
 if (q.question_type === "Single Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  const correctIndex = Number(correctIndices[0]); // normalized above
+  const correctIndex = Number((q.correctIndices || [])[0]);
   let locked = false;
 
   questionDiv.addEventListener("click", (e) => {
     const opt = e.target.closest(".option");
     if (!opt || locked) return;
+
     const idx = Number(opt.dataset.index);
 
-    // clear any previous borders for visual consistency (optional)
-    questionDiv.querySelectorAll(".option").forEach(o => {
-      o.classList.remove("border-green-400", "border-red-400", "bg-green-100", "bg-red-100");
-    });
-
     if (idx === correctIndex) {
-      opt.classList.add("border-green-400");
+      opt.classList.add("border-green-400", "bg-green-100");
     } else {
-      opt.classList.add("border-red-400");
+      opt.classList.add("border-red-400", "bg-red-100");
       const correctOpt = questionDiv.querySelector(`.option[data-index="${correctIndex}"]`);
-      if (correctOpt) correctOpt.classList.add("border-green-400");
+      if (correctOpt) correctOpt.classList.add("border-green-400", "bg-green-100");
     }
 
     solution.classList.remove("hidden");
     locked = true;
-    if (window.MathJax) MathJax.typesetPromise();
   });
 }
 
+// -------------------
+// Multiple Choice
+// -------------------
 if (q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  const correctSet = new Set(correctIndices); // normalized array -> Set
+  const correctSet = new Set(Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
   const selectedCorrect = new Set();
   let locked = false;
 
   questionDiv.addEventListener("click", (e) => {
     const opt = e.target.closest(".option");
     if (!opt || locked) return;
+
     const idx = Number(opt.dataset.index);
 
-    // Wrong pick: reveal all corrects immediately and lock
     if (!correctSet.has(idx)) {
-      opt.classList.add("border-red-400");
+      // Wrong choice → mark wrong + reveal all corrects
+      opt.classList.add("border-red-400", "bg-red-100");
       correctSet.forEach(ci => {
         const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-        if (correctOpt) correctOpt.classList.add("border-green-400");
+        if (correctOpt) correctOpt.classList.add("border-green-400", "bg-green-100");
       });
       solution.classList.remove("hidden");
       locked = true;
-      if (window.MathJax) MathJax.typesetPromise();
       return;
     }
 
-    // Correct pick: mark and accumulate
+    // Correct choice → mark green
     if (!selectedCorrect.has(idx)) {
       selectedCorrect.add(idx);
-      opt.classList.add("border-green-400");
+      opt.classList.add("border-green-400", "bg-green-100");
     }
 
-    // If all corrects selected, reveal solution and lock
+    // If all corrects are selected → reveal solution & lock
     let allPicked = true;
-    correctSet.forEach(ci => { if (!selectedCorrect.has(ci)) allPicked = false; });
+    correctSet.forEach(ci => {
+      if (!selectedCorrect.has(ci)) allPicked = false;
+    });
+
     if (allPicked) {
       solution.classList.remove("hidden");
       locked = true;
-      if (window.MathJax) MathJax.typesetPromise();
     }
   });
 }

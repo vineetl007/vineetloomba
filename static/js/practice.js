@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `
               <div class="flex items-center space-x-2">
                 <input id="int-answer" type="text" 
-                       class="border rounded p-2 w-32 bg-gray-800 text-white placeholder-gray-400" 
+                       class="border rounded p-2 w-32 bg-gray-800 text-white font-concert placeholder-gray-400" 
                        placeholder="Enter answer" />
                 <button id="check-btn" class="px-4 py-2 font-concert bg-blue-500 text-white rounded">
                   Submit

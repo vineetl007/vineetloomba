@@ -1,0 +1,29 @@
+<!-- Question Metadata -->
+{{ with .Params.tags }}
+<div class="mb-6 flex flex-wrap gap-2">
+  {{ range . }}
+    <a href="/tags/{{ . | urlize }}/" 
+       class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition"> 
+      {{ . }}
+    </a>
+  {{ end }}
+</div>
+{{ end }}
+
+{{ with .Params.difficulty }}
+<div class="mb-6 flex flex-wrap gap-2">
+  <a href="/difficulty/{{ . | urlize }}/" 
+     class="bg-blue-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-blue-400 transition">
+    Difficulty: {{ . }}
+  </a>
+</div>
+{{ end }}
+
+{{ with .Params.question_type }}
+<div class="mb-6 flex flex-wrap gap-2">
+  <a href="/question-type/{{ . | urlize }}/" 
+     class="bg-purple-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-purple-400 transition">
+    Type: {{ . | title }}
+  </a>
+</div>
+{{ end }}

@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="flex justify-between mt-6">
-        <button id="prev-btn" class="px-4 py-2 bg-gray-200 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <button id="prev-btn" class="px-4 py-2 bg-blue-500 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
         <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;

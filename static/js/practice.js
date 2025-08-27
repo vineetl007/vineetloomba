@@ -107,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // ✅ Integer Type handler
     if (isInteger) {
       const input = app.querySelector("#int-answer");
-      const Btn = app.querySelector("#-btn");
+      const checkBtn = app.querySelector("#check-btn");
       const solution = app.querySelector(".solution");
 
-      Btn.addEventListener("click", () => {
+      checkBtn.addEventListener("click", () => {
         const userAns = input.value.trim();
         const correctAns = (q.numerical_answer || "").trim();
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         solution.classList.remove("hidden");
         input.disabled = true;
-        Btn.disabled = true;
+        checkBtn.disabled = true;
       });
     }
 

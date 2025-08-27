@@ -23,7 +23,9 @@
       "correctIndices": {{ $q.Params.correctIndices | jsonify }},
      "solution": "{{ $q.Params.solution | safeJS }}",
       "question_type": "{{ $q.Params.question_type }}",
-      "numerical_answer": "{{ $q.Params.numerical_answer }}"  
+      "numerical_answer": "{{ $q.Params.numerical_answer }}",
+      "tags": {{ $q.Params.tags | jsonify }},
+    "difficulty": "{{ $q.Params.difficulty }}"
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}
 ]

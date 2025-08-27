@@ -8,6 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderQuestion(index) {
     const q = questions[index];
+    // normalize correctIndices to an array of numbers (works if it's a single number/string or an array)
+let correctIndicesRaw = q.correctIndices;
+if (correctIndicesRaw === undefined || correctIndicesRaw === null) {
+  correctIndicesRaw = [];
+} else if (!Array.isArray(correctIndicesRaw)) {
+  correctIndicesRaw = [correctIndicesRaw];
+}
+const correctIndices = correctIndicesRaw.map(Number);
+
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
@@ -44,16 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // -------------------
     // Choice Questions (Single & Multiple)
     // -------------------
-   if (q.question_type === "Single Choice") {
+if (q.question_type === "Single Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  const correctIndex = Number((q.correctIndices || [])[0]); // only one correct
+  const correctIndex = Number(correctIndices[0]); // normalized above
   let locked = false;
 
   questionDiv.addEventListener("click", (e) => {
     const opt = e.target.closest(".option");
     if (!opt || locked) return;
     const idx = Number(opt.dataset.index);
+
+    // clear any previous borders for visual consistency (optional)
+    questionDiv.querySelectorAll(".option").forEach(o => {
+      o.classList.remove("border-green-400", "border-red-400", "bg-green-100", "bg-red-100");
+    });
 
     if (idx === correctIndex) {
       opt.classList.add("border-green-400");
@@ -65,13 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     solution.classList.remove("hidden");
     locked = true;
+    if (window.MathJax) MathJax.typesetPromise();
   });
 }
 
 if (q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  const correctSet = new Set((q.correctIndices || []).map(Number));
+  const correctSet = new Set(correctIndices); // normalized array -> Set
   const selectedCorrect = new Set();
   let locked = false;
 
@@ -80,6 +95,7 @@ if (q.question_type === "Multiple Choice") {
     if (!opt || locked) return;
     const idx = Number(opt.dataset.index);
 
+    // Wrong pick: reveal all corrects immediately and lock
     if (!correctSet.has(idx)) {
       opt.classList.add("border-red-400");
       correctSet.forEach(ci => {
@@ -88,27 +104,26 @@ if (q.question_type === "Multiple Choice") {
       });
       solution.classList.remove("hidden");
       locked = true;
+      if (window.MathJax) MathJax.typesetPromise();
       return;
     }
 
+    // Correct pick: mark and accumulate
     if (!selectedCorrect.has(idx)) {
       selectedCorrect.add(idx);
       opt.classList.add("border-green-400");
     }
 
-    // check if all corrects selected
+    // If all corrects selected, reveal solution and lock
     let allPicked = true;
-    correctSet.forEach(ci => {
-      if (!selectedCorrect.has(ci)) allPicked = false;
-    });
-
+    correctSet.forEach(ci => { if (!selectedCorrect.has(ci)) allPicked = false; });
     if (allPicked) {
       solution.classList.remove("hidden");
       locked = true;
+      if (window.MathJax) MathJax.typesetPromise();
     }
   });
 }
-
 
     // -------------------
     // Integer Type

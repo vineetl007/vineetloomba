@@ -42,58 +42,57 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
 // -------------------
-// Choice Questions (Single & Multiple)
+// Choice Questions (Single & Multiple) — delegated handler (robust)
 // -------------------
 if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
 
-  // Normalize correct answers
+  // normalized sets
   const correctSet = new Set((q.correctIndices || []).map(Number));
   const selectedCorrect = new Set();
   questionDiv.dataset.locked = "false";
 
-  app.querySelectorAll(".option").forEach(opt => {
-    opt.addEventListener("click", () => {
-      // ignore if locked
-      if (questionDiv.dataset.locked === "true") return;
+  // Delegated click handler attached to questionDiv
+  const onOptionClick = (e) => {
+    const opt = e.target.closest(".option");
+    if (!opt || !questionDiv.contains(opt)) return; // click outside .option
+    if (questionDiv.dataset.locked === "true") return; // already locked
 
-      const idx = Number(opt.dataset.index);
+    const idx = Number(opt.dataset.index);
 
-      if (!correctSet.has(idx)) {
-        // ❌ Wrong -> highlight wrong, reveal all corrects, show solution, lock
-        opt.classList.add("border-red-400");
-        correctSet.forEach(ci => {
-          const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-          if (correctOpt) correctOpt.classList.add("border-green-400");
-        });
-        solution.classList.remove("hidden");
-        questionDiv.dataset.locked = "true";
-        if (window.MathJax) MathJax.typesetPromise();
-        return;
-      }
-
-      // ✅ Correct -> highlight it
-      if (!selectedCorrect.has(idx)) {
-        selectedCorrect.add(idx);
-        opt.classList.add("border-green-400");
-      }
-
-      // if all corrects chosen, reveal solution + lock
-      let allPicked = true;
+    // WRONG pick: reveal all corrects, show solution, lock
+    if (!correctSet.has(idx)) {
+      opt.classList.add("border-red-400");
       correctSet.forEach(ci => {
-        if (!selectedCorrect.has(ci)) allPicked = false;
+        const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+        if (correctOpt) correctOpt.classList.add("border-green-400");
       });
+      solution.classList.remove("hidden");
+      questionDiv.dataset.locked = "true";
+      return;
+    }
 
-      if (allPicked) {
-        solution.classList.remove("hidden");
-        questionDiv.dataset.locked = "true";
-        if (window.MathJax) MathJax.typesetPromise();
-      }
+    // CORRECT pick: mark it, accumulate
+    if (!selectedCorrect.has(idx)) {
+      selectedCorrect.add(idx);
+      opt.classList.add("border-green-400");
+    }
+
+    // If all corrects are picked -> show solution & lock
+    let allPicked = true;
+    correctSet.forEach(ci => {
+      if (!selectedCorrect.has(ci)) allPicked = false;
     });
-  });
-}
+    if (allPicked) {
+      solution.classList.remove("hidden");
+      questionDiv.dataset.locked = "true";
+    }
+  };
 
+  // Attach the delegated handler (safe because questionDiv is newly created each render)
+  questionDiv.addEventListener("click", onOptionClick);
+}
 
     // -------------------
     // Integer Type

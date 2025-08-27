@@ -25,7 +25,15 @@
       "question_type": "{{ $q.Params.question_type }}",
       "numerical_answer": "{{ $q.Params.numerical_answer }}",
     "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-    "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }}
+   "tags": {{ if $q.Params.tags }}
+            {{ if reflect.IsSlice $q.Params.tags }}
+                {{ $q.Params.tags | jsonify }}
+            {{ else }}
+                [{{ $q.Params.tags | jsonify }}]
+            {{ end }}
+         {{ else }}[]
+         {{ end }}
+
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}
 ]

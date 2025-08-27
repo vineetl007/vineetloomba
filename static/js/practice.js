@@ -11,23 +11,24 @@ document.addEventListener("DOMContentLoaded", () => {
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
-        ${q.question_type === "Single Choice" || q.question_type === "Multiple Choice" ? `
-  <ul class="space-y-2">
-    ${q.options.map((opt, i) => `
-      <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
-          data-index="${i}">
-        <span class="latex-option">${opt}</span>
-      </li>
-    `).join("")}
-  </ul>
-` : ""}
 
-${q.question_type === "Integer Type" ? `
-  <div class="mt-3">
-    <input type="text" class="integer-input border rounded p-2 w-32" placeholder="Enter answer" />
-    <button class="check-int bg-blue-500 text-white px-3 py-1 rounded ml-2">Check</button>
-  </div>
-` : ""}
+        ${q.question_type === "Single Choice" || q.question_type === "Multiple Choice" ? `
+          <ul class="space-y-2">
+            ${q.options.map((opt, i) => `
+              <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
+                  data-index="${i}">
+                <span class="latex-option">${opt}</span>
+              </li>
+            `).join("")}
+          </ul>
+        ` : ""}
+
+        ${q.question_type === "Integer Type" ? `
+          <div class="mt-3">
+            <input type="text" class="integer-input border rounded p-2 w-32" placeholder="Enter answer" />
+            <button class="check-int bg-blue-500 text-white px-3 py-1 rounded ml-2">Check</button>
+          </div>
+        ` : ""}
 
         <div class="solution mt-4 hidden">
           <strong>Solution:</strong> ${q.solution}
@@ -40,94 +41,77 @@ ${q.question_type === "Integer Type" ? `
       </div>
     `;
 
-// Add option click behavior
-/* app.querySelectorAll(".option").forEach(opt => {
-  opt.addEventListener("click", () => {
-    const questionDiv = opt.closest(".question");
-    const solution = questionDiv.querySelector(".solution");
-    const correct = opt.dataset.correct === "true"; */
-
+    // -------------------
+    // Single Choice
+    // -------------------
     if (q.question_type === "Single Choice") {
-  app.querySelectorAll(".option").forEach(opt => {
-    opt.addEventListener("click", () => {
-      const idx = parseInt(opt.dataset.index);
-      const questionDiv = opt.closest(".question");
-      const solution = questionDiv.querySelector(".solution");
+      app.querySelectorAll(".option").forEach(opt => {
+        opt.addEventListener("click", () => {
+          const idx = parseInt(opt.dataset.index);
+          const questionDiv = opt.closest(".question");
+          const solution = questionDiv.querySelector(".solution");
 
-      // clear old highlights
-      questionDiv.querySelectorAll(".option").forEach(o => {
-        o.classList.remove("border-green-400", "border-red-400");
-      });
+          // clear old highlights
+          questionDiv.querySelectorAll(".option").forEach(o => {
+            o.classList.remove("border-green-400", "border-red-400");
+          });
 
-      if (q.correctIndices.includes(idx)) {
-        opt.classList.add("border-green-400");
-      } else {
-        opt.classList.add("border-red-400");
-        q.correctIndices.forEach(ci => {
-          const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-          if (correctOpt) correctOpt.classList.add("border-green-400");
+          if (q.correctIndices.includes(idx)) {
+            opt.classList.add("border-green-400");
+          } else {
+            opt.classList.add("border-red-400");
+            q.correctIndices.forEach(ci => {
+              const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+              if (correctOpt) correctOpt.classList.add("border-green-400");
+            });
+          }
+          solution.classList.remove("hidden");
         });
-      }
-      solution.classList.remove("hidden");
-    });
-  });
-}
-
-if (q.question_type === "Multiple Choice") {
-  const solution = app.querySelector(".solution");
-  app.querySelectorAll(".option").forEach(opt => {
-    opt.addEventListener("click", () => {
-      opt.classList.toggle("bg-gray-200");
-    });
-  });
-  app.querySelector("#next-btn")?.addEventListener("click", () => {
-    app.querySelectorAll(".option").forEach(opt => {
-      const idx = parseInt(opt.dataset.index);
-      if (q.correctIndices.includes(idx)) {
-        opt.classList.add("border-green-400");
-      } else if (opt.classList.contains("bg-gray-200")) {
-        opt.classList.add("border-red-400");
-      }
-    });
-    solution.classList.remove("hidden");
-  });
-}
-
-if (q.question_type === "Integer Type") {
-  const solution = app.querySelector(".solution");
-  app.querySelector(".check-int").addEventListener("click", () => {
-    const val = app.querySelector(".integer-input").value.trim();
-    if (val === q.numerical_answer) {
-      app.querySelector(".integer-input").classList.add("border-green-400");
-    } else {
-      app.querySelector(".integer-input").classList.add("border-red-400");
-    }
-    solution.classList.remove("hidden");
-  });
-}
-
-
-    // Remove any previously applied borders
-    questionDiv.querySelectorAll(".option").forEach(o => {
-      o.classList.remove("border-green-400", "border-red-400", "bg-green-100", "bg-red-100");
-    });
-
-    if (correct) {
-      opt.classList.add("border-green-400");
-    } else {
-      opt.classList.add("border-red-400");
-
-      // highlight the correct option
-      const correctOption = Array.from(questionDiv.querySelectorAll(".option"))
-        .find(o => o.dataset.correct === "true");
-      if (correctOption) correctOption.classList.add("border-green-400");
+      });
     }
 
-    solution.classList.remove("hidden");
-  });
-});
+    // -------------------
+    // Multiple Choice
+    // -------------------
+    if (q.question_type === "Multiple Choice") {
+      const solution = app.querySelector(".solution");
+      app.querySelectorAll(".option").forEach(opt => {
+        opt.addEventListener("click", () => {
+          opt.classList.toggle("bg-gray-200");
+        });
+      });
+      app.querySelector("#next-btn")?.addEventListener("click", () => {
+        app.querySelectorAll(".option").forEach(opt => {
+          const idx = parseInt(opt.dataset.index);
+          if (q.correctIndices.includes(idx)) {
+            opt.classList.add("border-green-400");
+          } else if (opt.classList.contains("bg-gray-200")) {
+            opt.classList.add("border-red-400");
+          }
+        });
+        solution.classList.remove("hidden");
+      });
+    }
 
+    // -------------------
+    // Integer Type
+    // -------------------
+    if (q.question_type === "Integer Type") {
+      const solution = app.querySelector(".solution");
+      app.querySelector(".check-int").addEventListener("click", () => {
+        const val = app.querySelector(".integer-input").value.trim();
+        if (val === q.numerical_answer) {
+          app.querySelector(".integer-input").classList.add("border-green-400");
+        } else {
+          app.querySelector(".integer-input").classList.add("border-red-400");
+        }
+        solution.classList.remove("hidden");
+      });
+    }
+
+    // -------------------
     // Navigation buttons
+    // -------------------
     app.querySelector("#prev-btn")?.addEventListener("click", () => {
       if (currentIndex > 0) {
         currentIndex--;
@@ -142,12 +126,12 @@ if (q.question_type === "Integer Type") {
       }
     });
 
-    // Render LaTeX after HTML is added
+    // Render LaTeX
     if (window.MathJax) {
       MathJax.typesetPromise();
     }
   }
 
-  // Render first question
+  // Initial render
   renderQuestion(currentIndex);
 });

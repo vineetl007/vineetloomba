@@ -42,22 +42,17 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
 // -------------------
-// Single Choice
-// -------------------
-// -------------------
-// Single Choice (new behavior + lock)
+// Single Choice (show correct immediately on wrong, lock after reveal)
 // -------------------
 if (q.question_type === "Single Choice") {
   const questionDiv = app.querySelector(".question");
   const solution = questionDiv.querySelector(".solution");
-  // make set of correct indices (handle strings/numbers)
   const correctSet = new Set((q.correctIndices || []).map(Number));
-  // mark unlocked initially
   questionDiv.dataset.locked = "false";
 
-  app.querySelectorAll(".option").forEach(opt => {
+  questionDiv.querySelectorAll(".option").forEach(opt => {
     opt.addEventListener("click", () => {
-      // if already answered, ignore
+      // ignore if already locked
       if (questionDiv.dataset.locked === "true") return;
 
       const idx = Number(opt.dataset.index);
@@ -68,10 +63,10 @@ if (q.question_type === "Single Choice") {
       });
 
       if (correctSet.has(idx)) {
-        // correct -> highlight it immediately
+        // correct -> highlight selected
         opt.classList.add("border-green-400");
       } else {
-        // wrong -> mark wrong, reveal ALL correct options
+        // wrong -> mark wrong and reveal ALL corrects
         opt.classList.add("border-red-400");
         correctSet.forEach(ci => {
           const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
@@ -79,17 +74,18 @@ if (q.question_type === "Single Choice") {
         });
       }
 
-      // show solution and lock
+      // reveal solution and lock interactions
       solution.classList.remove("hidden");
       questionDiv.dataset.locked = "true";
+      questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
 
-      // re-typeset any LaTeX if present
       if (window.MathJax) MathJax.typesetPromise();
     });
   });
 }
+
 // -------------------
-// Multiple Choice (aggregate-correct until wrong OR all chosen, then lock)
+// Multiple Choice (accumulate corrects; wrong -> reveal all & lock)
 // -------------------
 if (q.question_type === "Multiple Choice") {
   const questionDiv = app.querySelector(".question");
@@ -98,14 +94,14 @@ if (q.question_type === "Multiple Choice") {
   const selectedCorrect = new Set();
   questionDiv.dataset.locked = "false";
 
-  app.querySelectorAll(".option").forEach(opt => {
+  questionDiv.querySelectorAll(".option").forEach(opt => {
     opt.addEventListener("click", () => {
-      // if already answered, ignore
+      // ignore if locked
       if (questionDiv.dataset.locked === "true") return;
 
       const idx = Number(opt.dataset.index);
 
-      // if user picks a wrong option -> reveal all correct answers & solution immediately
+      // if wrong chosen -> show all corrects and lock
       if (!correctSet.has(idx)) {
         opt.classList.add("border-red-400");
         correctSet.forEach(ci => {
@@ -114,25 +110,24 @@ if (q.question_type === "Multiple Choice") {
         });
         solution.classList.remove("hidden");
         questionDiv.dataset.locked = "true";
+        questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
         if (window.MathJax) MathJax.typesetPromise();
         return;
       }
 
-      // picking a correct option: idempotent add (no deselect)
+      // correct chosen -> mark it (no deselect)
       if (!selectedCorrect.has(idx)) {
         selectedCorrect.add(idx);
         opt.classList.add("border-green-400");
       }
 
-      // check whether all correct options are picked
+      // if all correct options picked -> reveal solution & lock
       let allPicked = true;
-      correctSet.forEach(ci => {
-        if (!selectedCorrect.has(ci)) allPicked = false;
-      });
-
+      correctSet.forEach(ci => { if (!selectedCorrect.has(ci)) allPicked = false; });
       if (allPicked) {
         solution.classList.remove("hidden");
         questionDiv.dataset.locked = "true";
+        questionDiv.querySelectorAll(".option").forEach(o => o.classList.add("pointer-events-none"));
         if (window.MathJax) MathJax.typesetPromise();
       }
     });
@@ -142,18 +137,34 @@ if (q.question_type === "Multiple Choice") {
     // -------------------
     // Integer Type
     // -------------------
-    if (q.question_type === "Integer Type") {
-      const solution = app.querySelector(".solution");
-      app.querySelector(".check-int").addEventListener("click", () => {
-        const val = app.querySelector(".integer-input").value.trim();
-        if (val === q.numerical_answer) {
-          app.querySelector(".integer-input").classList.add("border-green-400");
-        } else {
-          app.querySelector(".integer-input").classList.add("border-red-400");
-        }
-        solution.classList.remove("hidden");
-      });
+   if (q.question_type === "Integer Type") {
+  const solution = app.querySelector(".solution");
+  const inputEl = app.querySelector(".integer-input");
+  const btn = app.querySelector(".check-int");
+
+  btn?.addEventListener("click", () => {
+    // prevent repeat attempts after reveal
+    if (!solution.classList.contains("hidden")) return;
+
+    const val = (inputEl.value || "").trim();
+    inputEl.classList.remove("border-green-400", "border-red-400");
+
+    if (val === (q.numerical_answer || "").toString()) {
+      inputEl.classList.add("border-green-400");
+    } else {
+      inputEl.classList.add("border-red-400");
     }
+
+    solution.classList.remove("hidden");
+
+    // lock input & button so it can't be changed
+    inputEl.disabled = true;
+    btn.disabled = true;
+
+    if (window.MathJax) MathJax.typesetPromise();
+  });
+}
+
 
     // -------------------
     // Navigation buttons

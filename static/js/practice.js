@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `
               <div class="flex items-center space-x-2">
                 <input id="int-answer" type="text" 
-                       class="border rounded p-2 w-32" 
+                       class="border rounded p-2 w-32 bg-gray-800 text-white placeholder-gray-400" 
                        placeholder="Enter answer" />
-                <button id="check-btn" class="px-4 py-2 bg-blue-500 text-white rounded">
-                  Check
+                <button id="check-btn" class="px-4 py-2 font-concert bg-blue-500 text-white rounded">
+                  Submit
                 </button>
               </div>
             `
@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="flex justify-between mt-6">
-        <button id="prev-btn" class="px-4 py-2 bg-blue-500 rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
-        <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
+        <button id="prev-btn" class="px-4 py-2 bg-blue-500 font-concert rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
+        <button id="next-btn" class="px-4 py-2 bg-blue-500 font-concert text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
       </div>
     `;
 
@@ -107,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // ✅ Integer Type handler
     if (isInteger) {
       const input = app.querySelector("#int-answer");
-      const checkBtn = app.querySelector("#check-btn");
+      const Btn = app.querySelector("#-btn");
       const solution = app.querySelector(".solution");
 
-      checkBtn.addEventListener("click", () => {
+      Btn.addEventListener("click", () => {
         const userAns = input.value.trim();
         const correctAns = (q.numerical_answer || "").trim();
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         solution.classList.remove("hidden");
         input.disabled = true;
-        checkBtn.disabled = true;
+        Btn.disabled = true;
       });
     }
 

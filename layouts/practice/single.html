@@ -24,14 +24,13 @@
      "solution": "{{ $q.Params.solution | safeJS }}",
       "question_type": "{{ $q.Params.question_type }}",
       "numerical_answer": "{{ $q.Params.numerical_answer }}",
-      "tags": {{- if $q.Params.tags -}}
-  {{- if (reflect.IsSlice $q.Params.tags) -}}
-    {{ $q.Params.tags | jsonify }}
+      "tags": {{ with $q.Params.tags }}
+  {{- if (reflect.IsSlice .) -}}
+    {{ . | jsonify }}
   {{- else -}}
-    [{{ $q.Params.tags | jsonify }}]
+    [{{ . | jsonify }}]
   {{- end -}}
-{{- else -}}[]
-{{- end -}},
+{{ else }}[]{{ end }},
       "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }}
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}

@@ -44,58 +44,71 @@ document.addEventListener("DOMContentLoaded", () => {
     // -------------------
     // Choice Questions (Single & Multiple)
     // -------------------
-    if (q.question_type === "Single Choice" || q.question_type === "Multiple Choice") {
-      const questionDiv = app.querySelector(".question");
-      const solution = questionDiv.querySelector(".solution");
+   if (q.question_type === "Single Choice") {
+  const questionDiv = app.querySelector(".question");
+  const solution = questionDiv.querySelector(".solution");
+  const correctIndex = Number((q.correctIndices || [])[0]); // only one correct
+  let locked = false;
 
-      let correctIndices = q.correctIndices || [];
-if (!Array.isArray(correctIndices)) {
-  correctIndices = [correctIndices];
-}
-const correctSet = new Set(correctIndices.map(Number));
+  questionDiv.addEventListener("click", (e) => {
+    const opt = e.target.closest(".option");
+    if (!opt || locked) return;
+    const idx = Number(opt.dataset.index);
 
-      const selectedCorrect = new Set();
-      let locked = false; // only for this question
-
-      questionDiv.addEventListener("click", (e) => {
-        const opt = e.target.closest(".option");
-        if (!opt) return; // ✅ guard to prevent null errors
-        if (locked) return;
-
-        const idx = Number(opt.dataset.index);
-
-        // ❌ Wrong answer
-        if (!correctSet.has(idx)) {
-          opt.classList.add("bg-red-100", "border-red-400");
-          correctSet.forEach(ci => {
-            const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-            if (correctOpt) correctOpt.classList.add("bg-green-100", "border-green-400");
-          });
-          solution.classList.remove("hidden");
-          locked = true;
-          if (window.MathJax) MathJax.typesetPromise();
-          return;
-        }
-
-        // ✅ Correct answer
-        if (!selectedCorrect.has(idx)) {
-          selectedCorrect.add(idx);
-          opt.classList.add("bg-green-100", "border-green-400");
-        }
-
-        // If all corrects are picked, reveal solution
-        let allPicked = true;
-        correctSet.forEach(ci => {
-          if (!selectedCorrect.has(ci)) allPicked = false;
-        });
-
-        if (allPicked) {
-          solution.classList.remove("hidden");
-          locked = true;
-          if (window.MathJax) MathJax.typesetPromise();
-        }
-      });
+    if (idx === correctIndex) {
+      opt.classList.add("border-green-400");
+    } else {
+      opt.classList.add("border-red-400");
+      const correctOpt = questionDiv.querySelector(`.option[data-index="${correctIndex}"]`);
+      if (correctOpt) correctOpt.classList.add("border-green-400");
     }
+
+    solution.classList.remove("hidden");
+    locked = true;
+  });
+}
+
+if (q.question_type === "Multiple Choice") {
+  const questionDiv = app.querySelector(".question");
+  const solution = questionDiv.querySelector(".solution");
+  const correctSet = new Set((q.correctIndices || []).map(Number));
+  const selectedCorrect = new Set();
+  let locked = false;
+
+  questionDiv.addEventListener("click", (e) => {
+    const opt = e.target.closest(".option");
+    if (!opt || locked) return;
+    const idx = Number(opt.dataset.index);
+
+    if (!correctSet.has(idx)) {
+      opt.classList.add("border-red-400");
+      correctSet.forEach(ci => {
+        const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+        if (correctOpt) correctOpt.classList.add("border-green-400");
+      });
+      solution.classList.remove("hidden");
+      locked = true;
+      return;
+    }
+
+    if (!selectedCorrect.has(idx)) {
+      selectedCorrect.add(idx);
+      opt.classList.add("border-green-400");
+    }
+
+    // check if all corrects selected
+    let allPicked = true;
+    correctSet.forEach(ci => {
+      if (!selectedCorrect.has(ci)) allPicked = false;
+    });
+
+    if (allPicked) {
+      solution.classList.remove("hidden");
+      locked = true;
+    }
+  });
+}
+
 
     // -------------------
     // Integer Type

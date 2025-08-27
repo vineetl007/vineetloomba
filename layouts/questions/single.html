@@ -6,7 +6,7 @@
   <!-- Question Title 
 <h1 class="text-3xl mb-6">{{ .Params.question | markdownify }}</h1> -->
 
-  <!-- Difficulty & Tags -->
+  <!-- Difficulty & Tags --
  {{ with .Params.tags }}
 <div class="mb-6 flex flex-wrap gap-2">
   {{ range . }}
@@ -27,7 +27,7 @@
 </div>
 {{ end }}
 
-  <!-- Question Type -->
+  <!-- Question Type --
 {{ with .Params.question_type }}
 <div class="mb-6 flex flex-wrap gap-2">
   <a href="/question-type/{{ . | urlize }}/" 
@@ -36,8 +36,10 @@
   </a>
 </div>
 {{ end }}
-
+  <!-- New through Partials   Difficulty & Tags ---->
   
+  {{ partial "question-meta.html" . }}
+
 
   <!-- Question Content -->
 

@@ -23,9 +23,7 @@
       "correctIndices": {{ $q.Params.correctIndices | jsonify }},
      "solution": "{{ $q.Params.solution | safeJS }}",
       "question_type": "{{ $q.Params.question_type }}",
-      "numerical_answer": "{{ $q.Params.numerical_answer }}",
- "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-"difficulty": {{ if $q.Params.difficulty }}{{ $q.Params.difficulty | safeJS }}{{ else }}""{{ end }}
+      "numerical_answer": "{{ $q.Params.numerical_answer }}"
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}
 ]

@@ -1,29 +1,74 @@
+// /js/practice.js
 document.addEventListener("DOMContentLoaded", () => {
   const dataEl = document.getElementById("practice-data");
   if (!dataEl) return;
 
-  const questions = JSON.parse(dataEl.textContent);
-  let currentIndex = 0;
+  let questions = [];
+  try {
+    questions = JSON.parse(dataEl.textContent || "[]");
+  } catch (err) {
+    console.error("Failed to parse practice-data JSON:", err);
+    questions = [];
+  }
+
   const app = document.getElementById("practice-app");
+  if (!app) return;
+
+  let currentIndex = 0;
+
+  // Normalize correctIndices into zero-based numeric indices
+  function normalizeCorrectIndices(raw, optionCount) {
+    if (raw == null) return [];
+    const arr = Array.isArray(raw) ? raw.slice() : [raw];
+
+    const mapped = arr.map(v => {
+      if (typeof v === "number" && Number.isFinite(v)) return v;
+      if (typeof v === "string") {
+        const s = v.trim();
+        // Single letter like "A", "b" -> 0-based index
+        if (/^[A-Za-z]$/.test(s)) {
+          return s.toUpperCase().charCodeAt(0) - "A".charCodeAt(0);
+        }
+        const n = Number(s);
+        if (Number.isFinite(n)) return n;
+      }
+      return NaN;
+    }).filter(n => Number.isFinite(n));
+
+    if (mapped.length === 0) return [];
+
+    const allWithinOneBased = mapped.every(n => n >= 1 && n <= optionCount);
+    const allWithinZeroBased = mapped.every(n => n >= 0 && n < optionCount);
+    const hasZero = mapped.some(n => n === 0);
+
+    let indices = mapped.slice();
+    // If values look 1-based (1..optionCount) and there is no 0 value, shift down
+    if (!hasZero && allWithinOneBased && !allWithinZeroBased) {
+      indices = indices.map(n => n - 1);
+    }
+
+    // Keep only valid indices and dedupe
+    return Array.from(new Set(indices.filter(n => n >= 0 && n < optionCount)));
+  }
 
   function renderQuestion(index) {
     const q = questions[index];
-    // normalize correctIndices to an array of numbers (works if it's a single number/string or an array)
-let correctIndicesRaw = q.correctIndices;
-if (correctIndicesRaw === undefined || correctIndicesRaw === null) {
-  correctIndicesRaw = [];
-} else if (!Array.isArray(correctIndicesRaw)) {
-  correctIndicesRaw = [correctIndicesRaw];
-}
-const correctIndices = correctIndicesRaw.map(Number);
+    if (!q) {
+      app.innerHTML = `<p>No question found.</p>`;
+      return;
+    }
 
+    const optionCount = Array.isArray(q.options) ? q.options.length : 0;
+    const correctIndices = normalizeCorrectIndices(q.correctIndices, optionCount);
+
+    // Render HTML
     app.innerHTML = `
-      <div class="question border rounded-lg p-4 shadow mb-4">
-        <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
+      <div class="question border rounded-lg p-4 shadow mb-4" data-qtype="${q.question_type || ""}">
+        <h2 class="font-normal mb-3">Q${index + 1}. ${q.question || ""}</h2>
 
         ${q.question_type === "Single Choice" || q.question_type === "Multiple Choice" ? `
           <ul class="space-y-2">
-            ${q.options.map((opt, i) => `
+            ${(q.options || []).map((opt, i) => `
               <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
                   data-index="${i}">
                 <span class="latex-option">${opt}</span>
@@ -40,7 +85,7 @@ const correctIndices = correctIndicesRaw.map(Number);
         ` : ""}
 
         <div class="solution mt-4 hidden">
-          <strong>Solution:</strong> ${q.solution}
+          <strong>Solution:</strong> ${q.solution || ""}
         </div>
       </div>
 
@@ -50,133 +95,136 @@ const correctIndices = correctIndicesRaw.map(Number);
       </div>
     `;
 
-  // -------------------
-// Single Choice
-// -------------------
-if (q.question_type === "Single Choice") {
-  const questionDiv = app.querySelector(".question");
-  const solution = questionDiv.querySelector(".solution");
-  const correctIndex = Number((q.correctIndices || [])[0]);
-  let locked = false;
+    const questionDiv = app.querySelector(".question");
+    const solutionEl = questionDiv.querySelector(".solution");
+    const optionEls = Array.from(questionDiv.querySelectorAll(".option"));
 
-  questionDiv.addEventListener("click", (e) => {
-    const opt = e.target.closest(".option");
-    if (!opt || locked) return;
+    // Small debug log — remove if you don't want console messages
+    // console.log("Rendering Q", index, "correctIndices(normalized) =", correctIndices);
 
-    const idx = Number(opt.dataset.index);
-
-    if (idx === correctIndex) {
-      opt.classList.add("border-green-400", "bg-green-100");
-    } else {
-      opt.classList.add("border-red-400", "bg-red-100");
-      const correctOpt = questionDiv.querySelector(`.option[data-index="${correctIndex}"]`);
-      if (correctOpt) correctOpt.classList.add("border-green-400", "bg-green-100");
-    }
-
-    solution.classList.remove("hidden");
-    locked = true;
-  });
-}
-
-// -------------------
-// Multiple Choice
-// -------------------
-if (q.question_type === "Multiple Choice") {
-  const questionDiv = app.querySelector(".question");
-  const solution = questionDiv.querySelector(".solution");
-  const correctSet = new Set(Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
-  const selectedCorrect = new Set();
-  let locked = false;
-
-  questionDiv.addEventListener("click", (e) => {
-    const opt = e.target.closest(".option");
-    if (!opt || locked) return;
-
-    const idx = Number(opt.dataset.index);
-
-    if (!correctSet.has(idx)) {
-      // Wrong choice → mark wrong + reveal all corrects
-      opt.classList.add("border-red-400", "bg-red-100");
-      correctSet.forEach(ci => {
-        const correctOpt = questionDiv.querySelector(`.option[data-index="${ci}"]`);
-        if (correctOpt) correctOpt.classList.add("border-green-400", "bg-green-100");
+    // Helper to reveal all correct options (marks green)
+    function revealAllCorrect() {
+      correctIndices.forEach(ci => {
+        const co = questionDiv.querySelector(`.option[data-index="${ci}"]`);
+        if (co) co.classList.add("border-green-400", "bg-green-100");
       });
-      solution.classList.remove("hidden");
-      locked = true;
-      return;
     }
 
-    // Correct choice → mark green
-    if (!selectedCorrect.has(idx)) {
-      selectedCorrect.add(idx);
-      opt.classList.add("border-green-400", "bg-green-100");
+    // ---------- Single Choice ----------
+    if (q.question_type === "Single Choice") {
+      let locked = false;
+      const correctIndex = correctIndices[0]; // may be undefined if not provided
+
+      optionEls.forEach(optEl => {
+        optEl.addEventListener("click", () => {
+          if (locked) return;
+          const idx = Number(optEl.dataset.index);
+
+          // If there is no correctIndex, treat any click as "wrong" (but reveal nothing)
+          if (typeof correctIndex === "number") {
+            if (idx === correctIndex) {
+              optEl.classList.add("border-green-400", "bg-green-100");
+            } else {
+              optEl.classList.add("border-red-400", "bg-red-100");
+              revealAllCorrect();
+            }
+          } else {
+            // no correct provided: mark clicked as red and show solution
+            optEl.classList.add("border-red-400", "bg-red-100");
+          }
+
+          solutionEl.classList.remove("hidden");
+          locked = true;
+        });
+      });
     }
 
-    // If all corrects are selected → reveal solution & lock
-    let allPicked = true;
-    correctSet.forEach(ci => {
-      if (!selectedCorrect.has(ci)) allPicked = false;
-    });
+    // ---------- Multiple Choice ----------
+    if (q.question_type === "Multiple Choice") {
+      let locked = false;
+      const correctSet = new Set(correctIndices);
+      const selectedCorrect = new Set();
 
-    if (allPicked) {
-      solution.classList.remove("hidden");
-      locked = true;
+      optionEls.forEach(optEl => {
+        optEl.addEventListener("click", () => {
+          if (locked) return;
+          const idx = Number(optEl.dataset.index);
+
+          // Wrong choice clicked -> mark wrong, reveal all corrects, show solution, lock
+          if (!correctSet.has(idx)) {
+            optEl.classList.add("border-red-400", "bg-red-100");
+            revealAllCorrect();
+            solutionEl.classList.remove("hidden");
+            locked = true;
+            return;
+          }
+
+          // Correct choice -> mark green and allow continuing
+          if (!selectedCorrect.has(idx)) {
+            selectedCorrect.add(idx);
+            optEl.classList.add("border-green-400", "bg-green-100");
+          }
+
+          // If all correct picked -> reveal solution & lock
+          if (selectedCorrect.size === correctSet.size && correctSet.size > 0) {
+            solutionEl.classList.remove("hidden");
+            locked = true;
+          }
+        });
+      });
     }
-  });
-}
 
-
-    // -------------------
-    // Integer Type
-    // -------------------
+    // ---------- Integer Type ----------
     if (q.question_type === "Integer Type") {
-      const solution = app.querySelector(".solution");
-      const inputEl = app.querySelector(".integer-input");
-      const btn = app.querySelector(".check-int");
-
+      const inputEl = questionDiv.querySelector(".integer-input");
+      const btn = questionDiv.querySelector(".check-int");
       btn?.addEventListener("click", () => {
-        if (!solution.classList.contains("hidden")) return;
+        if (!solutionEl.classList.contains("hidden")) return;
 
         const val = (inputEl.value || "").trim();
         inputEl.classList.remove("border-green-400", "border-red-400");
 
-        if (val === (q.numerical_answer || "").toString()) {
+        const expected = (q.numerical_answer || "").toString().trim();
+        if (expected !== "" && val === expected) {
           inputEl.classList.add("border-green-400");
         } else {
           inputEl.classList.add("border-red-400");
         }
 
-        solution.classList.remove("hidden");
+        solutionEl.classList.remove("hidden");
         inputEl.disabled = true;
         btn.disabled = true;
 
-        if (window.MathJax) MathJax.typesetPromise();
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise().catch(() => {});
+        }
       });
     }
 
-    // -------------------
-    // Navigation buttons
-    // -------------------
-    app.querySelector("#prev-btn")?.addEventListener("click", () => {
+    // ---------- Navigation ----------
+    const prevBtn = app.querySelector("#prev-btn");
+    const nextBtn = app.querySelector("#next-btn");
+
+    prevBtn?.addEventListener("click", () => {
       if (currentIndex > 0) {
         currentIndex--;
         renderQuestion(currentIndex);
       }
     });
 
-    app.querySelector("#next-btn")?.addEventListener("click", () => {
+    nextBtn?.addEventListener("click", () => {
       if (currentIndex < questions.length - 1) {
         currentIndex++;
         renderQuestion(currentIndex);
       }
     });
 
-    // Render LaTeX
-    if (window.MathJax) {
-      MathJax.typesetPromise();
+    // Re-render LaTeX if MathJax is present
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise().catch(() => {});
     }
   }
 
-  // Initial render
+  // initial render
   renderQuestion(currentIndex);
 });

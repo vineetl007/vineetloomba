@@ -11,10 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const isMulti = q.question_type === "Multiple Choice";
     const isInteger = q.question_type === "Integer Type";  // ✅ added
     let selectedIndices = [];
-
+    
+// difficulty and tags and question type pulled dynamically 
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
         <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
+
+        <div class="mb-4 flex flex-wrap gap-2">
+  ${q.tags ? q.tags.map(tag => `
+    <a href="/tags/${tag}/" 
+       class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
+      ${tag}
+    </a>
+  `).join('') : ''}
+
+  ${q.difficulty ? `
+    <a href="/difficulty/${q.difficulty}/" 
+       class="bg-blue-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-blue-400 transition">
+      Difficulty: ${q.difficulty}
+    </a>
+  ` : ''}
+
+  ${q.question_type ? `
+    <a href="/question-type/${q.question_type}/" 
+       class="bg-purple-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-purple-400 transition">
+      Type: ${q.question_type}
+    </a>
+  ` : ''}
+</div>
         ${
           isInteger
             ? `

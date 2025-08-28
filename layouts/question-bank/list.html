@@ -34,7 +34,7 @@
 
             {{ range $dpps }}
            <a href="/practice/{{ $chapter | urlize }}-{{ . | urlize }}/"
-                 class=inline-block bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
+                 class="inline-block bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
                {{ "DPP-" }}{{ replace . "dpp-" "" | upper }}
               </a>
             {{ end }}

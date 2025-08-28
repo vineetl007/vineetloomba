@@ -4,7 +4,7 @@
   "@context": "https://schema.org",
   "@type": "Course",
   "name": {{ .Title | jsonify }},
-  "description": {{ (or .Params.description "JEE Mathematics chapter by Vineet Loomba.") | jsonify }},
+  "description": {{ (or .Params.description "JEE Mathematics Preparation by Vineet Loomba.") | jsonify }},
   "provider": {
     "@type": "Organization",
     "name": "Vineet Loomba",
@@ -61,21 +61,21 @@
     {{ end }}
   </div>
 
-{{/* Show buttons only for the chapters section */}}
-{{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/chapters/") }}
+{{/* Show buttons only for the Video-Lectures section */}}
+{{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/video-lectures/") }}
 
-  {{ if eq .RelPermalink "/chapters/" }}
-    <!-- On /chapters/ → Back to Home -->
+  {{ if eq .RelPermalink "/video-lectures/" }}
+    <!-- On /video-lectures/ → Back to Home -->
     <div class="mt-10">
       <a href="/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
         ← Back to Home
       </a>
     </div>
   {{ else }}
-    <!-- On /chapters/<chapter>/ → Back to All Chapters -->
+    <!-- On /video-lectures/<video-lectures>/ → Back to All video-lectures -->
     <div class="mt-10">
-      <a href="/chapters/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
-        ← Back to All Chapters
+      <a href="/video-lectures/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
+        ← Back to All Video Lectures
       </a>
     </div>
   {{ end }}

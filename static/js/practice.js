@@ -13,7 +13,40 @@ document.addEventListener("DOMContentLoaded", () => {
   : (typeof q.tags === "string" && q.tags.trim())
     ? q.tags.split(",").map(s => s.trim()).filter(Boolean)
     : [];*/
-    const tags = Array.isArray(q.tags) ? q.tags : [];
+  //  const tags = Array.isArray(q.tags) ? q.tags : [];
+    // ---------- REPLACE YOUR old `const tags = ...` WITH THIS BLOCK ----------
+const tags = (() => {
+  // case 1: already an array (normal Hugo/jsonify output)
+  if (Array.isArray(q.tags)) return q.tags.map(t => String(t).trim()).filter(Boolean);
+
+  // case 2: a string — could be JSON-stringified array '["jeemain"]' or comma-separated "a, b"
+  if (typeof q.tags === "string" && q.tags.trim()) {
+    const s = q.tags.trim();
+
+    // try JSON.parse first (handles '["jeemain"]' or '["a","b"]')
+    try {
+      const parsed = JSON.parse(s);
+      if (Array.isArray(parsed)) return parsed.map(t => String(t).trim()).filter(Boolean);
+    } catch (e) { /* not JSON */ }
+
+    // fallback: remove surrounding brackets if present and split by comma
+    const cleaned = s.replace(/^\[|\]$/g, "");
+    return cleaned.split(",").map(t => String(t).trim()).filter(Boolean);
+  }
+
+  // case 3: sometimes CMS gives an object-like structure — try to extract values
+  if (q.tags && typeof q.tags === "object") {
+    try {
+      return Object.values(q.tags)
+        .flat()
+        .map(t => String(t).trim())
+        .filter(Boolean);
+    } catch (e) { /* ignore */ }
+  }
+
+  // default: empty array
+  return [];
+})();
     const isMulti = q.question_type === "Multiple Choice";
     const isInteger = q.question_type === "Integer Type";  // ✅ added
     let selectedIndices = [];

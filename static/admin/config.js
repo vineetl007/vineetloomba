@@ -133,6 +133,13 @@ CMS.init({
   fields: [
     { label: "Title", name: "title", widget: "string" },
     { 
+      label: "Subject", 
+      name: "subject", 
+      widget: "select", 
+      options: ["maths", "physics", "chemistry"], 
+      default: "maths"
+    },
+    { 
       label: "Chapter", 
       name: "chapter", 
       widget: "select", 

@@ -26,10 +26,10 @@
     {{ end }}
   </div>
 
-{{/* Show buttons only for the chapters section */}}
-{{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/chapters/") }}
+{{/* Show buttons only for the Video-lectures section */}}
+{{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/video-lectures/") }}
 
-  {{ if eq .RelPermalink "/chapters/" }}
+  {{ if eq .RelPermalink "/video-lectures/" }}
     <!-- On /chapters/ → Back to Home -->
     <div class="mt-10">
       <a href="/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
@@ -37,10 +37,10 @@
       </a>
     </div>
   {{ else }}
-    <!-- On /chapters/<chapter>/ → Back to All Chapters -->
+    <!-- On /video-lectures/<video-lectures>/ → Back to All Chapters -->
     <div class="mt-10">
-      <a href="/chapters/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
-        ← Back to All Chapters
+      <a href="/video-lectures/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
+        ← Back to All Video Lectures
       </a>
     </div>
   {{ end }}

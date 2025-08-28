@@ -13,7 +13,7 @@ paginate = 10
   homeTitle = "Welcome to Vineet Loomba's Free IIT JEE Preparation Website"
   homeSubtitle = "IIT JEE Mathematics Chapterwise Learning Portal"
   description = "Organized IIT JEE Math videos chapterwise and conceptwise"
-  mainSections = ["chapters"]
+  mainSections = ["video-lectures"]
 
 [markup]
   [markup.goldmark]
@@ -28,8 +28,8 @@ paginate = 10
     weight = 1
 
   [[menu.main]]
-    name = "Chapters"
-    url = "/chapters/"
+    name = "Video Lectures"
+    url = "/video-lectures/"
     weight = 2
 
   [[menu.main]]

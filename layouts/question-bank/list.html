@@ -33,10 +33,11 @@
             {{ end }}
 
             {{ range $dpps }}
-              <a href="/practice/{{ $chapter | urlize }}/{{ . | urlize }}/"
-                 class="block bg-yellow-400 text-black py-2 px-3 rounded hover:bg-yellow-300">
-                DPP {{ . }}
-              </a>
+           <a href="/practice/{{ $chapter | urlize }}-{{ $dpp | urlize }}/"
+   class="block bg-yellow-400 text-black py-2 px-3 rounded hover:bg-yellow-300">
+   DPP {{ $dpp }}
+</a>
+
             {{ end }}
           </div>
         </details>

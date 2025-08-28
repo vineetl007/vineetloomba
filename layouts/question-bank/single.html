@@ -1,81 +1,79 @@
 {{ define "main" }}
 <div class="container mx-auto p-6">
-  <h1 class="text-2xl font-bold mb-4">Practice: {{ .Title }}</h1>
+  <h1 class="text-3xl font-bold mb-6">Question Bank</h1>
 
-  {{/* Collect questions matching chapter + dpp */}}
-  {{ $chapter := .Params.chapter }}
-  {{ $dpp := .Params.dpp }}
-  {{ $questions := where (where site.RegularPages "Section" "questions") ".Params.chapter" $chapter | intersect (where site.RegularPages ".Params.dpp" $dpp) }}
+  <!-- MATHS -->
+  <div class="mb-10">
+    <h2 class="text-2xl font-semibold mb-4">Mathematics</h2>
 
-  <div id="practice-app" class="space-y-6">
-    <!-- Question container will be rendered by JS -->
+    {{ $maths := where site.RegularPages "Section" "practice" | where ".Params.subject" "Maths" }}
+    {{ $chapters := $maths | group "Params.chapter" }}
+
+    {{ if gt (len $chapters) 0 }}
+      {{ range $chapters }}
+        <div class="mb-4 border rounded">
+          <button class="w-full flex justify-between items-center px-4 py-2 font-medium bg-gray-100 hover:bg-gray-200 focus:outline-none chapter-toggle">
+            <span>{{ .Key }}</span>
+            <!-- Chevron -->
+            <svg class="w-5 h-5 transition-transform duration-200 transform chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="chapter-content hidden px-4 py-2">
+            <ul class="space-y-2 ml-2">
+              {{ range .Pages }}
+                <li>
+                  <a href="{{ .RelPermalink }}" class="block p-2 border rounded hover:bg-gray-50">
+                    {{ .Params.dpp }}
+                  </a>
+                </li>
+              {{ end }}
+            </ul>
+          </div>
+        </div>
+      {{ end }}
+    {{ else }}
+      <p class="text-gray-500">No Maths DPPs added yet.</p>
+    {{ end }}
+  </div>
+
+  <!-- PHYSICS -->
+  <div class="mb-10">
+    <h2 class="text-2xl font-semibold mb-4">Physics</h2>
+    <p class="text-gray-500">Physics DPPs coming soon…</p>
+  </div>
+
+  <!-- CHEMISTRY -->
+  <div class="mb-10">
+    <h2 class="text-2xl font-semibold mb-4">Chemistry</h2>
+    <p class="text-gray-500">Chemistry DPPs coming soon…</p>
   </div>
 </div>
 
 <script>
-  const questions = [
-    {{ range $i, $q := $questions }}
-    {
-      text: {{ $q.Params.question | jsonify }},
-      options: {{ $q.Params.options | jsonify }},
-      correct: {{ $q.Params.correctIndices | jsonify }},
-      solution: {{ $q.Params.solution | jsonify }}
-    }{{ if lt (add $i 1) (len $questions) }},{{ end }}
-    {{ end }}
-  ];
+  // Accordion with chevron rotation
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggles = document.querySelectorAll(".chapter-toggle");
 
-  let current = 0;
-  const container = document.getElementById("practice-app");
+    toggles.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const content = btn.nextElementSibling;
+        const chevron = btn.querySelector(".chevron");
 
-  function renderQuestion() {
-    const q = questions[current];
-    container.innerHTML = `
-      <div class="bg-white shadow rounded-lg p-6">
-        <p class="mb-4 font-medium">${q.text}</p>
-        <div class="space-y-2">
-          ${q.options.map((opt, i) => `
-            <label class="block p-2 border rounded cursor-pointer hover:bg-gray-50">
-              <input type="radio" name="q${current}" value="${i}" onchange="checkAnswer(${i})">
-              ${opt}
-            </label>
-          `).join("")}
-        </div>
-        <div id="solution" class="mt-4 hidden p-3 border-l-4 border-green-500 bg-green-50 rounded">
-          <p><strong>Solution:</strong></p>
-          <div>${q.solution}</div>
-        </div>
-        <div class="flex justify-between mt-6">
-          <button onclick="prevQ()" ${current === 0 ? "disabled" : ""} class="px-4 py-2 bg-gray-200 rounded">Previous</button>
-          <button onclick="nextQ()" ${current === questions.length - 1 ? "disabled" : ""} class="px-4 py-2 bg-blue-600 text-white rounded">Next</button>
-        </div>
-      </div>
-    `;
-  }
+        // Close all other chapters
+        document.querySelectorAll(".chapter-content").forEach(div => {
+          if (div !== content) div.classList.add("hidden");
+        });
 
-  function checkAnswer(i) {
-    const q = questions[current];
-    if (q.correct.includes(i)) {
-      event.target.parentElement.classList.add("bg-green-100", "border-green-500");
-    } else {
-      event.target.parentElement.classList.add("bg-red-100", "border-red-500");
-    }
-    document.getElementById("solution").classList.remove("hidden");
-  }
+        document.querySelectorAll(".chevron").forEach(icon => {
+          if (icon !== chevron) icon.classList.remove("rotate-180");
+        });
 
-  function nextQ() {
-    if (current < questions.length - 1) {
-      current++;
-      renderQuestion();
-    }
-  }
-
-  function prevQ() {
-    if (current > 0) {
-      current--;
-      renderQuestion();
-    }
-  }
-
-  renderQuestion();
+        // Toggle clicked one
+        content.classList.toggle("hidden");
+        chevron.classList.toggle("rotate-180");
+      });
+    });
+  });
 </script>
 {{ end }}

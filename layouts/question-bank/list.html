@@ -8,20 +8,34 @@
     <details class="bg-gray-900 rounded-lg shadow p-4">
       <summary class="cursor-pointer text-2xl font-bold">Maths</summary>
 
-      {{/* Get all maths questions */}}
       {{ $maths := where .Site.RegularPages "Params.subject" "maths" }}
 
-      {{/* Group by chapter */}}
-      {{ range $chapter, $qsByChapter := group $maths "Params.chapter" }}
+      {{/* collect unique chapters manually */}}
+      {{ $chapters := slice }}
+      {{ range $maths }}
+        {{ if not (in $chapters .Params.chapter) }}
+          {{ $chapters = $chapters | append .Params.chapter }}
+        {{ end }}
+      {{ end }}
+
+      {{ range $chapters }}
+        {{ $chapter := . }}
         <details class="bg-gray-800 rounded-lg p-3 mt-3 ml-4">
           <summary class="cursor-pointer text-xl font-semibold">{{ $chapter }}</summary>
 
           <div class="mt-2 ml-4 space-y-2">
-            {{/* Group by DPP inside chapter */}}
-            {{ range $dpp, $qsByDpp := group $qsByChapter "Params.dpp" }}
-              <a href="/practice/{{ $chapter | urlize }}/{{ $dpp | urlize }}/"
+            {{/* collect unique dpps for this chapter */}}
+            {{ $dpps := slice }}
+            {{ range where $maths "Params.chapter" $chapter }}
+              {{ if not (in $dpps .Params.dpp) }}
+                {{ $dpps = $dpps | append .Params.dpp }}
+              {{ end }}
+            {{ end }}
+
+            {{ range $dpps }}
+              <a href="/practice/{{ $chapter | urlize }}/{{ . | urlize }}/"
                  class="block bg-yellow-400 text-black py-2 px-3 rounded hover:bg-yellow-300">
-                 DPP {{ $dpp }}
+                DPP {{ . }}
               </a>
             {{ end }}
           </div>

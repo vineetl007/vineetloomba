@@ -30,14 +30,14 @@
 {{ if and (eq .Kind "section") (hasPrefix .RelPermalink "/video-lectures/") }}
 
   {{ if eq .RelPermalink "/video-lectures/" }}
-    <!-- On /chapters/ → Back to Home -->
+    <!-- On /video-lectures/ → Back to Home -->
     <div class="mt-10">
       <a href="/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
         ← Back to Home
       </a>
     </div>
   {{ else }}
-    <!-- On /video-lectures/<video-lectures>/ → Back to All Chapters -->
+    <!-- On /video-lectures/<video-lectures>/ → Back to All video-lectures -->
     <div class="mt-10">
       <a href="/video-lectures/" class="inline-block bg-yellow-400 text-black font-concert py-2 px-4 rounded hover:bg-yellow-300">
         ← Back to All Video Lectures

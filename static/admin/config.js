@@ -10,9 +10,9 @@ CMS.init({
     public_folder: "/uploads",
    collections: [
   {
-    name: "chapters",
-    label: "Chapters",
-    folder: "content/chapters",
+    name: "video_lectures",
+    label: "Video Lectures",
+    folder: "content/video_lectures",
     create: true,
     slug: "{{slug}}",
     path: "{{slug}}/_index",

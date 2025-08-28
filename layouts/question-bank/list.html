@@ -11,7 +11,13 @@
       {{/* Get all maths questions */}}
       {{ $questions := where .Site.RegularPages "Section" "questions" }}
       {{ $maths := where $questions "Params.subject" "maths" }}
-      {{ $chapters := uniq (sort (pluck "Params.chapter" $maths)) }}
+
+      {{/* Collect all chapters */}}
+      {{ $chapters := slice }}
+      {{ range $maths }}
+        {{ $chapters = $chapters | append .Params.chapter }}
+      {{ end }}
+      {{ $chapters = uniq (sort $chapters) }}
 
       <div class="mt-3 ml-4 space-y-3">
         {{ range $chapters }}
@@ -21,12 +27,18 @@
 
             <div class="mt-2 ml-4 space-y-2">
               {{ $qsByChapter := where $maths "Params.chapter" $chapter }}
-              {{ $dpps := uniq (sort (pluck "Params.dpp" $qsByChapter)) }}
+
+              {{/* Collect all dpps for this chapter */}}
+              {{ $dpps := slice }}
+              {{ range $qsByChapter }}
+                {{ $dpps = $dpps | append .Params.dpp }}
+              {{ end }}
+              {{ $dpps = uniq (sort $dpps) }}
+
               {{ range $dpps }}
-                {{ $dpp := . }}
-                <a href="/practice/{{ $chapter | urlize }}/{{ $dpp | urlize }}/"
+                <a href="/practice/{{ $chapter | urlize }}/{{ . | urlize }}/"
                    class="block bg-yellow-400 text-black py-2 px-3 rounded hover:bg-yellow-300">
-                   DPP {{ $dpp }}
+                   DPP {{ . }}
                 </a>
               {{ end }}
             </div>

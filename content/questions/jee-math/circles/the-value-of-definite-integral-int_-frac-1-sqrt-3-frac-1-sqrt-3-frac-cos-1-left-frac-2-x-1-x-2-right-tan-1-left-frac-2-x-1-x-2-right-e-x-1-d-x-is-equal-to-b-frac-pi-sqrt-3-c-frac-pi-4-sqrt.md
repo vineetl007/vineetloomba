@@ -40,13 +40,6 @@ solution: >-
 
 
   (c) $\frac{\pi}{4 \sqrt{3}}$(c) $\frac{\pi}{4 \sqrt{3}}$(c) $\frac{\pi}{4 \sqrt{3}}$
-
-
-
-
-
-
-  {{< yt "ZBKvhm1KnDA" "Binomial Theorem in One Shot" 120 >}}
 video: ZBKvhm1KnDA
 start_time: 120
 ---

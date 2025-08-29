@@ -121,6 +121,21 @@ CMS.init({
     },
 
     { label: "Solution / Explanation", name: "solution", widget: "markdown" }
+      // ✅ Add Video Solution Fields
+    { 
+      label: "Video Solution (YouTube ID)", 
+      name: "video", 
+      widget: "string", 
+      required: false,
+      hint: "Enter only the YouTube video ID (e.g., ZBKvhm1KnDA)" 
+    },
+    { 
+      label: "Start Time (seconds)", 
+      name: "start_time", 
+      widget: "number", 
+      required: false, 
+      hint: "Enter start time in seconds (default 0)" 
+    }
       ]
     },
 

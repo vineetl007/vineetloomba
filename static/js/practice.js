@@ -103,20 +103,28 @@ ${tags.length ? tags.map(tag => `
             `
         }
     
-      <div class="solution mt-4 hidden">
+<div class="solution mt-4 hidden">
   <strong>Solution:</strong> ${q.solution}
 
   ${q.video ? `
-    <div class="mt-4 aspect-video">
-      <iframe 
-        src="https://www.youtube.com/embed/${q.video}?start=${q.start_time || 0}" 
-        class="w-full h-64 rounded-xl"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
+    <div class="mt-6">
+      <p class="text-lg font-semibold mb-2">🎥 Video Solution</p>
+      <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl">
+        <iframe 
+          src="https://www.youtube.com/embed/${q.video}?start=${q.start_time || 0}"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+          title="Video Solution">
+        </iframe>
+      </div>
     </div>
   ` : ""}
-    </div>
+</div>
+
+
 
 
       <div class="flex justify-between mt-6">

@@ -102,7 +102,8 @@ ${tags.length ? tags.map(tag => `
               </ul>
             `
         }
-    
+
+ 
 <div class="solution mt-4 hidden">
   <strong>Solution:</strong> ${q.solution}
 

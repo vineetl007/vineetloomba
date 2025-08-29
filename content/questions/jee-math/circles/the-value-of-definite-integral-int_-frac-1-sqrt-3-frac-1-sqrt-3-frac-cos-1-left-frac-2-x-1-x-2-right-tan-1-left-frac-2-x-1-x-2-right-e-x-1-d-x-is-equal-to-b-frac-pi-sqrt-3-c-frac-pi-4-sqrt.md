@@ -47,4 +47,6 @@ solution: >-
 
 
   {{< yt "ZBKvhm1KnDA" "Binomial Theorem in One Shot" 120 >}}
+video: ZBKvhm1KnDA
+start_time: 120
 ---

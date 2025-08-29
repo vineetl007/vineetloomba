@@ -81,17 +81,18 @@
  </div>
  {{ end }}
 
- <!-- Video Solution -->
- {{ with .Params.video }}
- <div class="mt-8 aspect-video">
-  <iframe 
-     src="https://www.youtube.com/embed/{{ . }}" 
-     class="w-full h-full rounded-xl" 
-     frameborder="0" 
-     allowfullscreen>
-   </iframe>
- </div>
- {{ end }}  -->
+<!-- Video Solution -->
+{{ with .Params.video }}
+  <div class="mt-8 aspect-video">
+    <iframe 
+      src="https://www.youtube.com/embed/{{ . }}?start={{ $.Params.start_time | default 0 }}" 
+      class="w-full h-full rounded-xl" 
+      frameborder="0" 
+      allowfullscreen>
+    </iframe>
+  </div>
+{{ end }}
+
 
 
   <!-- JSON-LD Schema for Question & Video -->

@@ -73,7 +73,7 @@
  </div>
  {{ end }}
 
- <!-- Solution -->
+ <!-- Solution --
  {{ with .Params.solution }}
  <div class="prose prose-invert mt-8">
    <h2 class="text-xl font-bold mb-3">Solution</h2>
@@ -81,7 +81,7 @@
  </div>
  {{ end }}
 
- <!-- Video Solution -->
+ <!-- Video Solution --
  {{ with .Params.video }}
  <div class="mt-8 aspect-video">
   <iframe 
@@ -91,7 +91,16 @@
      allowfullscreen>
    </iframe>
  </div>
- {{ end }}
+ {{ end }}  -->
+
+  <!-- Solution -->
+{{ with .Params.solution }}
+<div class="prose prose-invert mt-8">
+  <h2 class="text-xl font-bold mb-3">Solution</h2>
+  {{ . | .Page.RenderString }}
+</div>
+{{ end }}
+
 
   <!-- JSON-LD Schema for Question & Video -->
   <script type="application/ld+json">

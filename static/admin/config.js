@@ -120,7 +120,7 @@ CMS.init({
       hint: "Enter your answer directly"
     },
 
-    { label: "Solution / Explanation", name: "solution", widget: "markdown" }
+    { label: "Solution / Explanation", name: "solution", widget: "markdown" },
       // ✅ Add Video Solution Fields
     { 
       label: "Video Solution (YouTube ID)", 

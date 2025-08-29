@@ -110,7 +110,7 @@ ${tags.length ? tags.map(tag => `
 ${q.video_url ? `
   <div class="mt-6">
     <p class="text-lg font-semibold mb-2">🎥 Video Solution</p>
-    <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl w-full sm:w-[80%] lg:w-[60%] mx-auto">
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:1.5rem;margin-bottom:1.5rem;">
       <iframe 
         src="${q.video_url}"
         style="position:absolute;top:0;left:0;width:100%;height:100%;"

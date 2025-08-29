@@ -21,7 +21,7 @@
 "question": "{{ $q.Params.question | safeJS }}",
      "options": [{{ range $i, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $i 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
       "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-      "solution": {{ .RenderString $q.Params.solution | jsonify }},
+       "solution": {{ if $q.Params.solution }}{{ $q.RenderString $q.Params.solution | jsonify }}{{ else }}""{{ end }},
       "question_type": "{{ $q.Params.question_type }}",
       "numerical_answer": "{{ $q.Params.numerical_answer }}",
     "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},

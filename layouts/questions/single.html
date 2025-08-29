@@ -93,11 +93,11 @@
  </div>
  {{ end }}  -->
 
-  <!-- Solution -->
+<!-- Solution -->
 {{ with .Params.solution }}
 <div class="prose prose-invert mt-8">
   <h2 class="text-xl font-bold mb-3">Solution</h2>
-  {{ . | .Page.RenderString }}
+  {{ .Page.RenderString . }}
 </div>
 {{ end }}
 

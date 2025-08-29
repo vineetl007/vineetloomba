@@ -108,8 +108,8 @@ ${tags.length ? tags.map(tag => `
       </div>
 
       <div class="flex justify-between mt-6">
-        <button id="prev-btn" class="px-4 py-2 bg-blue-500 font-concert rounded" ${index === 0 ? "disabled" : ""}>Previous</button>
-        <button id="next-btn" class="px-4 py-2 bg-blue-500 font-concert text-white rounded" ${index === questions.length - 1 ? "disabled" : ""}>Next</button>
+        <button id="prev-btn" class="px-4 py-2 bg-blue-500 font-concert rounded" ${index === 0 ? 'style="display:none"' : ""}>Previous</button>
+        <button id="next-btn" class="px-4 py-2 bg-blue-500 font-concert text-white rounded" ${index === questions.length - 1 ? 'style="display:none"' : ""}>Next</button>
       </div>
     `;
 

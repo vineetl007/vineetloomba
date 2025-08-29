@@ -102,10 +102,22 @@ ${tags.length ? tags.map(tag => `
               </ul>
             `
         }
-        <div class="solution mt-4 hidden">
-          <strong>Solution:</strong> ${q.solution}
-        </div>
-      </div>
+    
+      <div class="solution mt-4 hidden">
+  <strong>Solution:</strong> ${q.solution}
+
+  ${q.video ? `
+    <div class="mt-4 aspect-video">
+      <iframe 
+        src="https://www.youtube.com/embed/${q.video}?start=${q.start_time || 0}" 
+        class="w-full h-64 rounded-xl"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </div>
+  ` : ""}
+    </div>
+
 
       <div class="flex justify-between mt-6">
         <button id="prev-btn" class="px-4 py-2 bg-blue-500 font-concert rounded" ${index === 0 ? 'style="display:none"' : ""}>Previous</button>

@@ -8,4 +8,4 @@ description: Permutations Combinations in One Shot
 
 **<br>**
 
-{{< yt "ttrWXmKp7vg" "Permutations Combinations in One Shot" >}}
+{{< yt "ttrWXmKp7vg" "Permutations Combinations in One Shot" 360>}}

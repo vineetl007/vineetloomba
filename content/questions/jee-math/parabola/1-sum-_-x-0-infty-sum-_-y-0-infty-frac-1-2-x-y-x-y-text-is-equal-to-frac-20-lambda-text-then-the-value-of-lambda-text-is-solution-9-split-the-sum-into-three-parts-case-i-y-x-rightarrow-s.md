@@ -38,14 +38,18 @@ question: >-
      (d) ellipse
 numerical_answer: "12"
 solution: >-
-  1.   \item The solution of differential equation $\frac{d y}{d
-  x}=\frac{x^{2}+y^{2}+1}{2 x y}$ satisfying $y(1)=0$ is given by:\\
+  The solution of differential equation $\frac{d y}{d x}=\frac{x^{2}+y^{2}+1}{2
+  x y}$ satisfying $y(1)=0$ is given by:\
 
-     (a) a circle\\
 
-     (b) $y^{2}=x^{2}+x-10$\\
+  (a) a circle\
 
-     (c) hyperbola\\
 
-     (d) ellipse
+  (b) $y^{2}=x^{2}+x-10$\
+
+
+  (c) hyperbola\
+
+
+  (d) ellipse
 ---

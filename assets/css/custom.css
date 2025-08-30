@@ -26,6 +26,18 @@ mjx-container > svg {
     line-height: 1.4 !important;
   }
 }
+/* ✅ Force MathJax block equations to use full width */
+mjx-container[display="true"] {
+  justify-content: center; /* keep it centered */
+  display: flex !important; /* allow flex scaling */
+}
+
+mjx-container[display="true"] > svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
 
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */

@@ -4,38 +4,13 @@
   font-family: 'Concert One', cursive;
 }
 
-/* ✅ MathJax: Keep equations inside container and mobile friendly */
-mjx-container[display="true"] {
-  display: flex !important;         /* use flex to center and scale */
-  justify-content: center;
-  max-width: 100% !important;
-  overflow-x: auto !important;
-  text-align: center;
-  padding: 0.5rem 0;
-  box-sizing: border-box;
-  white-space: normal; /* allow wrapping if possible */
-}
-
-/* ✅ Make SVG equations responsive and scale to full width */
-mjx-container[display="true"] > svg {
-  width: 100% !important;   /* take full width of container */
-  max-width: 100% !important;
-  height: auto !important;
-  transform-origin: center;
-}
-
-/* ✅ Slightly increase size on mobile screens */
+/* Mobile-friendly MathJax scaling */
 @media (max-width: 768px) {
-  mjx-container[display="true"] {
-    font-size: 1.2em !important;
+  .MathJax, .MathJax_Display {
+    font-size: 1.2em !important;   /* increase size */
     line-height: 1.4 !important;
   }
-
-  mjx-container[display="true"] > svg {
-    transform: scale(1.2);  /* enlarge equation a bit on small screens */
-  }
 }
-
 
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */

@@ -1,7 +1,7 @@
 ---
 title: p2
 chapter: parabola
-dpp: dpp-2
+dpp: 2
 tags:
   - adva
   - JEEMAIN

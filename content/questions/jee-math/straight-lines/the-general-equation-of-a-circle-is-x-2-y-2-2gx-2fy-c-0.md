@@ -1,7 +1,7 @@
 ---
 title: q113
 chapter: straight-lines
-dpp: dpp-1
+dpp: 1
 tags:
   - jeemain
   - jeeadv

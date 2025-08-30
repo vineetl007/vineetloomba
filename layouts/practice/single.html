@@ -26,7 +26,7 @@
       "numerical_answer": "{{ $q.Params.numerical_answer }}",
     "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
  "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-      "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}"{{ else }}""{{ end }}
+      "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
     }{{ if not (eq (add $index 1) (len $questions)) }},{{ end }}
   {{- end -}}
 ]

@@ -4,17 +4,26 @@
   font-family: 'Concert One', cursive;
 }
 
+/* ✅ Keep MathJax equations inside container on all screens */
+mjx-container[display="true"] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;  /* allow scroll if equation is very wide */
+  text-align: center;
+  padding: 0.5rem 0;
+  box-sizing: border-box;
+}
+
+mjx-container > svg {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Mobile-friendly MathJax scaling */
 @media (max-width: 768px) {
   mjx-container[display="true"] {
-  font-size: 1.2em !important;
-  line-height: 1.4 !important;
-  max-width: 100% !important;
-  overflow-x: auto !important;
-  box-sizing: border-box !important;
-  display: block !important;
-  white-space: normal !important;
-}
+    font-size: 1.05em; /* very slight bump, avoid breaking layout */
+  }
 }
 
 

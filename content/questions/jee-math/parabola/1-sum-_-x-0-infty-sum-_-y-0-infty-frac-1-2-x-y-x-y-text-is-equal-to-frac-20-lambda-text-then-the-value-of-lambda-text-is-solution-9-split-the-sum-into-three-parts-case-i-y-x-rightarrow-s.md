@@ -5,145 +5,47 @@ dpp: 2
 difficulty: Easy
 question_type: Integer Type
 question: >-
-  1. $$ \sum\_{x=0}^{\infty} \sum\_{y=0}^{\infty} \frac{1}{2^{x+y+|x-y|}} \text{
-  is equal to } \frac{20}{\lambda} \text{ then the value of } \lambda \text{ is}
-  $$
+  1. \begin{enumerate}
 
+       \item The value of definite integral $\int_{\frac{-1}{\sqrt{3}}}^{\frac{1}{\sqrt{3}}} \frac{\cos ^{-1}\left(\frac{2 x}{1+x^{2}}\right)+\tan ^{-1}\left(\frac{2 x}{1-x^{2}}\right)}{e^{x}+1} d x$ is equal to:\\
 
-  \### Solution : (9)
+     (a) $\frac{\pi}{2 \sqrt{3}}$\\
 
+     (b) $\frac{\pi}{\sqrt{3}}$\\
 
-  Split the sum into three parts
+     (c) $\frac{\pi}{4 \sqrt{3}}$\\
 
+     (d) $\frac{\pi}{3 \sqrt{3}}$
 
-  \### Case I : $y = x$
+       \item $\lim _{n \rightarrow \infty} \frac{n^{2}}{\left(\left(n^{2}+1^{2}\right)\left(n^{2}+2^{2}\right) \ldots \ldots \ldots\left(n^{2}+n^{2}\right)\right)^{\frac{1}{n}}}$ equals:\\
 
+     (a) $2 e^{2+\frac{\pi}{2}}$\\
 
-  $$
+     (b) $2 e^{2-\frac{\pi}{2}}$\\
 
+     (c) $\frac{1}{2} e^{2-\frac{\pi}{2}}$\\
 
-  \Rightarrow S\_1 = \sum\_{x=0}^{\infty} \frac{1}{2^{2x}} = \frac{1}{1-1/4} = \frac{4}{3}
+     (d) $\frac{1}{2} e^{2+\frac{\pi}{2}}$
 
+       \item The solution of differential equation $\frac{d y}{d x}=\frac{x^{2}+y^{2}+1}{2 x y}$ satisfying $y(1)=0$ is given by:\\
 
-  $$
+     (a) a circle\\
 
+     (b) $y^{2}=x^{2}+x-10$\\
 
-  \### Case II: $y = x + d$; $d > 0$
+     (c) hyperbola\\
 
-
-  $$
-
-
-  \Rightarrow S\_2 = \sum\_{d=1}^{\infty} \sum\_{x=0}^{\infty} \frac{1}{2^{2x+2d}} = \sum\_{d=1}^{\infty} \frac{1}{2^{2d}} \times \sum_{x=0}^{\infty} \frac{1}{2^{2x}}
-
-
-  $$
-
-
-  $$
-
-
-  \= \frac{1}{3} \times \frac{4}{3} = \frac{4}{9}
-
-
-  $$
-
-
-  \### Case III : $y = x - d$; $d > 0$
-
-
-  $\Rightarrow S_3$ is just obtained by switching $x$ and $y$
-
-
-  $\Rightarrow S_3 = S_2$
-
-
-  $$
-
-
-  S_1 + S_2 + S_3 = \frac{4}{3} + \frac{4}{9} + \frac{4}{9} = \frac{20}{9}
-
-
-  $$
-
-
-  $$
-
-
-  \therefore \lambda = 9
-
-
-  $$
+     (d) ellipse
 numerical_answer: "12"
 solution: >-
-  solutions 
+  1.   \item The solution of differential equation $\frac{d y}{d
+  x}=\frac{x^{2}+y^{2}+1}{2 x y}$ satisfying $y(1)=0$ is given by:\\
 
+     (a) a circle\\
 
-  1. $$ \sum\_{x=0}^{\infty} \sum\_{y=0}^{\infty} \frac{1}{2^{x+y+|x-y|}} \text{ is equal to } \frac{20}{\lambda} \text{ then the value of } \lambda \text{ is} $$
+     (b) $y^{2}=x^{2}+x-10$\\
 
+     (c) hyperbola\\
 
-  \### Solution : (9)
-
-
-  Split the sum into three parts
-
-
-  \### Case I : $y = x$
-
-
-  $$
-
-
-  \Rightarrow S\_1 = \sum\_{x=0}^{\infty} \frac{1}{2^{2x}} = \frac{1}{1-1/4} = \frac{4}{3}
-
-
-  $$
-
-
-  \### Case II: $y = x + d$; $d > 0$
-
-
-  $$
-
-
-  \Rightarrow S\_2 = \sum\_{d=1}^{\infty} \sum\_{x=0}^{\infty} \frac{1}{2^{2x+2d}} = \sum\_{d=1}^{\infty} \frac{1}{2^{2d}} \times \sum_{x=0}^{\infty} \frac{1}{2^{2x}}
-
-
-  $$
-
-
-  $$
-
-
-  \= \frac{1}{3} \times \frac{4}{3} = \frac{4}{9}
-
-
-  $$
-
-
-  \### Case III : $y = x - d$; $d > 0$
-
-
-  $\Rightarrow S_3$ is just obtained by switching $x$ and $y$
-
-
-  $\Rightarrow S_3 = S_2$
-
-
-  $$
-
-
-  S_1 + S_2 + S_3 = \frac{4}{3} + \frac{4}{9} + \frac{4}{9} = \frac{20}{9}
-
-
-  $$
-
-
-  $$
-
-
-  \therefore \lambda = 9
-
-
-  $$
+     (d) ellipse
 ---

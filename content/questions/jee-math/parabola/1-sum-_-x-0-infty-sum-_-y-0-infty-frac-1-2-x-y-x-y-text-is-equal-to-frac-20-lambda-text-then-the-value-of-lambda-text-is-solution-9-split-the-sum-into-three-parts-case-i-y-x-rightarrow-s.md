@@ -7,9 +7,7 @@ question_type: Integer Type
 question: >-
   The value of definite integral 
 
-  $\int_{\frac{-1}{\sqrt{3}}}^{\frac{1}{\sqrt{3}}} \frac{\cos ^{-1}\left(\frac{2 x}{1+x^{2}}\right)+\tan ^{-1}\left(\frac{2 x}{1-x^{2}}\right)}{e^{x}+1} d x$ 
-
-  is equal to:
+  $\int_{\frac{-1}{\sqrt{3}}}^{\frac{1}{\sqrt{3}}} \frac{\cos ^{-1}\left(\frac{2 x}{1+x^{2}}\right)+\tan ^{-1}\left(\frac{2 x}{1-x^{2}}\right)}{e^{x}+1} d x$ is equal to:mmmm
 
 
   (a) $\frac{\pi}{2 \sqrt{3}}$

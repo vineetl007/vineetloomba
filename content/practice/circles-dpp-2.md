@@ -1,5 +1,5 @@
 ---
-title: Circles DPP 2
+title: Circles DPP-2
 subject: maths
 chapter: circles
 dpp: 2

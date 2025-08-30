@@ -1,7 +1,9 @@
 ---
 title: Indefinite Integration
 weight: 24
+chapter: indefinite-integration
 date: 2021-08-11
+description: integration
 ---
 # Lecture 1 
 

@@ -1,7 +1,7 @@
 ---
 title: p1
 chapter: parabola
-dpp: dpp-2
+dpp: 2
 difficulty: Medium
 question_type: Single Choice
 question: >-

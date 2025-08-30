@@ -67,12 +67,15 @@ CMS.init({
       widget: "select",
       options: ["circles", "straight-lines", "parabola"],
     },
-    {
-      label: "DPP",
-      name: "dpp",
-      widget: "select",
-      options: ["dpp-1", "dpp-2", "dpp-3"],
-    },
+    { 
+  label: "DPP", 
+  name: "dpp", 
+  widget: "number", 
+  value_type: "int",
+  min: 1,
+  hint: "Enter DPP number (e.g., 1 for DPP-1)"
+  },
+
     { label: "Tags", name: "tags", widget: "list" },
     {
       label: "Difficulty",
@@ -160,12 +163,15 @@ CMS.init({
       widget: "select", 
       options: ["circles", "straight-lines", "parabola"] 
     },
-    { 
-      label: "DPP", 
-      name: "dpp", 
-      widget: "select", 
-      options: ["dpp-1", "dpp-2", "dpp-3"] 
-    },
+ { 
+  label: "DPP", 
+  name: "dpp", 
+  widget: "number", 
+  value_type: "int",
+  min: 1,
+  hint: "Enter DPP number (e.g., 1 for DPP-1)"
+},
+
     { 
       label: "Layout", 
       name: "layout", 

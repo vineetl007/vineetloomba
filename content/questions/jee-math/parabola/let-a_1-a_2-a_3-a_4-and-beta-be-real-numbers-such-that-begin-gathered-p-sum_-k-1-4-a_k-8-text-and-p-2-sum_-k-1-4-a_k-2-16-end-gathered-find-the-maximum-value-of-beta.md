@@ -12,13 +12,10 @@ question: |-
 
   $$
 
-  \begin{gathered}
-
   p+\sum_{k=1}^4 a_k=8 \\
 
   \text { and } p^2+\sum_{k=1}^4 a_k^2=16
 
-  \end{gathered}
 
   $$
 

@@ -31,31 +31,35 @@ question: >-2
 
   (d) $\frac{1}{2} e^{2+\frac{\pi}{2}}$
 
-    \item The solution of differential equation $\frac{d y}{d x}=\frac{x^{2}+y^{2}+1}{2 x y}$ satisfying $y(1)=0$ is given by:\\
 
-  (a) a circle\\
-
-
-  (b) $y^{2}=x^{2}+x-10$\\
+  The solution of differential equation $\frac{d y}{d x}=\frac{x^{2}+y^{2}+1}{2 x y}$ satisfying $y(1)=0$ is given by:
 
 
-  (c) hyperbola\\
+  (a) a circle
+
+
+
+
+  (b) $y^{2}=x^{2}+x-10$
+
+
+  (c) hyperbola
 
 
   (d) ellipse
 numerical_answer: "12"
 solution: >-
   The solution of differential equation $\frac{d y}{d x}=\frac{x^{2}+y^{2}+1}{2
-  x y}$ satisfying $y(1)=0$ is given by:\
+  x y}$ satisfying $y(1)=0$ is given by:
 
 
-  (a) a circle\
+  (a) a circle
 
 
-  (b) $y^{2}=x^{2}+x-10$\
+  (b) $y^{2}=x^{2}+x-10$
 
 
-  (c) hyperbola\
+  (c) hyperbola
 
 
   (d) ellipse

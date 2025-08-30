@@ -54,7 +54,10 @@ const tags = (() => {
 // difficulty and tags and question type pulled dynamically 
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
-        <h2 class="font-normal mb-3">Q${index + 1}. ${q.question}</h2>
+       <h2 class="font-normal mb-3">
+        Q${index + 1}. ${q.question.replace(/\n/g, "<br>")}
+      </h2>
+
 
   <div class="mb-4 flex flex-wrap gap-2">
 ${tags.length ? tags.map(tag => `

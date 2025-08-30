@@ -39,24 +39,25 @@
     <p>No questions found for this DPP.</p>
   {{ end }}
 
-  {{/* Find the video lecture page for this chapter */}}
+{{/* Find the video lecture page for this chapter */}}
 {{ $chapter := .Params.chapter }}
 {{ $videoPage := site.GetPage (printf "/video-lectures/%s" $chapter) }}
 
 {{ if $videoPage }}
-  <div class="mt-10 p-4 bg-gradient-to-r from-green-600 to-green-500 rounded-xl shadow-lg border border-green-400">
-    <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
-      📺 Related Video Lecture
+  <div class="mt-10 p-4 bg-gray-800 rounded-xl shadow border border-gray-700">
+    <h2 class="text-xl font-concert mb-2 flex items-center gap-2 text-yellow-400">
+      📺 Not Able to Solve Questions Confidently ? No Worries !!
     </h2>
-    <p class="text-gray-200 mb-3">
-      Watch the video lecture for <span class="font-semibold">{{ $chapter | title }}</span> to strengthen your concepts.
+    <p class="text-gray-300 mb-3">
+      Watch the video lecture for <span class="font-concert text-white">{{ $chapter | title }}</span> to strengthen your concepts.
     </p>
     <a href="{{ $videoPage.RelPermalink }}" 
-       class="inline-block bg-white text-green-700 font-bold py-2 px-4 rounded-lg shadow hover:bg-gray-100 transition">
+       class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded-lg hover:bg-blue-400 transition">
        ▶ Watch Now
     </a>
   </div>
 {{ end }}
+
 
 </div>
 

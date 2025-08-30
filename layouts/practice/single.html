@@ -39,10 +39,17 @@
     <p>No questions found for this DPP.</p>
   {{ end }}
 
+{{/* BACK TO QUESTION BANK BUTTON*/}}
+<div class="mt-6">
+  <a href="/question-bank/"
+     class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
+    ⬅ Back to Question Bank
+  </a>
+</div>
+  
 {{/* Find the video lecture page for this chapter */}}
 {{ $chapter := .Params.chapter }}
 {{ $videoPage := site.GetPage (printf "/video-lectures/%s" $chapter) }}
-
 {{ if $videoPage }}
   <div class="mt-10 p-4 bg-gray-800 rounded-xl shadow border border-gray-700">
     <h2 class="text-xl font-concert mb-2 flex items-center gap-2 text-yellow-400">
@@ -57,13 +64,6 @@
     </a>
   </div>
 {{ end }}
-
-  <div class="mt-6">
-  <a href="/question-bank/"
-     class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-    ⬅ Back to Question Bank
-  </a>
-</div>
 
 
 </div>

@@ -52,17 +52,19 @@ const tags = (() => {
     let selectedIndices = [];
     
 // difficulty and tags and question type pulled dynamically 
-    app.innerHTML = `
-      <div class="question border rounded-lg p-4 shadow mb-4">
+
+// ✅ First: prepare questionHtml OUTSIDE the template string
 const rawQ = String(q.question || "");
 const questionHtml = rawQ
-  .split(/\n\s*\n/)                       // split on blank lines (paragraphs)
-  .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // single newlines -> <br>
-  .join("");                              
+  .split(/\n\s*\n/)                       // split paragraphs on blank lines
+  .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // convert single newlines to <br>
+  .join("");
 
-// render number and question body (questionHtml is block-level)
-`<h2 class="font-normal mb-3">Q${index + 1}.</h2>
-<div class="question-text">${questionHtml}</div>`
+// ✅ Then build the HTML normally
+app.innerHTML = `
+  <div class="question border rounded-lg p-4 shadow mb-4">
+    <h2 class="font-normal mb-3">Q${index + 1}.</h2>
+    <div class="question-text mb-3">${questionHtml}</div>
 
 
 

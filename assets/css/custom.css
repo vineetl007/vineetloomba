@@ -26,15 +26,6 @@ mjx-container > svg {
   }
 }
 
-@media (max-width: 768px) {
-  .question-container {
-    padding-left: 0.25rem;  /* reduce left gap */
-    padding-right: 0.25rem; /* reduce right gap */
-    max-width: 100%;        /* allow full width */
-  }
-}
-
-
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */
 h1, h2, h3, h4, h5, h6 {

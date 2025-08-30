@@ -143,7 +143,9 @@
         displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       chtml: {
-        scale: 1.15  // ✅ Slightly enlarge all equations globally
+        scale: 1.15,          // ✅ Slightly enlarge globally (good for mobile too)
+        displayAlign: 'center', // ✅ Always center block equations
+        displayIndent: '0'      // ✅ No extra left margin
       }
     };
   </script>

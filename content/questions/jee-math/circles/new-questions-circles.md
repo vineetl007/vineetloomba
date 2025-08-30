@@ -1,7 +1,7 @@
 ---
 title: c56
 chapter: circles
-dpp: dpp-1
+dpp: 1
 tags:
   - jeemain
 difficulty: Medium

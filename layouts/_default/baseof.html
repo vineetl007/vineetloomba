@@ -140,12 +140,25 @@
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        displayMath: [['$$', '$$'], ['\
+
+\[', '\\]
+
+']]
+      },
+      chtml: {
+        scale: 1.2  // Makes equations 20% larger
+      },
+      options: {
+        renderActions: {
+          addMenu: []  // Optional: disables right-click MathJax menu
+        }
       }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 {{ end }}
+
   
   {{ partial "footer.html" . }}
 </body>

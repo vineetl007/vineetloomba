@@ -1,7 +1,7 @@
 ---
 title: p23
 chapter: circles
-dpp: dpp-2
+dpp: 2
 tags:
   - adva
   - JEEMAIN

@@ -1,6 +1,9 @@
 ---
 title: Quadratic Equations
 weight: 7
+chapter: quadratic-equations
+date: 2025-08-30
+description: quadratic
 ---
 # **👉Basics Lecture 1**
 

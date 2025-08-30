@@ -54,9 +54,16 @@ const tags = (() => {
 // difficulty and tags and question type pulled dynamically 
     app.innerHTML = `
       <div class="question border rounded-lg p-4 shadow mb-4">
-       <h2 class="font-normal mb-3">
-        Q${index + 1}. ${q.question.replace(/\n/g, "<br>")}
-      </h2>
+const rawQ = String(q.question || "");
+const questionHtml = rawQ
+  .split(/\n\s*\n/)                       // split on blank lines (paragraphs)
+  .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // single newlines -> <br>
+  .join("");                              
+
+// render number and question body (questionHtml is block-level)
+`<h2 class="font-normal mb-3">Q${index + 1}.</h2>
+<div class="question-text">${questionHtml}</div>`
+
 
 
   <div class="mb-4 flex flex-wrap gap-2">

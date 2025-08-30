@@ -4,6 +4,15 @@
   font-family: 'Concert One', cursive;
 }
 
+/* ✅ Keep MathJax equations inside container on all screens */
+.MathJax_Display {
+  overflow-x: auto;       /* allow horizontal scroll if too wide */
+  display: block;
+  max-width: 100%;        /* never exceed container width */
+  text-align: center;     /* keep it centered */
+  padding: 0.5rem 0;      /* little breathing space */
+}
+
 /* Mobile-friendly MathJax scaling */
 @media (max-width: 768px) {
   .MathJax, .MathJax_Display {

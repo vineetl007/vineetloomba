@@ -6,11 +6,16 @@
 
 /* Mobile-friendly MathJax scaling */
 @media (max-width: 768px) {
-  .MathJax, .MathJax_Display {
-    font-size: 1.2em !important;   /* increase size */
+  mjx-container[display="true"] {
+    font-size: 1.2em !important;
     line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    box-sizing: border-box !important;
+    padding: 0.5em; /* optional: adds breathing room */
   }
 }
+
 
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */

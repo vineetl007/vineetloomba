@@ -5,4 +5,8 @@ chapter: circles
 date: 2025-08-30
 description: circle
 ---
-_JjswBYW_t4
+
+
+
+
+{{< yt "_JjswBYW_t4" "circle lecture 1" >}}

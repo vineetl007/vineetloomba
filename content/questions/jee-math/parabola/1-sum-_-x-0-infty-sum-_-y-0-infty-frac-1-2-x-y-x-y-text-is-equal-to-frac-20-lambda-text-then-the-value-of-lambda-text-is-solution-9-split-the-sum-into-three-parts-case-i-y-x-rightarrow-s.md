@@ -23,7 +23,7 @@ question: >-
   (d) $\frac{\pi}{3 \sqrt{3}}$
 
 
-  $$\lim _{n \rightarrow \infty} \frac{n^{2}}{\left(\left(n^{2}+1^{2}\right)\left(n^{2}+2^{2}\right) \ldots \ldots \ldots\left(n^{2}+n^{2}\right)\right)^{\frac{1}{n}}}$$ equals:\
+  $\lim _{n \rightarrow \infty} \frac{n^{2}}{\left(\left(n^{2}+1^{2}\right)\left(n^{2}+2^{2}\right) \ldots \ldots \ldots\left(n^{2}+n^{2}\right)\right)^{\frac{1}{n}}}$ equals:\
 
 
   (a) $2 e^{2+\frac{\pi}{2}}$\\

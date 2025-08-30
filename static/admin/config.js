@@ -25,7 +25,7 @@ CMS.init({
       label: "Chapter",
       name: "chapter",
       widget: "select",
-      options: ["circles", "straight-lines", "parabola"],
+      options: ["circles", "straight-lines", "parabola","binomial-theorem","indefinite-integration","permutations-combinations","quadratic-equations"],
     },
       { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false },
       { label: "Description", name: "description", widget: "string", hint: "SEO meta description (around 150 characters)" },
@@ -71,7 +71,7 @@ CMS.init({
       label: "Chapter",
       name: "chapter",
       widget: "select",
-      options: ["circles", "straight-lines", "parabola"],
+      options: ["circles", "straight-lines", "parabola","binomial-theorem","indefinite-integration","permutations-combinations","quadratic-equations"],
     },
     { 
   label: "DPP", 

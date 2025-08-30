@@ -21,6 +21,12 @@ CMS.init({
     fields: [
       { label: "Title", name: "title", widget: "string" },
       { label: "Weight", name: "weight", widget: "number", default: 1 },
+    {
+      label: "Chapter",
+      name: "chapter",
+      widget: "select",
+      options: ["circles", "straight-lines", "parabola"],
+    },
       { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false },
       { label: "Description", name: "description", widget: "string", hint: "SEO meta description (around 150 characters)" },
       { label: "Body", name: "body", widget: "markdown" },

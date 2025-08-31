@@ -358,6 +358,52 @@ CMS.init({
 // ------------------ JEE Main Mock Tests Collection ------------------
 
 // ================= Mock Tests =================
+     {
+  name: "mocktests",
+  label: "Mock Tests",
+  folder: "content/mocktests",
+  create: true,
+  slug: "{{slug}}",
+  fields: [
+    { label: "Test Name", name: "title", widget: "string" },
+    { label: "Test UID", name: "uid", widget: "string" },
+    {
+      label: "Subjects",
+      name: "subjects",
+      widget: "select",
+      multiple: true,
+      options: ["Maths", "Physics", "Chemistry"],
+    },
+    {
+      label: "Maths Questions",
+      name: "maths_questions",
+      widget: "list",
+      field: { label: "Question Title", name: "title", widget: "string" },
+    },
+    {
+      label: "Physics Questions",
+      name: "physics_questions",
+      widget: "list",
+      field: { label: "Question Title", name: "title", widget: "string" },
+    },
+    {
+      label: "Chemistry Questions",
+      name: "chemistry_questions",
+      widget: "list",
+      field: { label: "Question Title", name: "title", widget: "string" },
+    },
+    {
+      label: "Rank Preset",
+      name: "rank_preset",
+      widget: "list",
+      fields: [
+        { label: "Marks", name: "marks", widget: "number" },
+        { label: "Estimated Rank", name: "rank", widget: "number" }
+      ]
+    }
+  ]
+},
+
      
 
 // dpp creation in decap

@@ -351,7 +351,152 @@ CMS.init({
     }
       ]
     },
+     
+     // Mock Tests collection for Decap 
+{
+  name: "mock-tests",
+  label: "Mock Tests",
+  folder: "content/mock-tests",
+  create: true,
+  slug: "{{slug}}",
+  fields: [
+    { label: "Test UID", name: "test_uid", widget: "string", hint: "Stable unique id (eg: jee-main-mock-1). Use slug or UUID." },
+    { label: "Title", name: "title", widget: "string" },
+    { label: "Slug (URL)", name: "slug", widget: "string", hint: "URL part (eg: jee-main-mock-1)" },
+    { label: "Version", name: "version", widget: "number", default: 1, hint: "Increase when you update test content" },
+    { label: "Duration (minutes)", name: "duration", widget: "number", min: 1, default: 180 },
 
+    {
+      label: "Preset (marking template)",
+      name: "preset",
+      widget: "select",
+      options: ["JEE Main", "JEE Advanced"],
+      default: "JEE Main",
+      hint: "Choose preset — you can still edit marking below"
+    },
+
+    {
+      label: "Marking Scheme",
+      name: "marking_scheme",
+      widget: "object",
+      fields: [
+        { label: "Points for Correct", name: "correct", widget: "number", default: 4 },
+        { label: "Points for Wrong", name: "wrong", widget: "number", default: -1 },
+        { label: "Points for Unattempted", name: "unattempted", widget: "number", default: 0 },
+        {
+          label: "Multiple-correct scoring",
+          name: "multiple_correct_scoring",
+          widget: "select",
+          options: ["all-or-nothing", "partial"],
+          default: "all-or-nothing",
+          hint: "Partial = partial credit, All-or-nothing = full marks only if all correct options selected"
+        }
+      ]
+    },
+
+    {
+      label: "Subjects (select one or more)",
+      name: "subjects",
+      widget: "list",
+      field: {
+        label: "Subject",
+        name: "subject",
+        widget: "select",
+        options: ["Maths", "Physics", "Chemistry"]
+      },
+      hint: "Sections will be created per selected subject"
+    },
+
+    {
+      label: "Question counts (applies PER subject)",
+      name: "counts_per_subject",
+      widget: "object",
+      fields: [
+        { label: "Single choice per subject", name: "single", widget: "number", default: 20 },
+        { label: "Integer type per subject", name: "integer", widget: "number", default: 5 },
+        { label: "Multiple-correct per subject", name: "multiple", widget: "number", default: 0 }
+      ],
+      hint: "These counts are applied to each selected subject when curating the test"
+    },
+
+    {
+      label: "Curated Questions (add in exact test order)",
+      name: "questions",
+      widget: "list",
+      hint: "Add questions in the order you want them to appear. Use the appropriate relation field below depending on subject.",
+      fields: [
+        { label: "Section subject", name: "subject", widget: "select", options: ["Maths", "Physics", "Chemistry"] },
+        { label: "Chapter", name: "chapter", widget: "string", hint: "Free text or chapter slug (for reference)" },
+
+        // Relations: admin should fill only the correct relation field per subject.
+        {
+          label: "Question (Maths) — use only if Subject = Maths",
+          name: "question_math",
+          widget: "relation",
+          collection: "questions",
+          searchFields: ["title", "question"],
+          valueField: "title",
+          displayFields: ["title"],
+          required: false
+        },
+        {
+          label: "Question (Physics) — use only if Subject = Physics",
+          name: "question_physics",
+          widget: "relation",
+          collection: "questionsp",
+          searchFields: ["title", "question"],
+          valueField: "title",
+          displayFields: ["title"],
+          required: false
+        },
+        {
+          label: "Question (Chemistry) — use only if Subject = Chemistry",
+          name: "question_chemistry",
+          widget: "relation",
+          collection: "questionsc",
+          searchFields: ["title", "question"],
+          valueField: "title",
+          displayFields: ["title"],
+          required: false
+        },
+
+        { label: "Question ID override (optional)", name: "question_id", widget: "string", required: false, hint: "If you want a custom id/filename for this question in the test snapshot." },
+        { label: "Notes (admin-only)", name: "notes", widget: "text", required: false }
+      ]
+    },
+
+    {
+      label: "AIR / Rank Mapping (score → estimated rank)",
+      name: "rank_mapping",
+      widget: "list",
+      hint: "Define non-overlapping ranges. Frontend picks the first matching range for user's score.",
+      fields: [
+        { label: "Min score (inclusive)", name: "min_score", widget: "number" },
+        { label: "Max score (inclusive)", name: "max_score", widget: "number" },
+        { label: "Estimated Rank / Text", name: "rank_text", widget: "string", hint: "e.g. Top 500 / ~2000" }
+      ]
+    },
+
+    {
+      label: "Display & behaviour",
+      name: "display",
+      widget: "object",
+      fields: [
+        { label: "Shuffle questions", name: "shuffle_questions", widget: "boolean", default: false, hint: "Keep false to preserve curated order" },
+        { label: "Shuffle options", name: "shuffle_options", widget: "boolean", default: false },
+        { label: "Show name/email capture before start", name: "capture_user", widget: "boolean", default: true }
+      ]
+    },
+
+    { label: "Preview URL (optional)", name: "preview_url", widget: "string", required: false, hint: "Frontend preview location if you want one" },
+
+    { label: "Published", name: "published", widget: "boolean", default: false },
+    { label: "Created by", name: "created_by", widget: "string", required: false },
+    { label: "Created at", name: "created_at", widget: "datetime", required: false }
+  ]
+},
+
+// dpp creation in decap
      {
   name: "practice",
   label: "Practice Pages",

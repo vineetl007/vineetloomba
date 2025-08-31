@@ -2,169 +2,176 @@ document.addEventListener("DOMContentLoaded", () => {
   const dataEl = document.getElementById("mocktest-data");
   if (!dataEl) return;
 
-  const questions = JSON.parse(dataEl.textContent);
+  const testData = JSON.parse(dataEl.textContent);
+
+  const subjects = testData.subjects; // e.g. ["Maths","Physics"]
+  const questionsData = {}; // {Maths: [...], Physics: [...]}
+  subjects.forEach(sub => {
+    questionsData[sub] = testData[`${sub.toLowerCase()}_questions`].map(qTitle => {
+      const questionPage = window.allQuestions.find(q => q.Params.title === qTitle);
+      return questionPage ? {
+        title: questionPage.Params.title,
+        question: questionPage.Params.question,
+        options: questionPage.Params.options || [],
+        correctIndices: questionPage.Params.correctIndices || [],
+        numerical_answer: questionPage.Params.numerical_answer || "",
+        question_type: questionPage.Params.question_type || "",
+        solution: questionPage.Params.solution || "",
+        video: questionPage.Params.video || "",
+        start_time: questionPage.Params.start_time || 0
+      } : null;
+    }).filter(Boolean);
+  });
+
+  const rankPreset = testData.rank_preset || [];
+
+  let currentSubjectIndex = 0;
+  let currentQuestionIndex = 0;
+
+  const userAnswers = {}; // {Maths:{0:2,1:0,...}, Physics:{...}}
+  const markedForReview = {};
+
+  subjects.forEach(s => { userAnswers[s] = {}; markedForReview[s] = {}; });
+
   const app = document.getElementById("mocktest-app");
-  let currentIndex = 0;
-  const userAnswers = Array(questions.length).fill(null); // store selected answers
 
-  // Grab rank preset from frontmatter
-  const rankPreset = window.rankPreset || []; // later we can inject via <script>
+  // Timer per subject: 60 min
+  let timer = 60 * 60;
+  const topBar = document.createElement("div");
+  topBar.className = "flex justify-between mb-4 p-2 bg-gray-800 text-white font-concert rounded";
+  app.appendChild(topBar);
 
-  function renderQuestion(index) {
-    const q = questions[index];
+  function formatTime(sec) {
+    const m = Math.floor(sec/60).toString().padStart(2,"0");
+    const s = (sec%60).toString().padStart(2,"0");
+    return `${m}:${s}`;
+  }
 
-    // handle tags
-    const tags = (() => {
-      if (Array.isArray(q.tags)) return q.tags.map(t => String(t).trim()).filter(Boolean);
-      if (typeof q.tags === "string" && q.tags.trim()) {
-        try {
-          const parsed = JSON.parse(q.tags);
-          if (Array.isArray(parsed)) return parsed.map(t => String(t).trim()).filter(Boolean);
-        } catch(e){}
-        return q.tags.replace(/^\[|\]$/g,"").split(",").map(t=>t.trim()).filter(Boolean);
-      }
-      return [];
-    })();
+  function updateTimer() {
+    topBar.innerHTML = `
+      <div>${subjects[currentSubjectIndex]}</div>
+      <div>Time Left: ${formatTime(timer)}</div>
+    `;
+    if(timer>0){ timer--; setTimeout(updateTimer,1000); } 
+    else { alert("Time up for this subject!"); nextSubject(); }
+  }
+  updateTimer();
 
-    const isMulti = q.question_type === "Multiple Choice";
-    const isInteger = q.question_type === "Integer Type";
+  // Question Palette
+  const palette = document.createElement("div");
+  palette.className = "grid grid-cols-5 gap-2 mb-4";
+  app.appendChild(palette);
 
-    // question text
-    const rawQ = String(q.question || "");
-    const questionHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join("");
+  function renderPalette() {
+    const qList = questionsData[subjects[currentSubjectIndex]];
+    palette.innerHTML = "";
+    qList.forEach((q,i)=>{
+      const btn = document.createElement("button");
+      btn.className = "p-2 border rounded font-concert";
+      if(userAnswers[subjects[currentSubjectIndex]][i]!=null) btn.classList.add("bg-green-500","text-white");
+      if(markedForReview[subjects[currentSubjectIndex]][i]) btn.classList.add("bg-yellow-400");
+      btn.innerText = i+1;
+      btn.addEventListener("click",()=>{ currentQuestionIndex=i; renderQuestion(); });
+      palette.appendChild(btn);
+    });
+  }
 
-    app.innerHTML = `
-      <div class="question border rounded-lg p-4 shadow mb-4">
-        <h2 class="font-normal mb-3">Q${index + 1}.</h2>
-        <div class="question-text mb-3">${questionHtml}</div>
+  // Main question render
+  const questionContainer = document.createElement("div");
+  app.appendChild(questionContainer);
 
-        <div class="mb-4 flex flex-wrap gap-2">
-          ${tags.length ? tags.map(tag => `
-            <a href="/tags/${encodeURIComponent(tag.toLowerCase())}/"
-               class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition">
-              ${tag}
-            </a>`).join('') : ''}
-          ${q.difficulty ? `<a href="#" class="bg-blue-500 text-white font-concert text-sm px-3 py-1 rounded-full">Difficulty: ${q.difficulty}</a>` : ''}
-          ${q.question_type ? `<a href="#" class="bg-purple-500 text-white font-concert text-sm px-3 py-1 rounded-full">Type: ${q.question_type}</a>` : ''}
-        </div>
+  function renderQuestion() {
+    const sub = subjects[currentSubjectIndex];
+    const qData = questionsData[sub][currentQuestionIndex];
+    const rawQ = qData.question || "";
+    const questionHtml = rawQ.split(/\n\s*\n/).map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join("");
+    
+    let optionsHtml = "";
+    if(qData.question_type==="Multiple Choice"){
+      optionsHtml = qData.options.map((opt,i)=>`
+        <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
+            data-index="${i}">
+          ${opt}
+        </li>`).join("");
+      optionsHtml = `<ul>${optionsHtml}</ul>`;
+    } else if(qData.question_type==="Integer Type"){
+      optionsHtml = `
+        <input type="text" id="int-answer" class="border p-2 w-32 bg-gray-800 text-white font-concert placeholder-gray-400" 
+          placeholder="Enter answer" value="${userAnswers[sub][currentQuestionIndex] || ''}"/>
+      `;
+    }
 
-        ${isInteger ? `
-          <div class="flex items-center space-x-2">
-            <input id="int-answer" type="text" class="border rounded p-2 w-32 bg-gray-800 text-white font-concert placeholder-gray-400" placeholder="Enter answer" />
-            <button id="check-btn" class="px-4 py-2 font-concert bg-blue-500 text-white rounded">Submit</button>
-          </div>
-        ` : `
-          <ul class="space-y-2">
-            ${q.options.map((opt,i)=>`
-              <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10"
-                  data-index="${i}" data-correct="${q.correctIndices.includes(i)}">
-                <span class="latex-option">${opt}</span>
-              </li>`).join('')}
-          </ul>
-        `}
-
-        <div class="solution mt-4 hidden">
-          <strong>Solution:</strong> ${q.solution}
-          ${q.video_url ? `<div class="mt-6">
-            <p class="text-lg font-semibold mb-2">🎥 Video Solution</p>
-            <div style="display:flex;justify-content:center;">
-              <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
-                <iframe src="${q.video_url}" style="width:100%; height:100%; border:0; display:block;"
-                  frameborder="0" allowfullscreen title="Video Solution"></iframe>
-              </div>
-            </div>
-          </div>` : ""}
-        </div>
-      </div>
-
-      <div class="flex justify-between mt-6">
-        <button id="prev-btn" class="px-4 py-2 bg-blue-500 font-concert rounded" ${index===0?'style="display:none"':''}>Previous</button>
-        <button id="next-btn" class="px-4 py-2 bg-blue-500 font-concert text-white rounded">${index===questions.length-1?'Finish':'Next'}</button>
+    questionContainer.innerHTML = `
+      <h2 class="text-lg font-semibold mb-2">${sub} Q${currentQuestionIndex+1}</h2>
+      <div class="mb-3">${questionHtml}</div>
+      ${optionsHtml}
+      <div class="flex gap-2 mt-4">
+        <button id="prev-btn" class="px-4 py-2 bg-blue-500 text-white font-concert rounded">Previous</button>
+        <button id="next-btn" class="px-4 py-2 bg-blue-500 text-white font-concert rounded">Next</button>
+        <button id="mark-btn" class="px-4 py-2 bg-yellow-400 font-concert rounded">Mark for Review</button>
       </div>
     `;
 
-    // Option click
-    if (!isInteger) {
-      app.querySelectorAll(".option").forEach(opt => {
-        opt.addEventListener("click", () => {
-          const idx = parseInt(opt.dataset.index);
-          userAnswers[index] = idx;
-
-          app.querySelectorAll(".option").forEach(o => o.style.pointerEvents = "none");
-          if (q.correctIndices.includes(idx)) {
-            opt.classList.add("border-green-400");
-          } else {
-            opt.classList.add("border-red-400");
-            q.correctIndices.forEach(ci => {
-              const correctEl = Array.from(app.querySelectorAll(".option")).find(o=>parseInt(o.dataset.index)===ci);
-              if(correctEl) correctEl.classList.add("border-green-400");
-            });
-          }
-          app.querySelector(".solution").classList.remove("hidden");
+    // Option selection
+    if(qData.question_type==="Multiple Choice"){
+      questionContainer.querySelectorAll(".option").forEach(opt=>{
+        opt.addEventListener("click",()=>{
+          userAnswers[sub][currentQuestionIndex] = parseInt(opt.dataset.index);
+          renderPalette();
         });
       });
+    } else if(qData.question_type==="Integer Type"){
+      const input = questionContainer.querySelector("#int-answer");
+      input.addEventListener("input",()=>{ userAnswers[sub][currentQuestionIndex] = input.value.trim(); renderPalette(); });
     }
 
-    // Integer type
-    if (isInteger) {
-      const input = app.querySelector("#int-answer");
-      const checkBtn = app.querySelector("#check-btn");
-      const solution = app.querySelector(".solution");
-      checkBtn.addEventListener("click", () => {
-        userAnswers[index] = input.value.trim();
-        solution.classList.remove("hidden");
-        input.disabled = true;
-        checkBtn.disabled = true;
+    // Buttons
+    questionContainer.querySelector("#prev-btn").addEventListener("click",()=>{
+      if(currentQuestionIndex>0){ currentQuestionIndex--; renderQuestion(); }
+    });
+    questionContainer.querySelector("#next-btn").addEventListener("click",()=>{
+      if(currentQuestionIndex<questionsData[sub].length-1){ currentQuestionIndex++; renderQuestion(); }
+    });
+    questionContainer.querySelector("#mark-btn").addEventListener("click",()=>{
+      markedForReview[sub][currentQuestionIndex] = !markedForReview[sub][currentQuestionIndex];
+      renderPalette();
+    });
+
+    if(window.MathJax) MathJax.typesetPromise();
+  }
+
+  renderPalette();
+  renderQuestion();
+
+  function nextSubject(){
+    if(currentSubjectIndex<subjects.length-1){
+      currentSubjectIndex++;
+      currentQuestionIndex=0;
+      timer=60*60;
+      renderPalette();
+      renderQuestion();
+      updateTimer();
+    } else { calculateResult(); }
+  }
+
+  function calculateResult(){
+    app.innerHTML = `<h2 class="text-xl font-bold mb-4">Test Submitted</h2>`;
+    let totalScore=0;
+    subjects.forEach(sub=>{
+      let score=0;
+      const qList = questionsData[sub];
+      qList.forEach((q,i)=>{
+        if(q.question_type==="Multiple Choice" && userAnswers[sub][i]!=null && q.correctIndices.includes(userAnswers[sub][i])) score++;
+        if(q.question_type==="Integer Type" && userAnswers[sub][i]!=null && userAnswers[sub][i]==q.numerical_answer) score++;
       });
-    }
-
-    // Navigation
-    app.querySelector("#prev-btn")?.addEventListener("click", () => {
-      if(currentIndex>0){ currentIndex--; renderQuestion(currentIndex); }
+      totalScore+=score;
+      app.innerHTML+=`<div class="mb-2 font-concert">${sub}: ${score}/${qList.length}</div>`;
     });
-    app.querySelector("#next-btn")?.addEventListener("click", () => {
-      if(currentIndex<questions.length-1){ 
-        currentIndex++; renderQuestion(currentIndex); 
-      } else {
-        showResults();
-      }
-    });
+    app.innerHTML+=`<div class="mb-4 font-concert">Total Score: ${totalScore}</div>`;
 
-    // MathJax render
-    if(window.MathJax){ MathJax.typesetPromise(); }
+    // Estimated rank
+    let estRank = rankPreset.reduce((acc,p)=> totalScore>=p.marks?p.rank:acc, null);
+    if(estRank) app.innerHTML+=`<div class="mb-4 font-concert">Estimated Rank: ${estRank}</div>`;
   }
 
-  function showResults() {
-    let totalCorrect = 0;
-    questions.forEach((q,i)=>{
-      if(q.question_type==="Integer Type"){
-        if(String(q.numerical_answer).trim()===String(userAnswers[i]).trim()) totalCorrect++;
-      } else {
-        if(Array.isArray(userAnswers[i]) && userAnswers[i].sort().join(",")===q.correctIndices.sort().join(",")) totalCorrect++;
-        else if(q.correctIndices.includes(userAnswers[i])) totalCorrect++;
-      }
-    });
-
-    // find estimated rank from preset
-    let estimatedRank = "";
-    if(Array.isArray(rankPreset)){
-      for(let i=0;i<rankPreset.length;i++){
-        if(totalCorrect>=rankPreset[i].marks){ estimatedRank=rankPreset[i].rank; break; }
-      }
-    }
-
-    app.innerHTML = `
-      <div class="text-center p-6 bg-[#0f111a] text-white rounded-lg">
-        <h2 class="text-2xl mb-4">Test Completed ✅</h2>
-        <p class="mb-2">Your Score: <strong>${totalCorrect} / ${questions.length}</strong></p>
-        ${estimatedRank ? `<p class="mb-2">Estimated Rank: <strong>${estimatedRank}</strong></p>` : ""}
-        <a href="/mocktest-bank/" class="inline-block mt-4 bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-          ⬅ Back to Mock Tests
-        </a>
-      </div>
-    `;
-  }
-
-  // Render first question
-  renderQuestion(currentIndex);
 });

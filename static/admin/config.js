@@ -361,6 +361,14 @@ CMS.init({
   create: true,
   slug: "{{slug}}",
   fields: [
+    {
+  label: "Test UID",
+  name: "test_uid",
+  widget: "uuid", // use uuid widget if supported, else generate manually when saving
+  hint: "Unique ID for this test (used for results & leaderboards).",
+  default: "" // auto-generated on creation
+},
+
     { label: "Test Title", name: "title", widget: "string" },
 
     {

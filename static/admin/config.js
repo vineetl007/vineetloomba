@@ -147,6 +147,210 @@ CMS.init({
     }
       ]
     },
+//questions for physics
+     {
+  name: "questionsp",
+  label: "Questions",
+  folder: "content/questions/jee-physics",
+  create: true,
+   slug: "{{title}}",                  // file name (q1, q2…)
+  path: "{{chapter}}/{{question | slugify}}",   // SEO-friendly URL from question
+    fields: [
+    { 
+      label: "Title (File Name)", 
+      name: "title", 
+      widget: "string",
+      hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
+    },
+    { 
+      label: "Slug (URL)", 
+      name: "slug", 
+      widget: "string",
+      required: false,
+      hint: "Auto-generated from question text for URL"
+    },
+    {
+      label: "Chapter",
+      name: "chapter",
+      widget: "select",
+      options: ["kinematics", "laws-of-motion", "work-power-energy"],
+    },
+    { 
+  label: "DPP", 
+  name: "dpp", 
+  widget: "number", 
+  value_type: "int",
+  min: 1,
+  hint: "Enter DPP number (e.g., 1 for DPP-1)"
+  },
+
+    { label: "Tags", name: "tags", widget: "list" },
+    {
+      label: "Difficulty",
+      name: "difficulty",
+      widget: "select",
+      options: ["Easy", "Medium", "Hard"],
+    },
+    { 
+      label: "Question Type", 
+      name: "question_type", 
+      widget: "select", 
+      options: ["Single Choice", "Multiple Choice", "Integer Type"], 
+      default: "Single Choice" 
+    },
+    { label: "Question Text", name: "question", widget: "markdown" },
+
+    // Options for Single or Multiple Choice
+    { 
+      label: "Options", 
+      name: "options", 
+      widget: "list", 
+      field: { label: "Option", name: "option", widget: "string" },
+      required: false,
+      hint: "Only for Single or Multiple Choice questions",
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
+    },
+
+    // Correct indices for Single or Multiple Choice
+    { 
+      label: "Correct Option Index(es)", 
+      name: "correctIndices", 
+      widget: "list", 
+      field: { label: "Index", name: "index", widget: "number", min: 0 },
+      required: false,
+      hint: "Single number for single choice, multiple numbers for multiple choice",
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
+    },
+
+    // Numerical answer for Integer / Decimal type
+    {
+      label: "Numerical Answer",
+      name: "numerical_answer",
+      widget: "string",   // string allows decimals, fractions, negatives
+      required: false,
+      hint: "Enter your answer directly"
+    },
+
+    { label: "Solution / Explanation", name: "solution", widget: "markdown" },
+      // ✅ Add Video Solution Fields
+    { 
+      label: "Video Solution (YouTube ID)", 
+      name: "video", 
+      widget: "string", 
+      required: false,
+      hint: "Enter only the YouTube video ID (e.g., ZBKvhm1KnDA)" 
+    },
+    { 
+      label: "Start Time (seconds)", 
+      name: "start_time", 
+      widget: "number", 
+      required: false, 
+      hint: "Enter start time in seconds (default 0)" 
+    }
+      ]
+    },
+//questions for chemistry 
+     {
+  name: "questionsc",
+  label: "Questions",
+  folder: "content/questions/jee-chemistry",
+  create: true,
+   slug: "{{title}}",                  // file name (q1, q2…)
+  path: "{{chapter}}/{{question | slugify}}",   // SEO-friendly URL from question
+    fields: [
+    { 
+      label: "Title (File Name)", 
+      name: "title", 
+      widget: "string",
+      hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
+    },
+    { 
+      label: "Slug (URL)", 
+      name: "slug", 
+      widget: "string",
+      required: false,
+      hint: "Auto-generated from question text for URL"
+    },
+    {
+      label: "Chapter",
+      name: "chapter",
+      widget: "select",
+      options: ["chemical-bonding", "pblock", "sblock","atomic-structure"],
+    },
+    { 
+  label: "DPP", 
+  name: "dpp", 
+  widget: "number", 
+  value_type: "int",
+  min: 1,
+  hint: "Enter DPP number (e.g., 1 for DPP-1)"
+  },
+
+    { label: "Tags", name: "tags", widget: "list" },
+    {
+      label: "Difficulty",
+      name: "difficulty",
+      widget: "select",
+      options: ["Easy", "Medium", "Hard"],
+    },
+    { 
+      label: "Question Type", 
+      name: "question_type", 
+      widget: "select", 
+      options: ["Single Choice", "Multiple Choice", "Integer Type"], 
+      default: "Single Choice" 
+    },
+    { label: "Question Text", name: "question", widget: "markdown" },
+
+    // Options for Single or Multiple Choice
+    { 
+      label: "Options", 
+      name: "options", 
+      widget: "list", 
+      field: { label: "Option", name: "option", widget: "string" },
+      required: false,
+      hint: "Only for Single or Multiple Choice questions",
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
+    },
+
+    // Correct indices for Single or Multiple Choice
+    { 
+      label: "Correct Option Index(es)", 
+      name: "correctIndices", 
+      widget: "list", 
+      field: { label: "Index", name: "index", widget: "number", min: 0 },
+      required: false,
+      hint: "Single number for single choice, multiple numbers for multiple choice",
+      conditional: { field: "question_type", value: ["Single Choice", "Multiple Choice"] }
+    },
+
+    // Numerical answer for Integer / Decimal type
+    {
+      label: "Numerical Answer",
+      name: "numerical_answer",
+      widget: "string",   // string allows decimals, fractions, negatives
+      required: false,
+      hint: "Enter your answer directly"
+    },
+
+    { label: "Solution / Explanation", name: "solution", widget: "markdown" },
+      // ✅ Add Video Solution Fields
+    { 
+      label: "Video Solution (YouTube ID)", 
+      name: "video", 
+      widget: "string", 
+      required: false,
+      hint: "Enter only the YouTube video ID (e.g., ZBKvhm1KnDA)" 
+    },
+    { 
+      label: "Start Time (seconds)", 
+      name: "start_time", 
+      widget: "number", 
+      required: false, 
+      hint: "Enter start time in seconds (default 0)" 
+    }
+      ]
+    },
 
      {
   name: "practice",

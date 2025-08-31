@@ -358,48 +358,7 @@ CMS.init({
 // ------------------ JEE Main Mock Tests Collection ------------------
 
 // ================= Mock Tests =================
-      {
-        name: "mock-tests",
-        label: "JEE Main Mock Tests",
-        folder: "content/mock-tests",
-        create: true,
-        slug: "{{slug}}",
-        fields: [
-          { label:"Test UID", name:"test_uid", widget:"string", hint:"Manual input unique ID for this test" },
-          { label:"Test Title", name:"title", widget:"string" },
-          { label:"Subjects", name:"subjects", widget:"select", multiple:true, options:["Maths","Physics","Chemistry"], hint:"Select one or more subjects" },
-          { label:"Duration (minutes per subject)", name:"duration", widget:"number", default:60 },
-          { 
-            label:"Question Picker per Subject",
-            name:"questions",
-            widget:"list",
-            summary:"{{fields.subject}} - {{fields.title}}",
-            fields:[
-              { 
-                label:"Subject", name:"subject", widget:"select", options:["Maths","Physics","Chemistry"] 
-              },
-              {
-                label:"Select Questions",
-                name:"picker",
-                widget:"relation",
-                collection:function(value) {
-                  if(value.subject==="Maths") return "questions";
-                  if(value.subject==="Physics") return "questionsp";
-                  if(value.subject==="Chemistry") return "questionsc";
-                },
-                search_fields:["title","chapter","tags"],
-                value_field:"title",
-                display_fields:["title","chapter","difficulty","question_type"],
-                multiple:true,
-                required:true,
-              }
-            ]
-          },
-          { label:"Selected Questions Preview", name:"selected_preview", widget:"markdown", default:"No questions selected yet." },
-          { label:"Estimated AIR Mapping", name:"air_mapping", widget:"markdown", hint:"Score to percentile mapping" },
-          { label:"Status", name:"status", widget:"select", options:["Draft","Published"], default:"Draft" }
-        ]
-      },
+     
 
 // dpp creation in decap
      {

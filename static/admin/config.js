@@ -376,23 +376,50 @@ CMS.init({
     },
 
     {
-      label: "Marking Scheme",
-      name: "marking_scheme",
+  label: "Marking Scheme",
+  name: "marking_scheme",
+  widget: "object",
+  fields: [
+    {
+      label: "Single Choice",
+      name: "single",
       widget: "object",
       fields: [
-        { label: "Points for Correct", name: "correct", widget: "number", default: 4 },
-        { label: "Points for Wrong", name: "wrong", widget: "number", default: -1 },
-        { label: "Points for Unattempted", name: "unattempted", widget: "number", default: 0 },
+        { label: "Correct", name: "correct", widget: "number", default: 3 },
+        { label: "Wrong", name: "wrong", widget: "number", default: -1 },
+        { label: "Unattempted", name: "unattempted", widget: "number", default: 0 }
+      ]
+    },
+    {
+      label: "Multiple Correct",
+      name: "multiple",
+      widget: "object",
+      fields: [
+        { label: "Correct", name: "correct", widget: "number", default: 4 },
+        { label: "Wrong", name: "wrong", widget: "number", default: 0 },
+        { label: "Unattempted", name: "unattempted", widget: "number", default: 0 },
         {
-          label: "Multiple-correct scoring",
-          name: "multiple_correct_scoring",
+          label: "Scoring type",
+          name: "scoring",
           widget: "select",
           options: ["all-or-nothing", "partial"],
-          default: "all-or-nothing",
-          hint: "Partial = partial credit, All-or-nothing = full marks only if all correct options selected"
+          default: "partial",
+          hint: "Partial = distribute marks across correct choices"
         }
       ]
     },
+    {
+      label: "Integer / Numerical",
+      name: "integer",
+      widget: "object",
+      fields: [
+        { label: "Correct", name: "correct", widget: "number", default: 3 },
+        { label: "Wrong", name: "wrong", widget: "number", default: 0 },
+        { label: "Unattempted", name: "unattempted", widget: "number", default: 0 }
+      ]
+    }
+  ]
+},
 
     {
       label: "Subjects (select one or more)",

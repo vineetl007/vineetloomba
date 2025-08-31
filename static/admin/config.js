@@ -48,7 +48,7 @@ CMS.init({
   
 {
   name: "questions",
-  label: "Questions",
+  label: "Questions-Maths",
   folder: "content/questions/jee-math",
   create: true,
    slug: "{{title}}",                  // file name (q1, q2…)
@@ -150,7 +150,7 @@ CMS.init({
 //questions for physics
      {
   name: "questionsp",
-  label: "Questions",
+  label: "Questions-Physics",
   folder: "content/questions/jee-physics",
   create: true,
    slug: "{{title}}",                  // file name (q1, q2…)
@@ -252,7 +252,7 @@ CMS.init({
 //questions for chemistry 
      {
   name: "questionsc",
-  label: "Questions",
+  label: "Questions-Chemistry",
   folder: "content/questions/jee-chemistry",
   create: true,
    slug: "{{title}}",                  // file name (q1, q2…)

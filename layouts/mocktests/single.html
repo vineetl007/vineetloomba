@@ -3,16 +3,19 @@
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  {{/* Get the list of question titles from this mocktest frontmatter */}}
-  {{ $qTitles := .Params.questions }}
+  {{/* Pull question titles from this mock test */}}
+  {{ $qTitles := slice }}
+  {{ range .Params.maths_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
+  {{ range .Params.physics_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
+  {{ range .Params.chemistry_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
 
   {{/* Get all questions from /questions/ */}}
   {{ $allQs := where .Site.RegularPages "Section" "questions" }}
   {{ $mockQs := slice }}
 
-  {{/* Loop through question titles and collect matching question pages */}}
-  {{ range $qTitles }}
-    {{ $q := index (where $allQs "Title" .) 0 }}
+  {{/* Match question pages by title */}}
+  {{ range $qTitle := $qTitles }}
+    {{ $q := index (where $allQs "Params.title" $qTitle) 0 }}
     {{ if $q }}
       {{ $mockQs = $mockQs | append $q }}
     {{ end }}
@@ -53,6 +56,7 @@
       ⬅ Back to Mock Tests
     </a>
   </div>
+
 </div>
 
 {{ end }}

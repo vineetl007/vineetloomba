@@ -362,112 +362,63 @@ CMS.init({
   slug: "{{slug}}",
   fields: [
     {
-  label: "Test UID",
-  name: "test_uid",
-  widget: "uuid", // use uuid widget if supported, else generate manually when saving
-  hint: "Unique ID for this test (used for results & leaderboards).",
-  default: "" // auto-generated on creation
-},
-
+      label: "Test UID",
+      name: "test_uid",
+      widget: "string", // ✅ use simple string, not uuid widget
+      hint: "Enter a unique ID manually (used for results & leaderboards)"
+    },
     { label: "Test Title", name: "title", widget: "string" },
-
     {
       label: "Subjects",
       name: "subjects",
       widget: "select",
       multiple: true,
-      options: ["Maths", "Physics", "Chemistry"],
-      hint: "Select one or more subjects for this mock test."
+      options: ["jee-math", "jee-physics", "jee-chemistry"],
+      hint: "Select one or more subjects for this test"
     },
-
+    {
+      label: "Chapters",
+      name: "chapters",
+      widget: "relation",
+      collection: "questions",  // ✅ pull chapters dynamically from existing question files
+      search_fields: ["chapter"],
+      value_field: "chapter",
+      display_fields: ["chapter"],
+      multiple: true,
+      hint: "Select which chapters to include (only questions from these chapters will show)"
+    },
+    {
+      label: "Difficulty Filter",
+      name: "difficulty",
+      widget: "select",
+      multiple: true,
+      options: ["Easy", "Medium", "Hard"]
+    },
+    {
+      label: "Tags Filter",
+      name: "tags",
+      widget: "select",
+      multiple: true,
+      options: ["PYQ", "JEE Main", "JEE Advanced"]
+    },
+    {
+      label: "Select Questions",
+      name: "questions",
+      widget: "relation",
+      collection: "questions",
+      search_fields: ["title", "chapter", "tags"],
+      value_field: "slug",
+      display_fields: ["title", "chapter", "difficulty", "question_type"],
+      multiple: true,
+      filter: { field: "chapter", value: "{{chapters}}" } // ✅ only show questions from selected chapters
+    },
     {
       label: "Duration (minutes)",
       name: "duration",
       widget: "number",
       default: 60,
-      hint: "Duration is per subject (auto-calculated total). You can override here."
+      hint: "Duration is per subject (auto-calculated total)."
     },
-
-    {
-      label: "Chapter Selection",
-      name: "chapters",
-      widget: "list",
-      summary: "{{fields.subject}} → {{fields.chapter}}",
-      hint: "Select chapters per subject. Lazy loads available chapters.",
-      fields: [
-        {
-          label: "Subject",
-          name: "subject",
-          widget: "select",
-          options: ["Maths", "Physics", "Chemistry"]
-        },
-        {
-          label: "Chapter",
-          name: "chapter",
-          widget: "select",
-          options: [], // lazy-loaded dynamically based on subject
-          hint: "Select chapter for this subject."
-        }
-      ]
-    },
-
-    {
-      label: "Filters",
-      name: "filters",
-      widget: "object",
-      fields: [
-        {
-          label: "Tags",
-          name: "tags",
-          widget: "select",
-          multiple: true,
-          options: [], // dynamically fetch all unique tags from questions folder
-          hint: "Filter questions by tags (e.g., jeemain, pyq)"
-        },
-        {
-          label: "Difficulty",
-          name: "difficulty",
-          widget: "select",
-          multiple: true,
-          options: ["Easy", "Medium", "Hard"]
-        }
-      ]
-    },
-
-    {
-      label: "Question Picker",
-      name: "questions",
-      widget: "list",
-      summary: "{{fields.title}}",
-      hint: "Search and select questions manually. Required: 20 Single + 5 Integer per subject.",
-      fields: [
-        {
-          label: "Question Title",
-          name: "title",
-          widget: "relation",
-          collection: "questions",
-          search_fields: ["title", "chapter", "tags"],
-          value_field: "title",
-          display_fields: ["title", "chapter", "difficulty", "question_type"]
-        }
-      ]
-    },
-
-    {
-      label: "Selected Questions Preview",
-      name: "selected_preview",
-      widget: "markdown",
-      hint: "Auto-generated read-only view showing selected questions grouped by subject and type.",
-      default: "No questions selected yet."
-    },
-
-    {
-      label: "Estimated AIR Mapping",
-      name: "air_mapping",
-      widget: "markdown",
-      hint: "Enter score-to-percentile mapping in simple table format."
-    },
-
     {
       label: "Status",
       name: "status",
@@ -477,6 +428,7 @@ CMS.init({
     }
   ]
 },
+
 
 // dpp creation in decap
      {

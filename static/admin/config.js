@@ -357,8 +357,7 @@ CMS.init({
 // ✅ JEE Main Mock Tests
 // ------------------ JEE Main Mock Tests Collection ------------------
 
-// ================= Mock Tests =================
-     {
+{
   name: "mocktests",
   label: "Mock Tests",
   folder: "content/mocktests",
@@ -379,18 +378,21 @@ CMS.init({
       name: "maths_questions",
       widget: "list",
       field: { label: "Question Title", name: "title", widget: "string" },
+      hint: "Enter question titles exactly as stored in 'title' of questions (e.g. d10, d23, d45)."
     },
     {
       label: "Physics Questions",
       name: "physics_questions",
       widget: "list",
       field: { label: "Question Title", name: "title", widget: "string" },
+      hint: "Enter question titles for physics."
     },
     {
       label: "Chemistry Questions",
       name: "chemistry_questions",
       widget: "list",
       field: { label: "Question Title", name: "title", widget: "string" },
+      hint: "Enter question titles for chemistry."
     },
     {
       label: "Rank Preset",
@@ -399,7 +401,8 @@ CMS.init({
       fields: [
         { label: "Marks", name: "marks", widget: "number" },
         { label: "Estimated Rank", name: "rank", widget: "number" }
-      ]
+      ],
+      hint: "Define marks-to-rank mapping (e.g. 300 → 100, 250 → 500)."
     }
   ]
 },

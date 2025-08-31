@@ -1,0 +1,12 @@
+{
+  "title": {{ .Params.title | jsonify }},
+  "chapter": {{ .Params.chapter | jsonify }},
+  "dpp": {{ .Params.dpp | jsonify }},
+  "tags": {{ .Params.tags | jsonify }},
+  "difficulty": {{ .Params.difficulty | jsonify }},
+  "question_type": {{ .Params.question_type | jsonify }},
+  "question": {{ .Params.question | jsonify }},
+  "options": {{ .Params.options | jsonify }},
+  "correctIndices": {{ .Params.correctIndices | jsonify }},
+  "solution": {{ .Params.solution | jsonify }}
+}

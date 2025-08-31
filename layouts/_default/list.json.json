@@ -1,0 +1,17 @@
+[
+{{- $pages := .Pages -}}
+{{- range $index, $page := $pages -}}
+  {
+    "title": {{ $page.Params.title | jsonify }},
+    "chapter": {{ $page.Params.chapter | jsonify }},
+    "dpp": {{ $page.Params.dpp | jsonify }},
+    "tags": {{ $page.Params.tags | jsonify }},
+    "difficulty": {{ $page.Params.difficulty | jsonify }},
+    "question_type": {{ $page.Params.question_type | jsonify }},
+    "question": {{ $page.Params.question | jsonify }},
+    "options": {{ $page.Params.options | jsonify }},
+    "correctIndices": {{ $page.Params.correctIndices | jsonify }},
+    "solution": {{ $page.Params.solution | jsonify }}
+  }{{ if lt (add $index 1) (len $pages) }},{{ end }}
+{{- end -}}
+]

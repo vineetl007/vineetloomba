@@ -47,6 +47,8 @@ paginate = 10
     url = "https://www.youtube.com/@vineetloombasir"
     weight = 5
 
-    [outputs]
+[outputs]
 section = ["HTML", "JSON"]
+page = ["HTML", "JSON"]
+
 

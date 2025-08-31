@@ -1,11 +1,11 @@
 ---
-title: as1
+title: as2
 chapter: atomic-structure
 dpp: 1
 tags:
   - jeemain
-difficulty: Easy
-question_type: Multiple Choice
+difficulty: Medium
+question_type: Single Choice
 question: "questions of atomic strucutre "
 options:
   - "questions of atomic strucutre "
@@ -13,6 +13,5 @@ options:
   - "questions of atomic strucutre "
 correctIndices:
   - 1
-  - 0
 solution: solution of atomic struc
 ---

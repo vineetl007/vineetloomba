@@ -2,31 +2,49 @@
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  {{ $test := .Params }}
-  <script>
-    window.dummyTest = {
-      maths_questions: {{ $test.maths_questions | jsonify }},
-      physics_questions: {{ $test.physics_questions | jsonify }},
-      chemistry_questions: {{ $test.chemistry_questions | jsonify }}
-    };
-  </script>
-
-  {{ $allQs := where .Site.RegularPages "Section" "questions" }}
-  {{ range $allQs }}
-    <script type="application/json" data-question-path="{{ .File.Path }}">
-      {{ dict "question" .Params.question "options" .Params.options "correctIndices" .Params.correctIndices "solution" .Params.solution "question_type" .Params.question_type "numerical_answer" .Params.numerical_answer "difficulty" .Params.difficulty "tags" .Params.tags "video" .Params.video "start_time" .Params.start_time | jsonify }}
-    </script>
-  {{ end }}
-
-  <div id="sections" class="mb-4 flex gap-2"></div>
+  {{ $mock := .Params }}
   <div id="mocktest-app" class="min-h-[400px]"></div>
 
-  <div class="mt-6">
-    <a href="/mocktests/" class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-      ⬅ Back to Tests
-    </a>
-  </div>
-</div>
+  <script type="application/json" id="mocktest-data">
+[
+  {{- $subjects := slice "maths" "physics" "chemistry" -}}
+  {{- range $sIndex, $sub := $subjects -}}
+    {{- $qList := index $mock (printf "%s_questions" $sub) -}}
+    {{- if $qList }}
+      {{- range $i, $qPath := $qList -}}
+        {{- $qPage := site.GetPage $qPath -}}
+        {{- if $qPage }}
+        {
+          "id": {{ add (mul $sIndex 1000) $i }},
+          "subject": "{{ $sub }}",
+          "title": "{{ $qPage.Title | safeJS }}",
+          "question": {{ $qPage.Params.question | jsonify }},
+          "options": {{ $qPage.Params.options | jsonify }},
+          "correctIndices": {{ $qPage.Params.correctIndices | jsonify }},
+          "solution": {{ $qPage.Params.solution | jsonify }},
+          "question_type": "{{ $qPage.Params.question_type }}",
+          "numerical_answer": {{ $qPage.Params.numerical_answer | jsonify }},
+          "difficulty": {{ if $qPage.Params.difficulty }}"{{ $qPage.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
+          "tags": {{ if $qPage.Params.tags }}{{ $qPage.Params.tags | jsonify }}{{ else }}[]{{ end }},
+          "video_url": {{ if $qPage.Params.video }}"https://www.youtube.com/embed/{{ $qPage.Params.video }}?start={{ $qPage.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
+        }{{ if not (and (eq $sIndex (sub (len $subjects) 1)) (eq $i (sub (len $qList) 1))) }},{{ end }}
+        {{- else }}
+        // No question found at path: {{ $qPath }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+]
+</script>
 
 <script src="/js/mocktest.js"></script>
+
+<div class="mt-6">
+  <a href="/mocktests/"
+     class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
+    ⬅ Back to Mock Tests
+  </a>
+</div>
+
+</div>
 {{ end }}

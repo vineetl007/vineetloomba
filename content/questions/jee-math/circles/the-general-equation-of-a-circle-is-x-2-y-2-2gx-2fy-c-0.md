@@ -1,6 +1,6 @@
 ---
 title: d10
-slug: questions-on-circle
+slug: questions-on-circle-23
 chapter: circles
 dpp: 1
 tags:

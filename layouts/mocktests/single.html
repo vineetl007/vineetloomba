@@ -21,24 +21,31 @@
   {{ if gt (len $mockQs) 0 }}
     <div id="mocktest-app" class="min-h-[400px]"></div>
 
-    <script type="application/json" id="mocktest-data">
-[
-  {{- range $index, $q := $mockQs -}}
-    {
-      "id": {{ $index }},
-      "question": "{{ $q.Params.question | safeJS }}",
-      "options": [{{ range $i, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $i 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
-      "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-      "solution": "{{ $q.Params.solution | safeJS }}",
-      "question_type": "{{ $q.Params.question_type }}",
-      "numerical_answer": "{{ $q.Params.numerical_answer }}",
-      "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-      "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-      "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-    }{{ if not (eq (add $index 1) (len $mockQs)) }},{{ end }}
-  {{- end -}}
-]
-    </script>
+  <script>
+window.allQuestions = [
+{{- $pages := where .Site.RegularPages "Section" "questions" -}}
+{{- range $i, $p := $pages -}}
+  {{ if $i }},{{ end -}}
+  {
+    File: { Path: "{{ $p.File.Path }}" },
+    RelPermalink: "{{ $p.RelPermalink }}",
+    HTML: {{ $p.Content | safeJS }},
+    Params: {{ $p.Params | jsonify }}
+  }
+{{- end -}}
+];
+</script>
+
+  
+<script type="application/json" id="mocktest-data">
+{
+  "maths": {{ jsonify .Params.maths_questions }},
+  "physics": {{ jsonify .Params.physics_questions }},
+  "chemistry": {{ jsonify .Params.chemistry_questions }},
+  "rank_preset": {{ jsonify .Params.rank_preset }}
+}
+</script>
+
 
     <script src="/js/mocktest.js"></script>
 

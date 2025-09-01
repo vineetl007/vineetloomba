@@ -9,9 +9,9 @@ maths_questions:
   - questions/jee-math/parabola/p1.md
   - questions/jee-math/parabola/p14.md
 physics_questions:
-  - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k1
-  - questions/jee-physics/kinematics/k3
+  - questions/jee-physics/kinematics/k2.md
+  - questions/jee-physics/kinematics/k1.md
+  - questions/jee-physics/kinematics/k3.md
 rank_preset:
   - marks: 24
     rank: 100

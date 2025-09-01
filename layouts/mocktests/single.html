@@ -46,12 +46,13 @@ window.allQuestions = [
   {
     "File": { "Path": "{{ $p.File.Path }}" },
     "RelPermalink": "{{ $p.RelPermalink }}",
-    "HTML": {{ $p.Content | safeJS }},
+    "HTML": {{ $p.Content | jsonify }},
     "Params": {{ $p.Params | jsonify }}
   }
 {{- end -}}
 ];
 </script>
+
 
 
   

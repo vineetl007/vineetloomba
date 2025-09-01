@@ -19,7 +19,25 @@
   {{ end }}
 
   {{ if gt (len $mockQs) 0 }}
-    <div id="mocktest-app" class="min-h-[400px]"></div>
+<div id="mocktest-app" class="min-h-[400px]">
+  <!-- subject tabs -->
+  <div id="sections" class="flex gap-2 mb-4"></div>
+
+  <!-- timer -->
+  <div id="timer" class="mb-4 text-yellow-400 font-bold"></div>
+
+  <!-- question display -->
+  <div id="question-container" class="mb-4"></div>
+
+  <!-- navigation palette -->
+  <div id="nav" class="mb-4"></div>
+
+  <!-- submit button -->
+  <button id="submit-test" class="bg-green-600 text-white px-4 py-2 rounded">
+    Submit Test
+  </button>
+</div>
+
 
 <script>
 window.allQuestions = [

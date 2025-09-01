@@ -1,136 +1,33 @@
 {{ define "main" }}
-<div class="container mx-auto px-4 py-6">
-  <h1 class="text-2xl mb-4">{{ .Title }}</h1>
-
-  {{/* normalize lists */}}
-  {{ $maths := .Params.maths_questions | default (slice) }}
-  {{ $physics := .Params.physics_questions | default (slice) }}
-  {{ $chemistry := .Params.chemistry_questions | default (slice) }}
-
-  {{/* mocktest-data JSON: lists for each subject (preserve order) */}}
-  <script type="application/json" id="mocktest-data">
-  {
-    "maths": [
-      {{- $len := len $maths -}}
-      {{- range $i, $path := $maths -}}
-        {{- if $i }},{{ end -}}
-        {{- $page := site.GetPage $path -}}
-        {{- if $page }}
-        {
-          "path": "{{ $path }}",
-          "question": {{ $page.Params.question | default "" | safeJS }},
-          "options": {{ $page.Params.options | default (slice) | jsonify }},
-          "correctIndices": {{ $page.Params.correctIndices | default (slice) | jsonify }},
-          "solution": {{ $page.Params.solution | default "" | safeJS }},
-          "question_type": {{ $page.Params.question_type | default "" | safeJS }},
-          "numerical_answer": {{ $page.Params.numerical_answer | default "" | safeJS }},
-          "difficulty": {{ if $page.Params.difficulty }}"{{ $page.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-          "tags": {{ $page.Params.tags | default (slice) | jsonify }},
-          "video": {{ if $page.Params.video }}"{{ $page.Params.video }}"{{ else }}""{{ end }}
-        }
-        {{- else }}
-        {
-          "path": "{{ $path }}",
-          "question": "",
-          "options": [],
-          "correctIndices": [],
-          "solution": "",
-          "question_type": "",
-          "numerical_answer": "",
-          "difficulty": "",
-          "tags": [],
-          "video": ""
-        }
-        {{- end -}}
-      {{- end -}}
-    ],
-    "physics": [
-      {{- $len := len $physics -}}
-      {{- range $i, $path := $physics -}}
-        {{- if $i }},{{ end -}}
-        {{- $page := site.GetPage $path -}}
-        {{- if $page }}
-        {
-          "path": "{{ $path }}",
-          "question": {{ $page.Params.question | default "" | safeJS }},
-          "options": {{ $page.Params.options | default (slice) | jsonify }},
-          "correctIndices": {{ $page.Params.correctIndices | default (slice) | jsonify }},
-          "solution": {{ $page.Params.solution | default "" | safeJS }},
-          "question_type": {{ $page.Params.question_type | default "" | safeJS }},
-          "numerical_answer": {{ $page.Params.numerical_answer | default "" | safeJS }},
-          "difficulty": {{ if $page.Params.difficulty }}"{{ $page.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-          "tags": {{ $page.Params.tags | default (slice) | jsonify }},
-          "video": {{ if $page.Params.video }}"{{ $page.Params.video }}"{{ else }}""{{ end }}
-        }
-        {{- else }}
-        {
-          "path": "{{ $path }}",
-          "question": "",
-          "options": [],
-          "correctIndices": [],
-          "solution": "",
-          "question_type": "",
-          "numerical_answer": "",
-          "difficulty": "",
-          "tags": [],
-          "video": ""
-        }
-        {{- end -}}
-      {{- end -}}
-    ],
-    "chemistry": [
-      {{- $len := len $chemistry -}}
-      {{- range $i, $path := $chemistry -}}
-        {{- if $i }},{{ end -}}
-        {{- $page := site.GetPage $path -}}
-        {{- if $page }}
-        {
-          "path": "{{ $path }}",
-          "question": {{ $page.Params.question | default "" | safeJS }},
-          "options": {{ $page.Params.options | default (slice) | jsonify }},
-          "correctIndices": {{ $page.Params.correctIndices | default (slice) | jsonify }},
-          "solution": {{ $page.Params.solution | default "" | safeJS }},
-          "question_type": {{ $page.Params.question_type | default "" | safeJS }},
-          "numerical_answer": {{ $page.Params.numerical_answer | default "" | safeJS }},
-          "difficulty": {{ if $page.Params.difficulty }}"{{ $page.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-          "tags": {{ $page.Params.tags | default (slice) | jsonify }},
-          "video": {{ if $page.Params.video }}"{{ $page.Params.video }}"{{ else }}""{{ end }}
-        }
-        {{- else }}
-        {
-          "path": "{{ $path }}",
-          "question": "",
-          "options": [],
-          "correctIndices": [],
-          "solution": "",
-          "question_type": "",
-          "numerical_answer": "",
-          "difficulty": "",
-          "tags": [],
-          "video": ""
-        }
-        {{- end -}}
-      {{- end -}}
-    ],
-    "rank_preset": {{ .Params.rank_preset | default (slice) | jsonify }}
-  }
-  </script>
-
-  <!-- Mocktest app DOM -->
-  <div id="mocktest-app" class="min-h-[400px]">
-    <div id="sections" class="flex gap-2 mb-4"></div>
-    <div class="flex items-center justify-between mb-4">
-      <div id="timer" class="text-yellow-400 font-mono text-lg"></div>
-      <div id="summary" class="text-sm text-gray-300"></div>
-    </div>
-    <div id="question-container" class="mb-4"></div>
-    <div id="nav" class="mb-4 flex flex-wrap"></div>
-    <div class="flex gap-2">
-      <button id="submit-test" class="bg-green-600 text-white px-4 py-2 rounded">Submit Test</button>
-      <a href="/mocktest-bank/" class="ml-2 inline-block bg-blue-500 text-white px-4 py-2 rounded">Back</a>
-    </div>
+<div id="mocktest-app" class="p-4 text-white font-sans">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">{{ .Title }}</h1>
+    <div id="timer" class="font-mono text-lg"></div>
   </div>
 
-  <script src="/js/mocktest.js"></script>
+  <div id="sections" class="flex gap-2 mb-4"></div>
+
+  <div id="question-container" class="border p-4 rounded bg-gray-900"></div>
+
+  <div id="palette" class="flex flex-wrap gap-2 mt-4"></div>
+
+  <div class="mt-6 flex justify-center">
+    <button id="submit-test" class="bg-green-600 px-4 py-2 rounded">
+      Submit Test
+    </button>
+  </div>
 </div>
+
+<!-- Embed mocktest meta + question paths -->
+<script id="mocktest-data" type="application/json">
+{
+  "title": "{{ .Title }}",
+  "uid": "{{ .Params.uid }}",
+  "maths": {{ .Params.maths_questions | jsonify }},
+  "physics": {{ .Params.physics_questions | jsonify }},
+  "chemistry": {{ .Params.chemistry_questions | jsonify }}
+}
+</script>
+
+<script src="/mocktest.js"></script>
 {{ end }}

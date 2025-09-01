@@ -51,7 +51,24 @@ window.allQuestions = [
   }
 {{- end -}}
 ];
+
+  // Build qStore from allQuestions
 </script>
+function buildQStore() {
+  const store = { maths: [], physics: [], chemistry: [] };
+
+  window.allQuestions.forEach(q => {
+    const path = q.File.Path.toLowerCase();
+    if (path.includes("jee-math")) store.maths.push(q);
+    else if (path.includes("jee-physics")) store.physics.push(q);
+    else if (path.includes("jee-chemistry")) store.chemistry.push(q);
+  });
+
+  return store;
+}
+
+let qStore = buildQStore();
+console.log("qStore built:", qStore);
 
 
 

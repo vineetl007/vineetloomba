@@ -51,6 +51,8 @@ CMS.init({
   label: "Questions-Maths",
   folder: "content/questions/jee-math",
   create: true,
+      // Explicitly set the identifier field.
+      identifier_field: 'title',
    slug: "{{fields.title}}",                  // file name (q1, q2…)
    path: "{{chapter}}/{{fields.slug}}",   // SEO-friendly URL from question
     fields: [

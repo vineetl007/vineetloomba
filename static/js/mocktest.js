@@ -345,6 +345,7 @@
 
   // initialization
   (function init(){
+    console.log("Loaded questions:", window.allQuestions.length);
     // ensure answers/visited/marked default objects for each index
     ['maths','physics','chemistry'].forEach(k=>{
       answers[k] = {};

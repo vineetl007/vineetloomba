@@ -26,4 +26,18 @@
       {{ end }}
     {{ end }}
   {{ end }}
+<h2>All Question Pages (Debug Dump)</h2>
+<ul>
+  {{ range site.RegularPages }}
+    {{ if in .File.Path "questions" }}
+      <li>
+        <strong>File:</strong> {{ .File.Path }} <br>
+        <strong>Title:</strong> {{ .Title }} <br>
+        <strong>RelPermalink:</strong> {{ .RelPermalink }} <br>
+        <strong>Lookup Key (Guess):</strong> {{ .Path }}
+      </li>
+    {{ end }}
+  {{ end }}
+</ul>
+
 {{ end }}

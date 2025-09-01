@@ -5,13 +5,13 @@ subjects:
   - Maths
   - Physics
 maths_questions:
-  - d10
-  - p1
-  - p14
+  - questions/jee-math/circles/d10
+  - questions/jee-math/parabola/p1
+  - questions/jee-math/parabola/p14
 physics_questions:
-  - k2
-  - k1
-  - k3
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k1
+  - questions/jee-physics/kinematics/k3
 rank_preset:
   - marks: 24
     rank: 100

@@ -52,7 +52,7 @@ CMS.init({
   folder: "content/questions/jee-math",
   create: true,
       // Explicitly set the identifier field.
-      identifier_field: "title",
+   identifier_field: "title",
    slug: "{{title}}",                  // file name (q1, q2…)
     path: "{{chapter}}/{{title}}",   // SEO-friendly URL from question
     fields: [
@@ -67,7 +67,7 @@ CMS.init({
       name: "slug", 
       widget: "string",
       required: false,
-      hint: "Auto-generated from question text for URL"
+      hint: "type in manually dont repeat"
     },
     {
       label: "Chapter",
@@ -155,8 +155,10 @@ CMS.init({
   label: "Questions-Physics",
   folder: "content/questions/jee-physics",
   create: true,
+     // Explicitly set the identifier field.
+   identifier_field: "title",
    slug: "{{title}}",                  // file name (q1, q2…)
-  path: "{{chapter}}/{{question | slugify}}",   // SEO-friendly URL from question
+    path: "{{chapter}}/{{title}}",   // SEO-friendly URL from question
     fields: [
     { 
       label: "Title (File Name)", 
@@ -169,7 +171,7 @@ CMS.init({
       name: "slug", 
       widget: "string",
       required: false,
-      hint: "Auto-generated from question text for URL"
+      hint: "type in manually dont repeat"
     },
     {
       label: "Chapter",
@@ -257,8 +259,10 @@ CMS.init({
   label: "Questions-Chemistry",
   folder: "content/questions/jee-chemistry",
   create: true,
+     // Explicitly set the identifier field.
+   identifier_field: "title",
    slug: "{{title}}",                  // file name (q1, q2…)
-  path: "{{chapter}}/{{question | slugify}}",   // SEO-friendly URL from question
+    path: "{{chapter}}/{{title}}",   // SEO-friendly URL from question
     fields: [
     { 
       label: "Title (File Name)", 
@@ -271,7 +275,7 @@ CMS.init({
       name: "slug", 
       widget: "string",
       required: false,
-      hint: "Auto-generated from question text for URL"
+      hint: "type in manually dont repeat"
     },
     {
       label: "Chapter",

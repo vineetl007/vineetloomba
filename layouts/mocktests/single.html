@@ -39,18 +39,50 @@
 </div>
 
 
-<script>
-window.allQuestions = [
-{{- range $i, $p := (where .Site.RegularPages "Section" "questions") -}}
-  {{- if $i }},{{ end -}}
-  {
-    "File": { "Path": "{{ $p.File.Path }}" },
-    "RelPermalink": "{{ $p.RelPermalink }}",
-    "HTML": {{ $p.Content | jsonify }},
-    "Params": {{ $p.Params | jsonify }}
-  }
-{{- end -}}
-];
+<script type="application/json" id="mocktest-data">
+{
+  "maths": [
+    {{ range $i, $path := .Params.maths_questions }}
+      {{- if $i }},{{ end -}}
+      {{ with site.GetPage $path }}
+        {
+          "File": { "Path": "{{ .File.Path }}" },
+          "RelPermalink": "{{ .RelPermalink }}",
+          "HTML": {{ .Content | safeJS }},
+          "Params": {{ .Params | jsonify }}
+        }
+      {{ end }}
+    {{ end }}
+  ],
+  "physics": [
+    {{ range $i, $path := .Params.physics_questions }}
+      {{- if $i }},{{ end -}}
+      {{ with site.GetPage $path }}
+        {
+          "File": { "Path": "{{ .File.Path }}" },
+          "RelPermalink": "{{ .RelPermalink }}",
+          "HTML": {{ .Content | safeJS }},
+          "Params": {{ .Params | jsonify }}
+        }
+      {{ end }}
+    {{ end }}
+  ],
+  "chemistry": [
+    {{ range $i, $path := .Params.chemistry_questions }}
+      {{- if $i }},{{ end -}}
+      {{ with site.GetPage $path }}
+        {
+          "File": { "Path": "{{ .File.Path }}" },
+          "RelPermalink": "{{ .RelPermalink }}",
+          "HTML": {{ .Content | safeJS }},
+          "Params": {{ .Params | jsonify }}
+        }
+      {{ end }}
+    {{ end }}
+  ]
+}
+</script>
+
 
   // Build qStore from allQuestions
 </script>

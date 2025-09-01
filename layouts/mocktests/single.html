@@ -3,60 +3,83 @@
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  {{/* Pull question titles from this mock test */}}
-  {{ $qTitles := slice }}
-  {{ range .Params.maths_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
-  {{ range .Params.physics_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
-  {{ range .Params.chemistry_questions }}{{ $qTitles = $qTitles | append . }}{{ end }}
+  {{/* Collect all questions (maths, physics, chemistry) */}}
+  {{ $qMaths := slice }}{{ range .Params.maths_questions }}{{ $q := index (where $.Site.RegularPages "File.Path" .) 0 }}{{ if $q }}{{ $qMaths = $qMaths | append $q }}{{ end }}{{ end }}
+  {{ $qPhysics := slice }}{{ range .Params.physics_questions }}{{ $q := index (where $.Site.RegularPages "File.Path" .) 0 }}{{ if $q }}{{ $qPhysics = $qPhysics | append $q }}{{ end }}{{ end }}
+  {{ $qChem := slice }}{{ range .Params.chemistry_questions }}{{ $q := index (where $.Site.RegularPages "File.Path" .) 0 }}{{ if $q }}{{ $qChem = $qChem | append $q }}{{ end }}{{ end }}
 
-  {{/* Get all questions from /questions/ */}}
-  {{ $allQs := where .Site.RegularPages "Section" "questions" }}
-  {{ $mockQs := slice }}
+  {{ $hasQs := or (gt (len $qMaths) 0) (gt (len $qPhysics) 0) (gt (len $qChem) 0) }}
 
-  {{/* Match question pages by title */}}
-  {{ range $qTitle := $qTitles }}
-    {{ $q := index (where $allQs "Params.title" $qTitle) 0 }}
-    {{ if $q }}
-      {{ $mockQs = $mockQs | append $q }}
-    {{ end }}
-  {{ end }}
+  {{ if $hasQs }}
+    <div id="mocktest-app" class="min-h-[500px]">
+      <div class="flex justify-between items-center mb-4">
+        <div id="sections" class="flex gap-4"></div>
+        <div id="timer" class="text-xl font-bold text-red-500"></div>
+      </div>
 
-  {{ if gt (len $mockQs) 0 }}
-    <div id="mocktest-app" class="min-h-[400px]"></div>
+      <div id="question-container" class="mb-6"></div>
 
+      <div id="nav" class="grid grid-cols-6 sm:grid-cols-10 gap-2 mb-6"></div>
+
+      <button id="submit-test"
+              class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-500 transition">
+        Submit Test
+      </button>
+    </div>
+
+    {{/* Embed questions as JSON for mocktest.js */}}
     <script type="application/json" id="mocktest-data">
-[
-  {{- range $index, $q := $mockQs -}}
     {
-      "id": {{ $index }},
-      "question": "{{ $q.Params.question | safeJS }}",
-      "options": [{{ range $i, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $i 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
-      "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-      "solution": "{{ $q.Params.solution | safeJS }}",
-      "question_type": "{{ $q.Params.question_type }}",
-      "numerical_answer": "{{ $q.Params.numerical_answer }}",
-      "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-      "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-      "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-    }{{ if not (eq (add $index 1) (len $mockQs)) }},{{ end }}
-  {{- end -}}
-]
+      "maths": [
+        {{- range $i, $q := $qMaths -}}
+          {
+            "id": "M{{ $i }}",
+            "question": "{{ $q.Params.question | safeJS }}",
+            "options": [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
+            "correctIndices": {{ $q.Params.correctIndices | jsonify }},
+            "question_type": "{{ $q.Params.question_type }}",
+            "numerical_answer": "{{ $q.Params.numerical_answer }}"
+          }{{ if not (eq (add $i 1) (len $qMaths)) }},{{ end }}
+        {{- end -}}
+      ],
+      "physics": [
+        {{- range $i, $q := $qPhysics -}}
+          {
+            "id": "P{{ $i }}",
+            "question": "{{ $q.Params.question | safeJS }}",
+            "options": [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
+            "correctIndices": {{ $q.Params.correctIndices | jsonify }},
+            "question_type": "{{ $q.Params.question_type }}",
+            "numerical_answer": "{{ $q.Params.numerical_answer }}"
+          }{{ if not (eq (add $i 1) (len $qPhysics)) }},{{ end }}
+        {{- end -}}
+      ],
+      "chemistry": [
+        {{- range $i, $q := $qChem -}}
+          {
+            "id": "C{{ $i }}",
+            "question": "{{ $q.Params.question | safeJS }}",
+            "options": [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }}, {{ end }}{{ end }}],
+            "correctIndices": {{ $q.Params.correctIndices | jsonify }},
+            "question_type": "{{ $q.Params.question_type }}",
+            "numerical_answer": "{{ $q.Params.numerical_answer }}"
+          }{{ if not (eq (add $i 1) (len $qChem)) }},{{ end }}
+        {{- end -}}
+      ]
+    }
     </script>
 
     <script src="/js/mocktest.js"></script>
-
   {{ else }}
     <p>No questions found for this mock test.</p>
   {{ end }}
 
-  {{/* Back to Mock Tests button */}}
   <div class="mt-6">
     <a href="/mocktest-bank/"
        class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
       ⬅ Back to Mock Tests
     </a>
   </div>
-
 </div>
 
 {{ end }}

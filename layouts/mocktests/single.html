@@ -1,69 +1,47 @@
-{{ define "main" }}
-<div id="mocktest-app" class="max-w-6xl mx-auto p-4 text-white">
+<div class="container mx-auto px-4 py-6">
 
-  <!-- Header -->
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold">{{ .Title }}</h1>
-    <div id="timer" class="text-lg font-mono"></div>
-  </div>
+  <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
   <!-- Subject Tabs -->
-  <div id="sections" class="flex space-x-2 mb-4"></div>
+  <div id="sections" class="flex gap-2 mb-4"></div>
 
-  <!-- Question Container -->
-  <div id="question-container" class="bg-gray-900 p-4 rounded-lg mb-4"></div>
+  <!-- Timer -->
+  <div id="timer" class="text-lg font-concert mb-4"></div>
 
-  <!-- Palette -->
-  <div id="palette" class="grid grid-cols-10 gap-2 mb-4"></div>
+  <!-- Mock Test App -->
+  <div id="mocktest-app" class="min-h-[400px]"></div>
 
-  <!-- Submit -->
-  <div class="flex justify-center">
-    <button id="submit-test" class="px-4 py-2 bg-blue-600 rounded">Submit Test</button>
+  <!-- Submit Button -->
+  <div class="mb-4">
+    <button id="submit-test" class="px-4 py-2 font-concert bg-blue-500 text-white rounded hover:bg-blue-400 transition">
+      Submit Test
+    </button>
+  </div>
+
+  <!-- Back to Mock Tests -->
+  <div class="mt-6">
+    <a href="/mocktest-bank/"
+       class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
+      ⬅ Back to Mock Tests
+    </a>
   </div>
 </div>
 
-<!-- Inline all questions Hugo-style -->
+<!-- Load Hugo Questions -->
 <script>
-window.allQuestions = [];
+  window.allQuestions = [
+    {{- range $i, $p := (where .Site.RegularPages "Section" "questions") -}}
+      {
+        "File": { "Path": "{{ $p.File.Path }}" },
+        "RelPermalink": "{{ $p.RelPermalink }}",
+        "Params": {{ $p.Params | jsonify }}
+      }{{ if not (eq (add $i 1) (len (where .Site.RegularPages "Section" "questions"))) }},{{ end }}
+    {{- end -}}
+  ];
 
-{{/* Maths list */}}
-{{ range .Params.maths_questions }}
-  {{ with site.GetPage . }}
-  window.allQuestions.push({
-    "File": { "Path": "{{ .File.Path }}" },
-    "RelPermalink": "{{ .RelPermalink }}",
-    "HTML": {{ .Content | jsonify | safeJS }},
-    "Params": {{ .Params | jsonify }}
-  });
-  {{ end }}
-{{ end }}
-
-{{/* Physics list */}}
-{{ range .Params.physics_questions }}
-  {{ with site.GetPage . }}
-  window.allQuestions.push({
-    "File": { "Path": "{{ .File.Path }}" },
-    "RelPermalink": "{{ .RelPermalink }}",
-    "HTML": {{ .Content | jsonify | safeJS }},
-    "Params": {{ .Params | jsonify }}
-  });
-  {{ end }}
-{{ end }}
-
-{{/* Chemistry list */}}
-{{ range .Params.chemistry_questions }}
-  {{ with site.GetPage . }}
-  window.allQuestions.push({
-    "File": { "Path": "{{ .File.Path }}" },
-    "RelPermalink": "{{ .RelPermalink }}",
-    "HTML": {{ .Content | jsonify | safeJS }},
-    "Params": {{ .Params | jsonify }}
-  });
-  {{ end }}
-{{ end }}
+  // Rank Preset for mock test (used in JS submit)
+  window.rankPreset = {{ .Params.rank_preset | jsonify }};
 </script>
 
-
-
+<!-- Mock Test JS -->
 <script src="/js/mocktest.js"></script>
-{{ end }}

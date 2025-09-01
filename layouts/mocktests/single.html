@@ -1,9 +1,29 @@
-{{ range $path := $qPaths }}
-  <p>Looking for: {{ $path }}</p>
-  {{ $q := site.GetPage $path }}
-  {{ if $q }}
-    <p style="color:green">✅ Found {{ $q.Title }}</p>
-  {{ else }}
-    <p style="color:red">❌ Not found: {{ $path }}</p>
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  <p><strong>UID:</strong> {{ .Params.uid }}</p>
+  <p><strong>Subjects:</strong> {{ delimit .Params.subjects ", " }}</p>
+
+  <h2>Debugging Question Paths</h2>
+  {{ $sections := dict
+      "Maths" .Params.maths_questions
+      "Physics" .Params.physics_questions
+      "Chemistry" .Params.chemistry_questions
+  }}
+
+  {{ range $subject, $qPaths := $sections }}
+    {{ if $qPaths }}
+      <h3>{{ $subject }} Questions</h3>
+      {{ range $path := $qPaths }}
+        <div class="mb-4">
+          <p>Looking for: <code>{{ $path }}</code></p>
+          {{ $q := site.GetPage (printf "/%s" $path) }}
+          {{ if $q }}
+            <p style="color:green">✅ Found: {{ $q.Title }}</p>
+          {{ else }}
+            <p style="color:red">❌ Not found: {{ $path }}</p>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ end }}
   {{ end }}
 {{ end }}

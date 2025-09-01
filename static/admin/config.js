@@ -357,6 +357,7 @@ CMS.init({
 // ✅ JEE Main Mock Tests
 // ------------------ JEE Main Mock Tests Collection ------------------
 
+// ------------------ JEE Main Mock Tests Collection ------------------
 {
   name: "mocktests",
   label: "Mock Tests",
@@ -366,34 +367,41 @@ CMS.init({
   fields: [
     { label: "Test Name", name: "title", widget: "string" },
     { label: "Test UID", name: "uid", widget: "string" },
-    {
-      label: "Subjects",
-      name: "subjects",
-      widget: "select",
-      multiple: true,
-      options: ["Maths", "Physics", "Chemistry"],
-    },
+
     {
       label: "Maths Questions",
       name: "maths_questions",
       widget: "list",
-      field: { label: "Question Title", name: "title", widget: "string" },
-      hint: "Enter question titles exactly as stored in 'title' of questions (e.g. d10, d23, d45)."
+      field: {
+        label: "Question Path",
+        name: "path",
+        widget: "string",
+        hint: "Enter full path e.g. questions/jee-math/chapter1/q1.md"
+      }
     },
     {
       label: "Physics Questions",
       name: "physics_questions",
       widget: "list",
-      field: { label: "Question Title", name: "title", widget: "string" },
-      hint: "Enter question titles for physics."
+      field: {
+        label: "Question Path",
+        name: "path",
+        widget: "string",
+        hint: "Enter full path e.g. questions/jee-physics/chapter2/q15.md"
+      }
     },
     {
       label: "Chemistry Questions",
       name: "chemistry_questions",
       widget: "list",
-      field: { label: "Question Title", name: "title", widget: "string" },
-      hint: "Enter question titles for chemistry."
+      field: {
+        label: "Question Path",
+        name: "path",
+        widget: "string",
+        hint: "Enter full path e.g. questions/jee-chemistry/chapter3/q20.md"
+      }
     },
+
     {
       label: "Rank Preset",
       name: "rank_preset",

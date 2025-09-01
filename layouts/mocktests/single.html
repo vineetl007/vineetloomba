@@ -20,24 +20,23 @@
   {{ end }}
 
   <script>
-    // Pass the questions from Hugo to JS
-    window.mockQuestions = [
-      {{- range $i, $q := $mockQs -}}
-      {
-        id: {{ $i }},
-        question: {{ $q.Params.question | safeJS }},
-        options: [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}{{ end }}],
-        correctIndices: {{ $q.Params.correctIndices | jsonify }},
-        solution: {{ $q.Params.solution | safeJS }},
-        question_type: "{{ $q.Params.question_type }}",
-        numerical_answer: "{{ $q.Params.numerical_answer }}",
-        difficulty: {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-        tags: {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-        video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-      }{{ if not (eq (add $i 1) (len $mockQs)) }},{{ end }}
-      {{- end -}}
-    ];
-  </script>
+window.mockQuestions = [
+  {{- range $i, $q := $mockQs -}}
+  {
+    id: {{ $i }},
+    question: {{ $q.Params.question | jsonify }},
+    options: {{ $q.Params.options | jsonify }},
+    correctIndices: {{ $q.Params.correctIndices | jsonify }},
+    solution: {{ $q.Params.solution | jsonify }},
+    question_type: {{ $q.Params.question_type | jsonify }},
+    numerical_answer: {{ $q.Params.numerical_answer | jsonify }},
+    difficulty: {{ $q.Params.difficulty | jsonify }},
+    tags: {{ $q.Params.tags | jsonify }},
+    video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
+  }{{ if not (eq (add $i 1) (len $mockQs)) }},{{ end }}
+  {{- end -}}
+];
+</script>
 
   <script src="/js/mocktest.js"></script>
 </div>

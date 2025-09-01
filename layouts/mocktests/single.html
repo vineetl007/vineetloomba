@@ -21,20 +21,20 @@
   {{ if gt (len $mockQs) 0 }}
     <div id="mocktest-app" class="min-h-[400px]"></div>
 
-  <script>
+<script>
 window.allQuestions = [
-{{- $pages := where .Site.RegularPages "Section" "questions" -}}
-{{- range $i, $p := $pages -}}
-  {{ if $i }},{{ end -}}
+{{- range $i, $p := (where .Site.RegularPages "Section" "questions") -}}
+  {{- if $i }},{{ end -}}
   {
-    File: { Path: "{{ $p.File.Path }}" },
-    RelPermalink: "{{ $p.RelPermalink }}",
-    HTML: {{ $p.Content | safeJS }},
-    Params: {{ $p.Params | jsonify }}
+    "File": { "Path": "{{ $p.File.Path }}" },
+    "RelPermalink": "{{ $p.RelPermalink }}",
+    "HTML": {{ $p.Content | safeJS }},
+    "Params": {{ $p.Params | jsonify }}
   }
 {{- end -}}
 ];
 </script>
+
 
   
 <script type="application/json" id="mocktest-data">

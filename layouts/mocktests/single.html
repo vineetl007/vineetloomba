@@ -24,18 +24,39 @@
 
 <!-- Inline all questions Hugo-style -->
 <script>
-window.allQuestions = [
-{{- range $i, $p := (where .Site.RegularPages "Section" "questions") -}}
-  {{- if $i }},{{ end -}}
-  {
+window.allQuestions = [];
+
+function pushQ(p) {
+  window.allQuestions.push({
     "File": { "Path": "{{ $p.File.Path }}" },
     "RelPermalink": "{{ $p.RelPermalink }}",
     "HTML": {{ $p.Content | jsonify | safeJS }},
     "Params": {{ $p.Params | jsonify }}
-  }
-{{- end -}}
-];
+  });
+}
+
+{{/* Maths list */}}
+{{ range .Params.maths_questions }}
+  {{ with site.GetPage . }}
+    pushQ({{ . | jsonify | safeJS }});
+  {{ end }}
+{{ end }}
+
+{{/* Physics list */}}
+{{ range .Params.physics_questions }}
+  {{ with site.GetPage . }}
+    pushQ({{ . | jsonify | safeJS }});
+  {{ end }}
+{{ end }}
+
+{{/* Chemistry list */}}
+{{ range .Params.chemistry_questions }}
+  {{ with site.GetPage . }}
+    pushQ({{ . | jsonify | safeJS }});
+  {{ end }}
+{{ end }}
 </script>
+
 
 <script src="/js/mocktest.js"></script>
 {{ end }}

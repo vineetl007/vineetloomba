@@ -1,57 +1,44 @@
 {{ define "main" }}
 <div class="container mx-auto px-4 py-6">
-
-  <!-- Page Title -->
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  <!-- Subject Tabs -->
-  <div id="sections" class="flex gap-2 mb-4"></div>
-
-  <!-- Timer -->
-  <div id="timer" class="text-lg font-concert mb-4"></div>
-
-  <!-- Mock Test App -->
   <div id="mocktest-app" class="min-h-[400px]"></div>
 
-  <!-- Submit Button -->
-  <div class="mb-4">
-    <button id="submit-test" class="px-4 py-2 font-concert bg-blue-500 text-white rounded hover:bg-blue-400 transition">
-      Submit Test
-    </button>
-  </div>
+  {{/* Collect all paths from this mock test */}}
+  {{ $qPaths := slice }}
+  {{ range .Params.maths_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
+  {{ range .Params.physics_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
+  {{ range .Params.chemistry_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
 
-  <!-- Back to Mock Tests -->
-  <div class="mt-6">
-    <a href="/mocktest-bank/"
-       class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-      ⬅ Back to Mock Tests
-    </a>
-  </div>
-</div>
+  {{/* Load each question by its relative path */}}
+  {{ $mockQs := slice }}
+  {{ range $path := $qPaths }}
+    {{ $q := site.GetPage $path }}
+    {{ if $q }}
+      {{ $mockQs = $mockQs | append $q }}
+    {{ end }}
+  {{ end }}
 
-<!-- Load Hugo Questions -->
-<script>
-  window.allQuestions = [
-    {{- $qs := slice -}}
-    {{- range .Params.maths_questions }}{{ $qs = $qs | append . }}{{ end -}}
-    {{- range .Params.physics_questions }}{{ $qs = $qs | append . }}{{ end -}}
-    {{- range .Params.chemistry_questions }}{{ $qs = $qs | append . }}{{ end -}}
-    {{- range $i, $path := $qs }}
-      {{ $q := site.GetPage $path }}
-      {{ if $q }}
+  <script>
+    // Pass the questions from Hugo to JS
+    window.mockQuestions = [
+      {{- range $i, $q := $mockQs -}}
       {
-        "File": { "Path": "{{ $q.File.Path }}" },
-        "RelPermalink": "{{ $q.RelPermalink }}",
-        "Params": {{ $q.Params | jsonify }}
-      }{{ if not (eq (add $i 1) (len $qs)) }},{{ end }}
-      {{ end }}
-    {{- end }}
-  ];
+        id: {{ $i }},
+        question: {{ $q.Params.question | safeJS }},
+        options: [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}{{ end }}],
+        correctIndices: {{ $q.Params.correctIndices | jsonify }},
+        solution: {{ $q.Params.solution | safeJS }},
+        question_type: "{{ $q.Params.question_type }}",
+        numerical_answer: "{{ $q.Params.numerical_answer }}",
+        difficulty: {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
+        tags: {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
+        video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
+      }{{ if not (eq (add $i 1) (len $mockQs)) }},{{ end }}
+      {{- end -}}
+    ];
+  </script>
 
-  // Rank Preset
-  window.rankPreset = {{ .Params.rank_preset | jsonify }};
-</script>
-
-<!-- Load Mock Test JS -->
-<script src="/js/mocktest.js"></script>
+  <script src="/js/mocktest.js"></script>
+</div>
 {{ end }}

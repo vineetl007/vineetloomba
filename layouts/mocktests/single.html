@@ -1,50 +1,32 @@
 {{ define "main" }}
-
 <div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  {{ $mock := . }}
-  {{ $subjects := $mock.Params.subjects }}
-  
-  {{/* Build subject-wise question store */}}
+  {{ $test := .Params }}
   <script>
-    window.mockTestData = {};
+    window.dummyTest = {
+      maths_questions: {{ $test.maths_questions | jsonify }},
+      physics_questions: {{ $test.physics_questions | jsonify }},
+      chemistry_questions: {{ $test.chemistry_questions | jsonify }}
+    };
   </script>
 
-  {{ range $sub := $subjects }}
-    {{ $qField := printf "%s_questions" (lower $sub) }}
-    {{ $qPaths := index $mock.Params $qField }}
-    
-    <script>
-      window.mockTestData["{{ $sub }}"] = [
-        {{- range $i, $path := $qPaths -}}
-          {{ $q := site.GetPage $path }}
-          {
-            id: {{ $i }},
-            question: {{ printf "%q" $q.Params.question }},
-            options: [
-              {{- range $j, $opt := $q.Params.options -}}
-                {{ printf "%q" $opt }}{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}
-              {{- end }}
-            ],
-            correctIndices: {{ $q.Params.correctIndices | jsonify }},
-            solution: {{ printf "%q" $q.Params.solution }},
-            question_type: {{ printf "%q" $q.Params.question_type }},
-            numerical_answer: {{ printf "%q" $q.Params.numerical_answer }},
-            difficulty: {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty }}"{{ else }}""{{ end }},
-            tags: {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-            video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-          }{{ if not (eq (add $i 1) (len $qPaths)) }},{{ end }}
-        {{- end -}}
-      ];
+  {{ $allQs := where .Site.RegularPages "Section" "questions" }}
+  {{ range $allQs }}
+    <script type="application/json" data-question-path="{{ .File.Path }}">
+      {{ dict "question" .Params.question "options" .Params.options "correctIndices" .Params.correctIndices "solution" .Params.solution "question_type" .Params.question_type "numerical_answer" .Params.numerical_answer "difficulty" .Params.difficulty "tags" .Params.tags "video" .Params.video "start_time" .Params.start_time | jsonify }}
     </script>
   {{ end }}
 
-  {{/* Render the mock test app container */}}
-  <div id="mocktest-app" class="min-h-[400px] mt-4"></div>
+  <div id="sections" class="mb-4 flex gap-2"></div>
+  <div id="mocktest-app" class="min-h-[400px]"></div>
 
-  <script src="/js/mocktest.js"></script>
-
+  <div class="mt-6">
+    <a href="/mocktests/" class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
+      ⬅ Back to Tests
+    </a>
+  </div>
 </div>
 
+<script src="/js/mocktest.js"></script>
 {{ end }}

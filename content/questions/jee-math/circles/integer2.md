@@ -1,0 +1,13 @@
+---
+title: integer2
+slug: new-integer-questions
+chapter: circles
+dpp: 1
+tags:
+  - jeemain
+difficulty: Hard
+question_type: Integer Type
+question: integer type question text
+numerical_answer: "42.56"
+solution: soltuins text
+---

@@ -1,5 +1,7 @@
+{{ define "main" }}
 <div class="container mx-auto px-4 py-6">
 
+  <!-- Page Title -->
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
   <!-- Subject Tabs -->
@@ -30,18 +32,26 @@
 <!-- Load Hugo Questions -->
 <script>
   window.allQuestions = [
-    {{- range $i, $p := (where .Site.RegularPages "Section" "questions") -}}
+    {{- $qs := slice -}}
+    {{- range .Params.maths_questions }}{{ $qs = $qs | append . }}{{ end -}}
+    {{- range .Params.physics_questions }}{{ $qs = $qs | append . }}{{ end -}}
+    {{- range .Params.chemistry_questions }}{{ $qs = $qs | append . }}{{ end -}}
+    {{- range $i, $path := $qs }}
+      {{ $q := site.GetPage $path }}
+      {{ if $q }}
       {
-        "File": { "Path": "{{ $p.File.Path }}" },
-        "RelPermalink": "{{ $p.RelPermalink }}",
-        "Params": {{ $p.Params | jsonify }}
-      }{{ if not (eq (add $i 1) (len (where .Site.RegularPages "Section" "questions"))) }},{{ end }}
-    {{- end -}}
+        "File": { "Path": "{{ $q.File.Path }}" },
+        "RelPermalink": "{{ $q.RelPermalink }}",
+        "Params": {{ $q.Params | jsonify }}
+      }{{ if not (eq (add $i 1) (len $qs)) }},{{ end }}
+      {{ end }}
+    {{- end }}
   ];
 
-  // Rank Preset for mock test (used in JS submit)
+  // Rank Preset
   window.rankPreset = {{ .Params.rank_preset | jsonify }};
 </script>
 
-<!-- Mock Test JS -->
+<!-- Load Mock Test JS -->
 <script src="/js/mocktest.js"></script>
+{{ end }}

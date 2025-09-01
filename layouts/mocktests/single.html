@@ -1,68 +1,50 @@
 {{ define "main" }}
-<div class="container mx-auto px-4 py-6">
 
+<div class="container mx-auto px-4 py-6">
   <h1 class="text-2xl mb-4">{{ .Title }}</h1>
 
-  <!-- Subject tabs -->
-  <div id="sections" class="mb-4 flex gap-2"></div>
-
-  <!-- Timer -->
-  <div id="timer" class="mb-4 text-lg font-semibold"></div>
-
-  <!-- Question container -->
-  <div id="mocktest-app" class="min-h-[400px]"></div>
-
-  <!-- Palette -->
-  <div id="nav" class="mt-4 flex flex-wrap gap-1"></div>
-
-  <!-- Submit button -->
-  <div class="mt-6">
-    <button id="submit-test" class="bg-green-600 text-white px-4 py-2 rounded font-concert">Submit Test</button>
-  </div>
-
-  <!-- Load all questions from this mocktest -->
-  {{ $qPaths := slice }}
-  {{ range .Params.maths_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
-  {{ range .Params.physics_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
-  {{ range .Params.chemistry_questions }}{{ $qPaths = $qPaths | append . }}{{ end }}
-
+  {{ $mock := . }}
+  {{ $subjects := $mock.Params.subjects }}
+  
+  {{/* Build subject-wise question store */}}
   <script>
-    // Pull questions dynamically
-    const qStore = { maths: [], physics: [], chemistry: [] };
-    const currentSubjectKey = 'maths';
-    let currentIndex = 0;
-
-    {{ range $path := $qPaths }}
-      {{ $q := site.GetPage $path }}
-      {{ if $q }}
-        {{ if strings.Contains $path "jee-math" }}
-          qStore.maths.push({
-            question: `{{ $q.Params.question | safeJS }}`,
-            options: {{ $q.Params.options | jsonify }},
-            correctIndices: {{ $q.Params.correctIndices | jsonify }},
-            solution: `{{ $q.Params.solution | safeJS }}`,
-            question_type: "{{ $q.Params.question_type }}",
-            numerical_answer: "{{ $q.Params.numerical_answer }}",
-            difficulty: "{{ $q.Params.difficulty }}",
-            tags: {{ $q.Params.tags | jsonify }},
-            video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}"{{ else }}""{{ end }}
-          });
-        {{ else if strings.Contains $path "jee-physics" }}
-          qStore.physics.push({/* same as above, replace maths with physics */});
-        {{ else if strings.Contains $path "jee-chemistry" }}
-          qStore.chemistry.push({/* same as above, replace maths with chemistry */});
-        {{ end }}
-      {{ end }}
-    {{ end }}
+    window.mockTestData = {};
   </script>
+
+  {{ range $sub := $subjects }}
+    {{ $qField := printf "%s_questions" (lower $sub) }}
+    {{ $qPaths := index $mock.Params $qField }}
+    
+    <script>
+      window.mockTestData["{{ $sub }}"] = [
+        {{- range $i, $path := $qPaths -}}
+          {{ $q := site.GetPage $path }}
+          {
+            id: {{ $i }},
+            question: {{ printf "%q" $q.Params.question }},
+            options: [
+              {{- range $j, $opt := $q.Params.options -}}
+                {{ printf "%q" $opt }}{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}
+              {{- end }}
+            ],
+            correctIndices: {{ $q.Params.correctIndices | jsonify }},
+            solution: {{ printf "%q" $q.Params.solution }},
+            question_type: {{ printf "%q" $q.Params.question_type }},
+            numerical_answer: {{ printf "%q" $q.Params.numerical_answer }},
+            difficulty: {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty }}"{{ else }}""{{ end }},
+            tags: {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
+            video_url: {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
+          }{{ if not (eq (add $i 1) (len $qPaths)) }},{{ end }}
+        {{- end -}}
+      ];
+    </script>
+  {{ end }}
+
+  {{/* Render the mock test app container */}}
+  <div id="mocktest-app" class="min-h-[400px] mt-4"></div>
 
   <script src="/js/mocktest.js"></script>
 
-  <div class="mt-6">
-    <a href="/mocktest-bank/"
-       class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-      ⬅ Back to Mock Tests
-    </a>
-  </div>
 </div>
+
 {{ end }}

@@ -259,11 +259,47 @@ function isCorrect(qIdx) {
     return Number(sorted[sorted.length - 1].rank);
   }
 
+// ---------- HELPERS ----------
+function isCorrect(qIdx) {
+  const q = questions[qIdx];
+  const s = state[qIdx];
+
+  if (q.question_type === "Integer Type") {
+    return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
+  }
+
+  if (q.question_type === "Single Choice") {
+    // Safe fallback: use 0 if correctIndices missing
+    const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
+    return s.selected.length > 0 && s.selected[0] === correct;
+  }
+
+  return false; // fallback
+}
+
+// ---------- RENDER ANALYSIS ----------
 function renderAnalysis() {
+  // Normalize all questions once
+  questions.forEach(q => {
+    if (!q.question_type) q.question_type = "Single Choice";
+
+    if (q.question_type === "Integer Type") {
+      q.numerical_answer = String(q.numerical_answer ?? "").trim();
+    } else {
+      if (Array.isArray(q.correctIndices)) {
+        q.correctIndices = q.correctIndices.map(Number);
+      } else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
+        q.correctIndices = [Number(q.correctIndices)];
+      } else {
+        q.correctIndices = [0]; // safe fallback
+      }
+    }
+  });
+
   const { correct, wrong, unattempted, score, total } = calculateScore();
   const rank = mapRank(score);
 
-  // Summary header
+  // Summary
   const summaryHtml = `
     <div class="border rounded-xl p-4 mb-4 bg-gray-900">
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
@@ -277,7 +313,7 @@ function renderAnalysis() {
     </div>
   `;
 
-  // helper: compare arrays ignoring order
+  // Compare arrays ignoring order
   function compareArrays(a, b) {
     const A = Array.isArray(a) ? a.map(Number) : [];
     const B = Array.isArray(b) ? b.map(Number) : [];
@@ -287,35 +323,23 @@ function renderAnalysis() {
     return true;
   }
 
-  // Build cards for all questions
+  // Build question cards
   const cards = questions.map((q, i) => {
     const st = state[i];
     const isInt = q.question_type === "Integer Type";
 
-    // Normalize user answers
+    // User answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-    const userMCQ = !isInt && q.question_type === "Single Choice"
-      ? (st.selected[0] !== undefined ? [st.selected[0]] : [])
-      : [];
+    const userMCQ = !isInt && q.question_type === "Single Choice" ? (st.selected[0] !== undefined ? [st.selected[0]] : []) : [];
 
-    // Normalize correct answers
-    let correctIdxs = [];
-    if (!isInt && Array.isArray(q.correctIndices)) {
-      correctIdxs = q.correctIndices.map(Number);
-    } else if (!isInt && (typeof q.correctIndices === "number" || typeof q.correctIndices === "string")) {
-      correctIdxs = [Number(q.correctIndices)];
-    }
-
-    const correctRaw = isInt ? String(q.numerical_answer ?? "").trim() : correctIdxs;
+    // Correct answers (safe)
+    const correctIdxs = isInt ? [] : q.correctIndices;
 
     // Determine correctness
-    const gotIt = isInt
-      ? (userInt !== "" && userInt === String(correctRaw))
-      : compareArrays(userMCQ, correctIdxs);
+    const gotIt = isInt ? (userInt !== "" && userInt === q.numerical_answer) : compareArrays(userMCQ, correctIdxs);
 
-    // Prepare question HTML
-    const rawQ = String(q.question || "");
-    const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+    // Question HTML
+    const qHtml = String(q.question || "").split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
 
     // User answer display
     const userAnsHtml = isInt
@@ -323,28 +347,21 @@ function renderAnalysis() {
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
     // Correct answer display
-    let correctAnsHtml = "";
-    if (isInt) {
-      correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
-    } else if (q.question_type === "Single Choice") {
-      const correctIdx = correctIdxs[0] ?? 0; // ✅ safe first index
-      correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[correctIdx]}</span>`;
-    } else {
-      correctAnsHtml = `Correct answer: —`;
-    }
+    const correctAnsHtml = isInt
+      ? `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`
+      : (q.question_type === "Single Choice" ? `Correct answer: <span class="text-green-400">${q.options[correctIdxs[0]]}</span>` : "Correct answer: —");
 
     // Options HTML for Single Choice
     const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
       <ul class="space-y-2">
         ${q.options.map((opt, oi) => {
-          const cls = (oi === (correctIdxs[0] ?? 0)) ? 'border-green-500' : 
-                      (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
+          const cls = (oi === correctIdxs[0]) ? 'border-green-500' : (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
           return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
         }).join("")}
       </ul>
     ` : '';
 
-    // Final card HTML
+    // Final card
     return `
       <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
         <div class="flex justify-between items-center mb-2">
@@ -361,7 +378,7 @@ function renderAnalysis() {
           <div class="text-sm font-semibold mb-1">Solution:</div>
           <div>${q.solution}</div>
           ${q.video_url ? `
-            <div class="mt-3" style="display:flex;justify-content:center;">
+            <div class="mt-3 flex justify-center">
               <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
                 <iframe
                   src="${q.video_url}"
@@ -371,7 +388,7 @@ function renderAnalysis() {
                   referrerpolicy="strict-origin-when-cross-origin"
                   title="Video Solution"></iframe>
               </div>
-            </div>` : ``}
+            </div>` : ''}
         </div>
       </div>
     `;
@@ -379,15 +396,13 @@ function renderAnalysis() {
 
   app.innerHTML = summaryHtml + cards;
 
-  // Safe MathJax typeset (works with v2 and v3)
+  // Safe MathJax typeset
   if (window.MathJax) {
-    if (typeof MathJax.typesetPromise === "function") {
-      MathJax.typesetPromise().catch(() => {});
-    } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
+    if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});
+    else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 }
+
 
 function submitTest() {
   if (submitted) return;

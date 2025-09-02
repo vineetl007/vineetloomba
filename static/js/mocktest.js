@@ -295,11 +295,10 @@ function isCorrect(qIdx) {
 
     // Normalize user answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-  const userMCQ = !isInt
-  ? (Array.isArray(st.selected)
-      ? st.selected.map(Number)
-      : (st.selected !== undefined && st.selected !== null ? [Number(st.selected)] : []))
+const userMCQ = !isInt && q.question_type === "Single Choice"
+  ? (st.selected[0] !== undefined ? [st.selected[0]] : [])
   : [];
+
 
 
 
@@ -345,15 +344,14 @@ const correctRaw = isInt
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
     // Correct answer display
-const correctAnsHtml = isInt
-  ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
-  : (() => {
-      // normalize from the source (covers array / single number / string / missing)
-      const idxs = Array.isArray(q.correctIndices)
-        ? q.correctIndices.map(Number)
-        : (typeof q.correctIndices === 'number' || typeof q.correctIndices === 'string'
-            ? [Number(q.correctIndices)]
-            : []);
+const correctAnsHtml = (() => {
+  if (isInt) return `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
+  if (q.question_type === "Single Choice") {
+    return `Correct answer: <span class="text-green-400">${q.options[q.correctIndices[0]]}</span>`;
+  }
+  return `Correct answer: —`; // fallback
+})();
+
 
       if (idxs.length === 0) return `Correct answer: <span class="text-green-400">—</span>`;
 

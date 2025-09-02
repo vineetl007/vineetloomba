@@ -299,7 +299,10 @@ function arraysEqual(a, b) {
 
     // Normalize user answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-    const userMCQ = !isInt ? (Array.isArray(st.selected) ? st.selected.map(Number) : []) : [];
+    const userMCQ = !isInt
+  ? (Array.isArray(st.selected) ? st.selected.map(Number) : (st.selected || st.selected === 0 ? [Number(st.selected)] : []))
+  : [];
+
 
    // ✅ Normalize correct answers safely for both array & single-value cases
 let correctIdxs = [];

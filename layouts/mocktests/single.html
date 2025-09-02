@@ -1,108 +1,36 @@
-{{ define "main" }}
-<div class="container mx-auto px-2 py-4">
+---
+layout: base
+---
 
-  <h1 class="text-2xl mb-4 text-center font-bold">{{ .Title }}</h1>
+<div id="mocktest-app" class="p-4"></div>
 
-  {{/* Collect questions from paths */}}
-  {{ $mathQs := slice }}
-  {{ range .Params.maths_questions }}
-    {{ with site.GetPage . }}{{ $mathQs = $mathQs | append . }}{{ end }}
-  {{ end }}
+<script id="mocktest-data" type="application/json">
+{
+  "title": "{{ .Title }}",
+  "uid": "{{ .Params.uid }}",
+  "rank_preset": {{ .Params.rank_preset | jsonify }},
+  "questions": [
+    {{- $index := 0 -}}
+    {{- range $i, $q := .Params.physics_questions }}
+      {{ if $index }},{{ end }}
+      {{ $qData := getJSON (print "/content/" $q ".json") }}
+      {{ $qData | merge (dict "subject" "Physics") | jsonify }}
+      {{- $index = add $index 1 -}}
+    {{- end }}
+    {{- range $i, $q := .Params.chemistry_questions }}
+      {{ if $index }},{{ end }}
+      {{ $qData := getJSON (print "/content/" $q ".json") }}
+      {{ $qData | merge (dict "subject" "Chemistry") | jsonify }}
+      {{- $index = add $index 1 -}}
+    {{- end }}
+    {{- range $i, $q := .Params.maths_questions }}
+      {{ if $index }},{{ end }}
+      {{ $qData := getJSON (print "/content/" $q ".json") }}
+      {{ $qData | merge (dict "subject" "Maths") | jsonify }}
+      {{- $index = add $index 1 -}}
+    {{- end }}
+  ]
+}
+</script>
 
-  {{ $phyQs := slice }}
-  {{ range .Params.physics_questions }}
-    {{ with site.GetPage . }}{{ $phyQs = $phyQs | append . }}{{ end }}
-  {{ end }}
-
-  {{ $chemQs := slice }}
-  {{ range .Params.chemistry_questions }}
-    {{ with site.GetPage . }}{{ $chemQs = $chemQs | append . }}{{ end }}
-  {{ end }}
-
-  {{/* Merge all with subject tag, in order Maths → Physics → Chemistry */}}
-  {{ $all := slice }}
-  {{ range $mathQs }} {{ $all = $all | append (dict "subject" "Maths" "page" .) }} {{ end }}
-  {{ range $phyQs }}  {{ $all = $all | append (dict "subject" "Physics" "page" .) }} {{ end }}
-  {{ range $chemQs }} {{ $all = $all | append (dict "subject" "Chemistry" "page" .) }} {{ end }}
-
-  {{ if gt (len $all) 0 }}
-    <div class="grid grid-cols-12 gap-4">
-
-      <!-- Left: Question Palette -->
-      <aside class="col-span-3 bg-gray-900 p-4 rounded-xl shadow-md">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg font-bold text-yellow-300">Question Palette</h2>
-          <div id="timer" class="text-sm font-bold text-red-400">00:00:00</div>
-        </div>
-
-        <!-- Legend -->
-        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-gray-700"></span>Not Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-white"></span>Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-green-600"></span>Answered</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-purple-600"></span>Marked</div>
-        </div>
-
-        <div id="question-palette" class="grid grid-cols-5 gap-2"></div>
-
-        <div class="mt-6 space-y-2">
-          <button id="submit-test"
-            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold">
-            Submit Test
-          </button>
-          <a href="/question-bank/"
-             class="block text-center bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-lg font-bold">
-            ⬅ Exit
-          </a>
-        </div>
-      </aside>
-
-      <!-- Right: Main Test Area -->
-      <main class="col-span-9">
-        <div id="mocktest-header" class="flex items-center justify-between mb-4">
-          <div class="text-xl font-bold text-blue-400">Mock Test</div>
-          <div class="text-sm text-gray-300">
-            Sections: 
-            {{ if gt (len $mathQs) 0 }}<span class="mr-2">Maths</span>{{ end }}
-            {{ if gt (len $phyQs) 0 }}<span class="mr-2">Physics</span>{{ end }}
-            {{ if gt (len $chemQs) 0 }}<span class="mr-2">Chemistry</span>{{ end }}
-          </div>
-        </div>
-
-        <div id="mocktest-app" class="min-h-[400px]"></div>
-      </main>
-    </div>
-
-    <!-- Data for JS -->
-    <script type="application/json" id="mocktest-data">
-      {
-        "durationMinutes": {{ or .Params.duration 180 }},
-        "rankPreset": {{ if .Params.rank_preset }}{{ .Params.rank_preset | jsonify }}{{ else }}[]{{ end }},
-        "questions": [
-          {{- range $i, $item := $all -}}
-            {{ $q := $item.page }}
-            {
-              "id": {{ add $i 1 }},
-              "subject": "{{ $item.subject }}",
-              "question": "{{ $q.Params.question | safeJS }}",
-              "options": [{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}{{ end }}],
-              "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-              "solution": "{{ $q.Params.solution | safeJS }}",
-              "question_type": "{{ $q.Params.question_type }}",
-              "numerical_answer": "{{ $q.Params.numerical_answer }}",
-              "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-              "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
-              "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-            }{{ if not (eq (add $i 1) (len $all)) }},{{ end }}
-          {{- end -}}
-        ]
-      }
-    </script>
-
-    <script src="/js/mocktest.js"></script>
-
-  {{ else }}
-    <p class="text-center">No questions found for this Mock Test.</p>
-  {{ end }}
-</div>
-{{ end }}
+<script src="/js/mocktest.js"></script>

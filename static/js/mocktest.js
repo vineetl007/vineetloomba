@@ -84,27 +84,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderPalette() {
-    palette.innerHTML = questions.map((_, i) => {
-      const base = `palette-btn w-10 h-10 rounded-full ${paletteBtnClass(i)} hover:opacity-90 transition`;
-      const ring = i === currentIndex ? " outline outline-2 outline-yellow-400" : "";
-      return `<button data-index="${i}" class="${base}${ring}">${i + 1}</button>`;
-    }).join("");
+  let html = "";
+  let currentSubject = null;
 
-    palette.querySelectorAll(".palette-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const idx = parseInt(btn.dataset.index);
-        if (!submitted) {
-          currentIndex = idx;
-          renderQuestion(currentIndex);
-          renderPalette();
-        } else {
-          // In analysis, jump to that card (scroll)
-          const card = document.getElementById(`analysis-q-${idx + 1}`);
-          if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      });
+  questions.forEach((q, i) => {
+    if (q.subject !== currentSubject) {
+      currentSubject = q.subject;
+      html += `<div class="col-span-full text-center font-bold text-yellow-400 my-1">${currentSubject}</div>`;
+    }
+
+    const base = `palette-btn w-10 h-10 rounded-full ${paletteBtnClass(i)} hover:opacity-90 transition`;
+    const ring = i === currentIndex ? " outline outline-2 outline-yellow-400" : "";
+    html += `<button data-index="${i}" class="${base}${ring}">${i + 1}</button>`;
+  });
+
+  palette.innerHTML = html;
+
+  palette.querySelectorAll(".palette-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.index);
+      if (!submitted) {
+        currentIndex = idx;
+        renderQuestion(currentIndex);
+        renderPalette();
+      } else {
+        const card = document.getElementById(`analysis-q-${idx + 1}`);
+        if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     });
-  }
+  });
+}
+
 
   // ---------- RENDER QUESTION (TEST MODE) ----------
   function renderQuestion(idx) {

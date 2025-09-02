@@ -49,13 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return s.selected.length > 0;
   }
 
-  function arraysEqual(a, b) {
-    if (a.length !== b.length) return false;
-    const A = [...a].sort((x, y) => x - y);
-    const B = [...b].sort((x, y) => x - y);
-    for (let i = 0; i < A.length; i++) if (A[i] !== B[i]) return false;
-    return true;
-  }
+function arraysEqual(a, b) {
+  // normalize inputs into arrays of numbers
+  const A = Array.isArray(a) ? a.map(x => Number(x)) : (a == null ? [] : [Number(a)]);
+  const B = Array.isArray(b) ? b.map(x => Number(x)) : (b == null ? [] : [Number(b)]);
+
+  if (A.length !== B.length) return false;
+  A.sort((x, y) => x - y);
+  B.sort((x, y) => x - y);
+  for (let i = 0; i < A.length; i++) if (A[i] !== B[i]) return false;
+  return true;
+}
 
   function isCorrect(qIdx) {
     const q = questions[qIdx];
@@ -155,12 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
             `
             : `
               <ul class="space-y-2">
-                ${q.options.map((opt, i) => `
-                  <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10 ${st.selected.includes(i) ? 'bg-blue-600' : ''}"
-                      data-index="${i}">
-                    <span class="latex-option">${opt}</span>
-                  </li>
-                `).join("")}
+               ${q.options.map((opt, i) => `
+  <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10 ${(st.selected || []).map(Number).includes(i) ? 'bg-blue-600' : ''}"
+      data-index="${i}">
+    <span class="latex-option">${opt}</span>
+  </li>
+`).join("")}
               </ul>
             `
         }

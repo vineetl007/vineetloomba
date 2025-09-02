@@ -96,7 +96,7 @@
         "subject": "{{ $item.subject }}",
         "question": "{{ $q.Params.question | safeJS }}",
         "options": {{ if eq $q.Params.question_type "Single Choice" }}[{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}{{ end }}]{{ else }}[]{{ end }},
-        "correctIndices": {{ if eq $q.Params.question_type "Single Choice" }}{{ $q.Params.correctIndices | jsonify }}{{ else }}[]{{ end }},
+        "correctIndices": {{ $q.Params.correctIndices | jsonify }},
         "solution": "{{ $q.Params.solution | safeJS }}",
         "question_type": "{{ $q.Params.question_type }}",
         "numerical_answer": {{ if eq $q.Params.question_type "Integer Type" }}"{{ $q.Params.numerical_answer | safeJS }}"{{ else }}""{{ end }},

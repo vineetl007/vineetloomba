@@ -368,17 +368,16 @@ const correctAnsHtml = (() => {
 
 
     // Options HTML for choice questions (with highlights)
-    const optionsHtml = !isInt ? `
-      <ul class="space-y-2">
-        ${q.options.map((opt, oi) => {
-          const isCorrectOpt = correctIdxs.includes(oi);
-          const isUserOpt = userMCQ.includes(oi);
-          // priority: correct (green) else user's wrong (red) else neutral
-          const cls = isCorrectOpt ? 'border-green-500' : (isUserOpt ? 'border-red-500' : 'border-gray-700');
-          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-        }).join("")}
-      </ul>
-    ` : ``;
+const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
+  <ul class="space-y-2">
+    ${q.options.map((opt, oi) => {
+      const cls = (oi === q.correctIndices[0]) ? 'border-green-500' : 
+                  (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
+      return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+    }).join("")}
+  </ul>
+` : '';
+
 
     // Final card HTML
     return `

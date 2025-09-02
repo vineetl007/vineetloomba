@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const state = questions.map(() => ({
     visited: false,
     marked: false,
-    selected: [],                      // for integer: [string]; for single: [idx]; for multi: [idx...]
+    selected: [],                      // for integer: [string]; for single: [idx]; 
   }));
   let submitted = false;
 
@@ -49,21 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return s.selected.length > 0;
   }
 
-function isCorrect(qIdx) {
-  const q = questions[qIdx];
-  const s = state[qIdx];
-
-  if (q.question_type === "Integer Type") {
-    return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
-  }
-
-  // Single Choice
-  if (q.question_type === "Single Choice") {
-    return s.selected[0] === q.correctIndices[0];
-  }
-
-  return false; // fallback (for now we ignore Multi Choice)
-}
 
   // ---------- PALETTE ----------
   function paletteBtnClass(qIdx) {
@@ -128,7 +113,7 @@ function isCorrect(qIdx) {
       .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
       .join("");
 
-    const isMulti = q.question_type === "Multiple Choice";
+   
     const isInteger = q.question_type === "Integer Type";
 
     app.innerHTML = `
@@ -178,13 +163,8 @@ function isCorrect(qIdx) {
       app.querySelectorAll(".option").forEach(opt => {
         opt.addEventListener("click", () => {
           const i = parseInt(opt.dataset.index);
-          if (isMulti) {
-            const sel = new Set(state[idx].selected);
-            sel.has(i) ? sel.delete(i) : sel.add(i);
-            state[idx].selected = Array.from(sel);
-          } else {
-            state[idx].selected = [i];
-          }
+       state[idx].selected = [i]; // single selection only
+
           renderQuestion(idx);
           renderPalette();
         });

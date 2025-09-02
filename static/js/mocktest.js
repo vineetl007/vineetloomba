@@ -344,27 +344,15 @@ const correctRaw = isInt
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
     // Correct answer display
-const correctAnsHtml = (() => {
-  if (isInt) return `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
-  if (q.question_type === "Single Choice") {
-    return `Correct answer: <span class="text-green-400">${q.options[q.correctIndices[0]]}</span>`;
-  }
-  return `Correct answer: —`; // fallback
-})();
-
-
-      if (idxs.length === 0) return `Correct answer: <span class="text-green-400">—</span>`;
-
-      const texts = idxs.map(i => {
-        if (q.options && q.options[i] !== undefined && q.options[i] !== null && String(q.options[i]).trim() !== "") {
-          return q.options[i];           // prefer the option text
-        }
-        // fallback to letter if option text missing
-        return String.fromCharCode(65 + Number(i));
-      });
-
-      return `Correct answer: <span class="text-green-400">${texts.join(", ")}</span>`;
-    })();
+// Correct answer display (simplified)
+let correctAnsHtml = "";
+if (isInt) {
+  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
+} else if (q.question_type === "Single Choice") {
+  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[q.correctIndices[0]]}</span>`;
+} else {
+  correctAnsHtml = `Correct answer: —`;
+}
 
 
     // Options HTML for choice questions (with highlights)

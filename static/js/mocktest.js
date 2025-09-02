@@ -1,183 +1,181 @@
 document.addEventListener("DOMContentLoaded", () => {
   const data = JSON.parse(document.getElementById("mocktest-data").textContent);
-  const questions = data.questions;
-  const rankPreset = data.rank_preset || [];
+  let questions = [];
+  let questionMeta = []; // {subject, path, visited, answered, selectedOption}
 
-  let currentQuestionIndex = 0;
-  let answers = Array(questions.length).fill(null); // user answers
-  let visited = Array(questions.length).fill(false);
+  // ✅ Load all questions (fetching frontmatter JSON dynamically)
+  async function loadQuestions() {
+    let index = 1;
+
+    async function fetchAndPush(arr, subject) {
+      for (const qPath of arr) {
+        const res = await fetch(`/${qPath}.json`);
+        const qData = await res.json();
+        questions.push(qData);
+        questionMeta.push({
+          id: index,
+          subject,
+          visited: false,
+          answered: false,
+          selectedOption: null,
+          correctIndices: qData.correctIndices || []
+        });
+        index++;
+      }
+    }
+
+    await fetchAndPush(data.physics_questions, "Physics");
+    await fetchAndPush(data.chemistry_questions, "Chemistry");
+    await fetchAndPush(data.maths_questions, "Maths");
+
+    renderQuestion(0);
+    renderPalette();
+  }
 
   const app = document.getElementById("mocktest-app");
-
-  function renderTestUI() {
-    app.innerHTML = `
-      <div class="flex flex-col md:flex-row gap-4">
-        <div class="flex-1">
-          <div id="question-container" class="mb-4"></div>
-          <div class="flex justify-between">
-            <button id="prev-btn" class="bg-gray-300 px-3 py-1 rounded">Prev</button>
-            <button id="next-btn" class="bg-gray-300 px-3 py-1 rounded">Next</button>
-            <button id="submit-btn" class="bg-green-500 text-white px-4 py-1 rounded">Submit Test</button>
-          </div>
-        </div>
-        <div class="w-full md:w-1/3">
-          <h2 class="font-bold mb-2">Question Palette</h2>
-          <div id="question-palette" class="grid grid-cols-6 gap-2"></div>
-        </div>
-      </div>
-    `;
-
-    renderQuestion();
-    renderPalette();
-    attachNavEvents();
-  }
-
-  function renderQuestion() {
-    const q = questions[currentQuestionIndex];
-    visited[currentQuestionIndex] = true;
-    const container = document.getElementById("question-container");
-
-    container.innerHTML = `
-      <div class="mb-3 font-bold">Q${currentQuestionIndex + 1}. ${q.question}</div>
-      <div class="flex flex-col gap-2">
-        ${q.options
-          .map(
-            (opt, i) => `
-          <label class="border p-2 rounded cursor-pointer">
-            <input type="radio" name="option" value="${i}" ${
-              answers[currentQuestionIndex] === i ? "checked" : ""
-            } />
-            ${opt}
-          </label>
-        `
-          )
-          .join("")}
-      </div>
-    `;
-
-    // Save selected answer
-    container.querySelectorAll('input[name="option"]').forEach((input) => {
-      input.addEventListener("change", (e) => {
-        answers[currentQuestionIndex] = parseInt(e.target.value);
-        renderPalette();
-      });
-    });
-  }
+  let currentIndex = 0;
 
   function renderPalette() {
-    const palette = document.getElementById("question-palette");
+    const palette = document.createElement("div");
+    palette.className = "grid grid-cols-10 gap-2 my-4";
+
+    // ✅ Section headings
+    const grouped = {
+      Physics: questionMeta.filter(q => q.subject === "Physics"),
+      Chemistry: questionMeta.filter(q => q.subject === "Chemistry"),
+      Maths: questionMeta.filter(q => q.subject === "Maths"),
+    };
+
     palette.innerHTML = "";
 
-    // Group questions by subject (Physics, Chemistry, Maths)
-    const subjects = ["Physics", "Chemistry", "Maths"];
-    let index = 0;
+    Object.entries(grouped).forEach(([subject, arr]) => {
+      if (arr.length === 0) return;
+      const header = document.createElement("div");
+      header.className = "col-span-10 font-semibold mt-2";
+      header.textContent = subject;
+      palette.appendChild(header);
 
-    subjects.forEach((sub) => {
-      const subjectQuestions = questions.filter((q) => q.subject === sub);
-      if (subjectQuestions.length > 0) {
-        const heading = document.createElement("div");
-        heading.className = "col-span-6 font-bold mt-2";
-        heading.textContent = sub;
-        palette.appendChild(heading);
-
-        subjectQuestions.forEach(() => {
-          const btn = document.createElement("button");
-          btn.textContent = index + 1;
-          btn.className =
-            "border rounded w-8 h-8 flex items-center justify-center " +
-            (answers[index] !== null
-              ? "bg-blue-400 text-white"
-              : visited[index]
-              ? "bg-yellow-300"
-              : "bg-gray-200");
-
-          btn.addEventListener("click", () => {
-            currentQuestionIndex = index;
-            renderQuestion();
-            renderPalette();
-          });
-
-          palette.appendChild(btn);
-          index++;
+      arr.forEach(q => {
+        const btn = document.createElement("button");
+        btn.textContent = q.id;
+        btn.className = "border rounded px-2 py-1 text-sm";
+        btn.addEventListener("click", () => {
+          currentIndex = q.id - 1;
+          renderQuestion(currentIndex);
+          renderPalette();
         });
-      }
+
+        if (q.answered) btn.classList.add("bg-green-300");
+        else if (q.visited) btn.classList.add("bg-blue-200");
+        palette.appendChild(btn);
+      });
     });
+
+    app.querySelector("#question-palette")?.remove();
+    palette.id = "question-palette";
+    app.appendChild(palette);
   }
 
-  function attachNavEvents() {
-    document.getElementById("prev-btn").addEventListener("click", () => {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        renderQuestion();
+  function renderQuestion(index) {
+    const q = questions[index];
+    const meta = questionMeta[index];
+    meta.visited = true;
+
+    const container = document.createElement("div");
+    container.innerHTML = `
+      <div class="p-4 border rounded shadow">
+        <div class="mb-4 font-bold">Q${meta.id}. (${meta.subject})</div>
+        <div class="mb-4">${q.question}</div>
+        <div class="space-y-2">
+          ${q.options
+            .map(
+              (opt, i) => `
+            <div>
+              <input type="radio" name="q${meta.id}" value="${i}" ${meta.selectedOption === i ? "checked" : ""}>
+              <label>${opt}</label>
+            </div>`
+            )
+            .join("")}
+        </div>
+        <div class="flex justify-between mt-4">
+          <button id="prev-btn" class="border px-4 py-2 rounded">Prev</button>
+          <button id="next-btn" class="border px-4 py-2 rounded">Next</button>
+          <button id="submit-btn" class="border px-4 py-2 rounded bg-red-400 text-white">Submit</button>
+        </div>
+      </div>
+    `;
+
+    app.querySelector("#question-container")?.remove();
+    container.id = "question-container";
+    app.prepend(container);
+
+    container.querySelectorAll(`input[name="q${meta.id}"]`).forEach(radio =>
+      radio.addEventListener("change", e => {
+        meta.selectedOption = parseInt(e.target.value);
+        meta.answered = true;
+        renderPalette();
+      })
+    );
+
+    container.querySelector("#prev-btn").onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion(currentIndex);
         renderPalette();
       }
-    });
-
-    document.getElementById("next-btn").addEventListener("click", () => {
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        renderQuestion();
+    };
+    container.querySelector("#next-btn").onclick = () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion(currentIndex);
         renderPalette();
       }
-    });
+    };
 
-    document.getElementById("submit-btn").addEventListener("click", () => {
-      showAnalysis();
-    });
+    container.querySelector("#submit-btn").onclick = showAnalysis;
   }
 
   function showAnalysis() {
-    let correct = 0,
-      attempted = 0;
+    let correct = 0, wrong = 0, attempted = 0;
 
-    const reviewHTML = questions
-      .map((q, i) => {
-        const chosen = answers[i];
-        const correctAns = q.correctIndices[0];
-        const isCorrect = chosen === correctAns;
-        if (chosen !== null) attempted++;
-        if (isCorrect) correct++;
+    const review = document.createElement("div");
+    review.className = "space-y-6";
 
-        return `
-          <div class="mb-6 p-4 border rounded">
-            <div class="font-bold mb-2">Q${i + 1}. ${q.question}</div>
-            ${q.options
-              .map(
-                (opt, idx) => `
-              <div class="p-2 rounded ${
-                idx === correctAns
-                  ? "bg-green-200"
-                  : idx === chosen
-                  ? "bg-red-200"
-                  : ""
-              }">${opt}</div>
-            `
-              )
-              .join("")}
-            <div class="mt-2 text-sm text-gray-600">
-              Your Answer: ${
-                chosen !== null ? q.options[chosen] : "Not Attempted"
-              }<br/>
-              Correct Answer: ${q.options[correctAns]}
-            </div>
+    questions.forEach((q, i) => {
+      const meta = questionMeta[i];
+      const isCorrect = meta.selectedOption !== null && meta.correctIndices.includes(meta.selectedOption);
+      if (meta.selectedOption !== null) attempted++;
+      if (isCorrect) correct++; else if (meta.selectedOption !== null) wrong++;
+
+      review.innerHTML += `
+        <div class="p-4 border rounded shadow">
+          <div class="font-bold mb-2">Q${meta.id} (${meta.subject})</div>
+          <div class="mb-2">${q.question}</div>
+          <div class="space-y-1">
+            ${q.options.map((opt, idx) => {
+              let cls = "";
+              if (meta.selectedOption === idx) cls = isCorrect ? "bg-green-200" : "bg-red-200";
+              if (q.correctIndices.includes(idx)) cls = "bg-green-200 font-bold";
+              return `<div class="${cls} p-1 rounded">${opt}</div>`;
+            }).join("")}
           </div>
-        `;
-      })
-      .join("");
+        </div>`;
+    });
 
-    const score = correct * 4 - (attempted - correct) * 1;
-    const predictedRank = rankPreset.find((r) => score >= r.marks)?.rank || "NA";
+    const totalMarks = correct * 4 - wrong; // adjust if JEE Adv partial needed
+    const nearest = data.rank_preset.reduce((prev, curr) =>
+      Math.abs(curr.marks - totalMarks) < Math.abs(prev.marks - totalMarks) ? curr : prev
+    );
 
-    app.innerHTML = `
-      <h2 class="text-2xl font-bold mb-4">Analysis</h2>
-      <p>Total Questions: ${questions.length}</p>
-      <p>Attempted: ${attempted}</p>
-      <p>Correct: ${correct}</p>
-      <p>Score: ${score}</p>
-      <p>Predicted Rank: ${predictedRank}</p>
-      <div class="mt-6">${reviewHTML}</div>
-    `;
+    review.innerHTML = `
+      <h2 class="text-xl font-bold">Analysis</h2>
+      <p>Total: ${questions.length}, Attempted: ${attempted}, Correct: ${correct}, Wrong: ${wrong}, Marks: ${totalMarks}</p>
+      <p>Predicted Rank: ${nearest.rank}</p>
+    ` + review.innerHTML;
+
+    app.innerHTML = "";
+    app.appendChild(review);
   }
 
-  renderTestUI();
+  loadQuestions();
 });

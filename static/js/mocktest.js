@@ -280,35 +280,82 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // All questions list with answer/solution
-    const cards = questions.map((q, i) => {
-      const st = state[i];
-      const isInt = q.question_type === "Integer Type";
-      const uAns = isInt ? (st.selected[0] || "") : st.selected;
-      const correctAns = isInt ? (q.numerical_answer || "") : (q.correctIndices || []);
-      const gotIt = isInt ? (uAns.trim() && uAns.trim() === correctAns.trim()) : arraysEqual(uAns, correctAns);
+   const cards = questions.map((q, i) => {
+  const st = state[i];
+  const isInt = q.question_type === "Integer Type";
 
-      const rawQ = String(q.question || "");
-      const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+  // user answer normalized
+  const uAns = isInt ? String(st.selected[0] || "").trim() : (Array.isArray(st.selected) ? st.selected : []);
 
-      const userAnsHtml = isInt
-        ? (uAns ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns}</span>` : `<span class="text-gray-400">Your answer: —</span>`)
-        : (uAns.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns.map(x => String.fromCharCode(65 + x)).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
+  // correct answer(s) normalized
+  const correctRaw = isInt ? String(q.numerical_answer || "").trim() : q.correctIndices;
+  const correctIdxs = Array.isArray(correctRaw)
+    ? correctRaw.map(x => Number(x))
+    : (correctRaw === "" || correctRaw == null ? [] : [Number(correctRaw)]);
 
-      const correctAnsHtml = isInt
-        ? `Correct answer: <span class="text-green-400">${correctAns}</span>`
-        : `Correct answer: <span class="text-green-400">${(correctAns || []).map(x => String.fromCharCode(65 + x)).join(", ")}</span>`;
+  // decide correctness
+  const gotIt = isInt
+    ? (uAns !== "" && uAns === String(correctRaw).trim())
+    : arraysEqual(uAns, correctIdxs);
 
-      // Options with highlight (for choice types)
-      const optionsHtml = !isInt ? `
-        <ul class="space-y-2">
-          ${q.options.map((opt, oi) => {
-            const isCorrectOpt = (q.correctIndices || []).includes(oi);
-            const isUserOpt = (st.selected || []).includes(oi);
-            const cls = isCorrectOpt ? 'border-green-500' : (isUserOpt ? 'border-red-500' : 'border-gray-700');
-            return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-          }).join("")}
-        </ul>
-      ` : ``;
+  // question HTML
+  const rawQ = String(q.question || "");
+  const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+
+  // user answer display
+  const userAnsHtml = isInt
+    ? (uAns ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns}</span>` : `<span class="text-gray-400">Your answer: —</span>`)
+    : ((Array.isArray(uAns) && uAns.length) ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
+
+  // correct answer display
+  const correctAnsHtml = isInt
+    ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
+    : `Correct answer: <span class="text-green-400">${correctIdxs.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>`;
+
+  // Options with highlights — only for non-integer questions
+  const optionsHtml = !isInt ? `
+    <ul class="space-y-2">
+      ${q.options.map((opt, oi) => {
+        const isCorrectOpt = correctIdxs.includes(oi);
+        const isUserOpt = (st.selected || []).includes(oi);
+        const cls = isCorrectOpt ? 'border-green-500' : (isUserOpt ? 'border-red-500' : 'border-gray-700');
+        return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+      }).join("")}
+    </ul>
+  ` : ``;
+
+  return `
+    <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
+      <div class="flex justify-between items-center mb-2">
+        <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
+        <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
+      </div>
+      <div class="mb-3">${qHtml}</div>
+      ${!isInt ? optionsHtml : ''}
+      <div class="mt-3 text-sm space-y-1">
+        <div>${userAnsHtml}</div>
+        <div>${correctAnsHtml}</div>
+      </div>
+      <div class="solution mt-3">
+        <div class="text-sm font-semibold mb-1">Solution:</div>
+        <div>${q.solution}</div>
+        ${q.video_url ? `
+          <div class="mt-3" style="display:flex;justify-content:center;">
+            <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
+              <iframe
+                src="${q.video_url}"
+                style="width:100%; height:100%; border:0; display:block;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Video Solution"></iframe>
+            </div>
+          </div>` : ``}
+      </div>
+    </div>
+  `;
+}).join("");
+
 
       return `
         <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">

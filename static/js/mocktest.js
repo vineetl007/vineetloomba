@@ -49,27 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return s.selected.length > 0;
   }
 
-function arraysEqual(a, b) {
-  // normalize inputs into arrays of numbers
-  const A = Array.isArray(a) ? a.map(x => Number(x)) : (a == null ? [] : [Number(a)]);
-  const B = Array.isArray(b) ? b.map(x => Number(x)) : (b == null ? [] : [Number(b)]);
+function isCorrect(qIdx) {
+  const q = questions[qIdx];
+  const s = state[qIdx];
 
-  if (A.length !== B.length) return false;
-  A.sort((x, y) => x - y);
-  B.sort((x, y) => x - y);
-  for (let i = 0; i < A.length; i++) if (A[i] !== B[i]) return false;
-  return true;
-}
-
-  function isCorrect(qIdx) {
-    const q = questions[qIdx];
-    const s = state[qIdx];
-    if (q.question_type === "Integer Type") {
-      return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
-    }
-    // Single or Multiple Choice
-    return arraysEqual(s.selected, q.correctIndices || []);
+  if (q.question_type === "Integer Type") {
+    return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
   }
+
+  // Single Choice
+  if (q.question_type === "Single Choice") {
+    return s.selected[0] === q.correctIndices[0];
+  }
+
+  return false; // fallback (for now we ignore Multi Choice)
+}
 
   // ---------- PALETTE ----------
   function paletteBtnClass(qIdx) {

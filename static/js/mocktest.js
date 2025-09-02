@@ -329,6 +329,18 @@ const correctRaw = isInt
       ? (userInt !== "" && userInt === String(correctRaw))
       : compareArrays(userMCQ, correctIdxs);
 
+    console.log(
+  `Q${i + 1}`,
+  "question_type=", q.question_type,
+  "options=", q.options,
+  "correctIndices(raw)=", q.correctIndices,
+  "correctIdxs(normalized)=", correctIdxs,
+  "userSelected=", st.selected,
+  "userMCQ=", userMCQ,
+  "gotIt=", gotIt
+);
+
+
     // Prepare question HTML
     const rawQ = String(q.question || "");
     const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
@@ -379,9 +391,6 @@ const correctAnsHtml = isInt
     // Final card HTML
     return `
       <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
-
-      console.log(i, 'st.selected=', st.selected, 'userMCQ=', userMCQ, 'q.correctIndices=', q.correctIndices, 'correctIdxs=', correctIdxs, 'gotIt=', gotIt);
-
         <div class="flex justify-between items-center mb-2">
           <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
           <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>

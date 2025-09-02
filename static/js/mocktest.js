@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- RENDER QUESTION (TEST MODE) ----------
   function renderQuestion(idx) {
     if (submitted) return;  // 👈 prevents showing question view after submission
+   currentIndex = idx;     // keep global index in sync (important for palette ring)
     const q = questions[idx];
     const st = state[idx];
     st.visited = true;
@@ -343,19 +344,22 @@ document.addEventListener("DOMContentLoaded", () => {
 function submitTest() {
   if (submitted) return;
   submitted = true;
-  renderPalette(); // recolor palette to correct/wrong/blank
-  renderAnalysis();
-  window.scrollTo({ top: 0, behavior: "smooth" }); // 👈 add this line
+  renderPalette();       // recolor palette to correct/wrong/blank
+  renderAnalysis();      // render full analysis (answers + solutions)
+  // bring the summary into view
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 
+
   // Hook up submit button
-  document.getElementById("submit-test").addEventListener("click", () => {
+document.getElementById("submit-test").addEventListener("click", () => {
   if (submitted) return; // prevent double-submit
   if (confirm("Are you sure you want to submit the test?")) {
     submitTest();
   }
 });
+
 
 
   // ---------- INITIAL RENDER ----------

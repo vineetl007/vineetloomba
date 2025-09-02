@@ -15,7 +15,6 @@ physics_questions:
 chemistry_questions:
   - questions/jee-chemistry/atomic-structure/as4
   - questions/jee-chemistry/atomic-structure/as1
-  - questions/jee-chemistry/atomic-structure/as4
 rank_preset:
   - marks: 24
     rank: 100

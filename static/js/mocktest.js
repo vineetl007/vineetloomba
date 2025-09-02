@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- RENDER QUESTION (TEST MODE) ----------
   function renderQuestion(idx) {
+    if (submitted) return;  // 👈 prevents showing question view after submission
     const q = questions[idx];
     const st = state[idx];
     st.visited = true;

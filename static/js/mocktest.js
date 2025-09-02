@@ -261,121 +261,123 @@ document.addEventListener("DOMContentLoaded", () => {
     return Number(sorted[sorted.length - 1].rank);
   }
 
-  function renderAnalysis() {
-    const { correct, wrong, unattempted, score, total } = calculateScore();
-    const rank = mapRank(score);
+ function renderAnalysis() {
+  const { correct, wrong, unattempted, score, total } = calculateScore();
+  const rank = mapRank(score);
 
-    // Summary header
-    const summaryHtml = `
-      <div class="border rounded-xl p-4 mb-4 bg-gray-900">
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
-          <div><div class="text-2xl font-bold">${total}</div><div class="text-xs text-gray-300">Total</div></div>
-          <div><div class="text-2xl font-bold text-green-500">${correct}</div><div class="text-xs text-gray-300">Correct</div></div>
-          <div><div class="text-2xl font-bold text-red-400">${wrong}</div><div class="text-xs text-gray-300">Wrong</div></div>
-          <div><div class="text-2xl font-bold">${unattempted}</div><div class="text-xs text-gray-300">Unattempted</div></div>
-          <div><div class="text-2xl font-bold text-yellow-300">${score}</div><div class="text-xs text-gray-300">Score</div></div>
-        </div>
-        ${rank ? `<div class="mt-3 text-center text-lg">Estimated Rank: <span class="font-bold">${rank}</span></div>` : ``}
+  // Summary header
+  const summaryHtml = `
+    <div class="border rounded-xl p-4 mb-4 bg-gray-900">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+        <div><div class="text-2xl font-bold">${total}</div><div class="text-xs text-gray-300">Total</div></div>
+        <div><div class="text-2xl font-bold text-green-500">${correct}</div><div class="text-xs text-gray-300">Correct</div></div>
+        <div><div class="text-2xl font-bold text-red-400">${wrong}</div><div class="text-xs text-gray-300">Wrong</div></div>
+        <div><div class="text-2xl font-bold">${unattempted}</div><div class="text-xs text-gray-300">Unattempted</div></div>
+        <div><div class="text-2xl font-bold text-yellow-300">${score}</div><div class="text-xs text-gray-300">Score</div></div>
       </div>
-    `;
-
-    // All questions list with answer/solution
-   const cards = questions.map((q, i) => {
-  const st = state[i];
-  const isInt = q.question_type === "Integer Type";
-
-  // Normalize user answer
-const uAns = isInt
-  ? String((st.selected?.[0] ?? "")).trim()
-  : Array.isArray(st.selected) ? [...st.selected].map(Number) : [];
-
-// Normalize correct answer
-const correctRaw = isInt
-  ? String(q.numerical_answer ?? "").trim()
-  : Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : [];
-
-// For MCQ: compare ignoring order
-function compareArrays(a, b) {
-  if (!Array.isArray(a) || !Array.isArray(b)) return false;
-  if (a.length !== b.length) return false;
-  const sa = [...a].sort((x, y) => x - y);
-  const sb = [...b].sort((x, y) => x - y);
-  return sa.every((val, idx) => val === sb[idx]);
-}
-
-const gotIt = isInt
-  ? (uAns !== "" && uAns === correctRaw) // compare as string after trimming
-  : compareArrays(uAns, correctRaw);
-
-
-  // question HTML
-  const rawQ = String(q.question || "");
-  const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
-
-  // user answer display
-  const userAnsHtml = isInt
-    ? (uAns ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns}</span>` : `<span class="text-gray-400">Your answer: —</span>`)
-    : ((Array.isArray(uAns) && uAns.length) ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${uAns.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
-
-  // correct answer display
-  const correctAnsHtml = isInt
-    ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
-    : `Correct answer: <span class="text-green-400">${correctIdxs.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>`;
-
-  // Options with highlights — only for non-integer questions
-  const optionsHtml = !isInt ? `
-    <ul class="space-y-2">
-      ${q.options.map((opt, oi) => {
-        const isCorrectOpt = correctIdxs.includes(oi);
-        const isUserOpt = (st.selected || []).includes(oi);
-        const cls = isCorrectOpt ? 'border-green-500' : (isUserOpt ? 'border-red-500' : 'border-gray-700');
-        return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-      }).join("")}
-    </ul>
-  ` : ``;
-
-  return `
-    <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
-      <div class="flex justify-between items-center mb-2">
-        <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
-        <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
-      </div>
-      <div class="mb-3">${qHtml}</div>
-      ${!isInt ? optionsHtml : ''}
-      <div class="mt-3 text-sm space-y-1">
-        <div>${userAnsHtml}</div>
-        <div>${correctAnsHtml}</div>
-      </div>
-      <div class="solution mt-3">
-        <div class="text-sm font-semibold mb-1">Solution:</div>
-        <div>${q.solution}</div>
-        ${q.video_url ? `
-          <div class="mt-3" style="display:flex;justify-content:center;">
-            <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
-              <iframe
-                src="${q.video_url}"
-                style="width:100%; height:100%; border:0; display:block;"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-                referrerpolicy="strict-origin-when-cross-origin"
-                title="Video Solution"></iframe>
-            </div>
-          </div>` : ``}
-      </div>
+      ${rank ? `<div class="mt-3 text-center text-lg">Estimated Rank: <span class="font-bold">${rank}</span></div>` : ``}
     </div>
   `;
-}).join("");
 
-    app.innerHTML = summaryHtml + cards;
+  // helper: compare arrays ignoring order
+  function compareArrays(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    const A = a.map(Number).sort((x, y) => x - y);
+    const B = b.map(Number).sort((x, y) => x - y);
+    return A.every((val, idx) => val === B[idx]);
+  }
 
-if (window.MathJax) {
-  if (typeof MathJax.typesetPromise === "function") {
-    MathJax.typesetPromise().catch(() => { /* ignore */ });
-  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  // Build cards for all questions
+  const cards = questions.map((q, i) => {
+    const st = state[i];
+    const isInt = q.question_type === "Integer Type";
+
+    // Normalize user answers
+    const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
+    const userMCQ = !isInt ? (Array.isArray(st.selected) ? st.selected.map(Number) : []) : [];
+
+    // Normalize correct answers
+    const correctRaw = isInt ? String(q.numerical_answer ?? "").trim() : (Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
+    const correctIdxs = isInt ? [] : (Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
+
+    // Determine correctness
+    const gotIt = isInt
+      ? (userInt !== "" && userInt === String(correctRaw))
+      : compareArrays(userMCQ, correctIdxs);
+
+    // Prepare question HTML
+    const rawQ = String(q.question || "");
+    const qHtml = rawQ.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+
+    // User answer display
+    const userAnsHtml = isInt
+      ? (userInt ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userInt}</span>` : `<span class="text-gray-400">Your answer: —</span>`)
+      : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
+
+    // Correct answer display
+    const correctAnsHtml = isInt
+      ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
+      : `Correct answer: <span class="text-green-400">${(correctIdxs.map(x => String.fromCharCode(65 + Number(x))).join(", "))}</span>`;
+
+    // Options HTML for choice questions (with highlights)
+    const optionsHtml = !isInt ? `
+      <ul class="space-y-2">
+        ${q.options.map((opt, oi) => {
+          const isCorrectOpt = correctIdxs.includes(oi);
+          const isUserOpt = userMCQ.includes(oi);
+          // priority: correct (green) else user's wrong (red) else neutral
+          const cls = isCorrectOpt ? 'border-green-500' : (isUserOpt ? 'border-red-500' : 'border-gray-700');
+          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+        }).join("")}
+      </ul>
+    ` : ``;
+
+    // Final card HTML
+    return `
+      <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
+        <div class="flex justify-between items-center mb-2">
+          <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
+          <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
+        </div>
+        <div class="mb-3">${qHtml}</div>
+        ${!isInt ? optionsHtml : ''}
+        <div class="mt-3 text-sm space-y-1">
+          <div>${userAnsHtml}</div>
+          <div>${correctAnsHtml}</div>
+        </div>
+        <div class="solution mt-3">
+          <div class="text-sm font-semibold mb-1">Solution:</div>
+          <div>${q.solution}</div>
+          ${q.video_url ? `
+            <div class="mt-3" style="display:flex;justify-content:center;">
+              <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
+                <iframe
+                  src="${q.video_url}"
+                  style="width:100%; height:100%; border:0; display:block;"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  title="Video Solution"></iframe>
+              </div>
+            </div>` : ``}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  app.innerHTML = summaryHtml + cards;
+
+  // Safe MathJax typeset (works with v2 and v3)
+  if (window.MathJax) {
+    if (typeof MathJax.typesetPromise === "function") {
+      MathJax.typesetPromise().catch(() => {});
+    } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
   }
-};
-  }
+}
+
 
 function submitTest() {
   if (submitted) return;

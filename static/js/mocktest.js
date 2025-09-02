@@ -345,21 +345,24 @@ const correctRaw = isInt
 
     // Correct answer display
 // Correct answer display (simplified)
+// Correct answer display (simplified)
 let correctAnsHtml = "";
 if (isInt) {
   correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
 } else if (q.question_type === "Single Choice") {
-  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[q.correctIndices[0]]}</span>`;
+  const correctIdx = Number(q.correctIndices); // ✅ convert to number
+  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[correctIdx]}</span>`;
 } else {
   correctAnsHtml = `Correct answer: —`;
 }
+
 
 
     // Options HTML for choice questions (with highlights)
 const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
   <ul class="space-y-2">
     ${q.options.map((opt, oi) => {
-      const cls = (oi === q.correctIndices[0]) ? 'border-green-500' : 
+      const cls = (oi === correctIdx) ? 'border-green-500' : 
                   (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
       return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
     }).join("")}

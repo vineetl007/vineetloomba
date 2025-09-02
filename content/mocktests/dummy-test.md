@@ -12,6 +12,10 @@ physics_questions:
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k1
   - questions/jee-physics/kinematics/k3
+chemistry_questions:
+  - questions/jee-chemistry/atomic-structure/as4
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as4
 rank_preset:
   - marks: 24
     rank: 100

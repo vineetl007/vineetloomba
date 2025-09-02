@@ -228,7 +228,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (window.MathJax) MathJax.typesetPromise();
+   if (window.MathJax) {
+  if (typeof MathJax.typesetPromise === "function") {
+    MathJax.typesetPromise().catch(() => { /* ignore */ });
+  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  }
+};
   }
 
   // ---------- SUBMIT / ANALYSIS ----------
@@ -338,7 +344,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     app.innerHTML = summaryHtml + cards;
 
-    if (window.MathJax) MathJax.typesetPromise();
+if (window.MathJax) {
+  if (typeof MathJax.typesetPromise === "function") {
+    MathJax.typesetPromise().catch(() => { /* ignore */ });
+  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  }
+};
   }
 
 function submitTest() {

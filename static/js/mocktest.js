@@ -356,39 +356,6 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
 }).join("");
 
-
-      return `
-        <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
-          <div class="flex justify-between items-center mb-2">
-            <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
-            <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
-          </div>
-          <div class="mb-3">${qHtml}</div>
-          ${!isInt ? optionsHtml : ''}
-          <div class="mt-3 text-sm space-y-1">
-            <div>${userAnsHtml}</div>
-            <div>${correctAnsHtml}</div>
-          </div>
-          <div class="solution mt-3">
-            <div class="text-sm font-semibold mb-1">Solution:</div>
-            <div>${q.solution}</div>
-            ${q.video_url ? `
-              <div class="mt-3" style="display:flex;justify-content:center;">
-                <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
-                  <iframe
-                    src="${q.video_url}"
-                    style="width:100%; height:100%; border:0; display:block;"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    title="Video Solution"></iframe>
-                </div>
-              </div>` : ``}
-          </div>
-        </div>
-      `;
-    }).join("");
-
     app.innerHTML = summaryHtml + cards;
 
 if (window.MathJax) {

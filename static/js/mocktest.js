@@ -339,13 +339,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.MathJax) MathJax.typesetPromise();
   }
 
-  function submitTest() {
-    if (submitted) return;
-    submitted = true;
-    // Lock UI and show analysis
-    renderPalette(); // recolor palette to correct/wrong/blank
-    renderAnalysis();
-  }
+function submitTest() {
+  if (submitted) return;
+  submitted = true;
+  renderPalette(); // recolor palette to correct/wrong/blank
+  renderAnalysis();
+  window.scrollTo({ top: 0, behavior: "smooth" }); // 👈 add this line
+}
+
 
   // Hook up submit button
   document.getElementById("submit-test").addEventListener("click", () => {

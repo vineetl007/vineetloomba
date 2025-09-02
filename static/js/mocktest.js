@@ -259,7 +259,7 @@ function isCorrect(qIdx) {
     return Number(sorted[sorted.length - 1].rank);
   }
 
- function renderAnalysis() {
+function renderAnalysis() {
   const { correct, wrong, unattempted, score, total } = calculateScore();
   const rank = mapRank(score);
 
@@ -278,15 +278,14 @@ function isCorrect(qIdx) {
   `;
 
   // helper: compare arrays ignoring order
- function compareArrays(a, b) {
-  const A = Array.isArray(a) ? a.map(Number) : [];
-  const B = Array.isArray(b) ? b.map(Number) : [];
-  if (A.length !== B.length) return false;
-  const setB = new Set(B);
-  for (const v of A) if (!setB.has(v)) return false;
-  return true;
-}
-
+  function compareArrays(a, b) {
+    const A = Array.isArray(a) ? a.map(Number) : [];
+    const B = Array.isArray(b) ? b.map(Number) : [];
+    if (A.length !== B.length) return false;
+    const setB = new Set(B);
+    for (const v of A) if (!setB.has(v)) return false;
+    return true;
+  }
 
   // Build cards for all questions
   const cards = questions.map((q, i) => {
@@ -295,44 +294,24 @@ function isCorrect(qIdx) {
 
     // Normalize user answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-const userMCQ = !isInt && q.question_type === "Single Choice"
-  ? (st.selected[0] !== undefined ? [st.selected[0]] : [])
-  : [];
+    const userMCQ = !isInt && q.question_type === "Single Choice"
+      ? (st.selected[0] !== undefined ? [st.selected[0]] : [])
+      : [];
 
+    // Normalize correct answers
+    let correctIdxs = [];
+    if (!isInt && Array.isArray(q.correctIndices)) {
+      correctIdxs = q.correctIndices.map(Number);
+    } else if (!isInt && (typeof q.correctIndices === "number" || typeof q.correctIndices === "string")) {
+      correctIdxs = [Number(q.correctIndices)];
+    }
 
-
-
-   // ✅ Normalize correct answers safely for both array & single-value cases
-let correctIdxs = [];
-if (isInt) {
-  correctIdxs = [];
-} else if (Array.isArray(q.correctIndices)) {
-  correctIdxs = q.correctIndices.map(Number);
-} else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
-  correctIdxs = [Number(q.correctIndices)];
-}
-
-const correctRaw = isInt
-  ? String(q.numerical_answer ?? "").trim()
-  : correctIdxs;
-
+    const correctRaw = isInt ? String(q.numerical_answer ?? "").trim() : correctIdxs;
 
     // Determine correctness
     const gotIt = isInt
       ? (userInt !== "" && userInt === String(correctRaw))
       : compareArrays(userMCQ, correctIdxs);
-
-    console.log(
-  `Q${i + 1}`,
-  "question_type=", q.question_type,
-  "options=", q.options,
-  "correctIndices(raw)=", q.correctIndices,
-  "correctIdxs(normalized)=", correctIdxs,
-  "userSelected=", st.selected,
-  "userMCQ=", userMCQ,
-  "gotIt=", gotIt
-);
-
 
     // Prepare question HTML
     const rawQ = String(q.question || "");
@@ -344,31 +323,26 @@ const correctRaw = isInt
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
     // Correct answer display
-// Correct answer display (simplified)
-// Correct answer display (simplified)
-let correctAnsHtml = "";
-if (isInt) {
-  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
-} else if (q.question_type === "Single Choice") {
-  const correctIdx = Number(q.correctIndices); // ✅ convert to number
-  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[correctIdx]}</span>`;
-} else {
-  correctAnsHtml = `Correct answer: —`;
-}
+    let correctAnsHtml = "";
+    if (isInt) {
+      correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
+    } else if (q.question_type === "Single Choice") {
+      const correctIdx = correctIdxs[0] ?? 0; // ✅ safe first index
+      correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[correctIdx]}</span>`;
+    } else {
+      correctAnsHtml = `Correct answer: —`;
+    }
 
-
-
-    // Options HTML for choice questions (with highlights)
-const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
-  <ul class="space-y-2">
-    ${q.options.map((opt, oi) => {
-      const cls = (oi === correctIdx) ? 'border-green-500' : 
-                  (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
-      return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-    }).join("")}
-  </ul>
-` : '';
-
+    // Options HTML for Single Choice
+    const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
+      <ul class="space-y-2">
+        ${q.options.map((opt, oi) => {
+          const cls = (oi === (correctIdxs[0] ?? 0)) ? 'border-green-500' : 
+                      (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
+          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+        }).join("")}
+      </ul>
+    ` : '';
 
     // Final card HTML
     return `
@@ -414,7 +388,6 @@ const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
     }
   }
 }
-
 
 function submitTest() {
   if (submitted) return;

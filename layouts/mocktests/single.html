@@ -1,50 +1,91 @@
 {{ define "main" }}
-<div class="container mx-auto px-4 py-6">
-  <h1 class="text-2xl mb-4">{{ .Title }}</h1>
+<div class="container mx-auto px-2 py-4">
 
-  {{ $mock := .Params }}
-  <div id="mocktest-app" class="min-h-[400px]"></div>
+  <h1 class="text-2xl mb-4 text-center font-bold">{{ .Title }}</h1>
 
-  <script type="application/json" id="mocktest-data">
-[
-  {{- $subjects := slice "maths" "physics" "chemistry" -}}
-  {{- range $sIndex, $sub := $subjects -}}
-    {{- $qList := index $mock (printf "%s_questions" $sub) -}}
-    {{- if $qList }}
-      {{- range $i, $qPath := $qList -}}
-        {{- $qPage := site.GetPage $qPath -}}
-        {{- if $qPage }}
-        {
-          "id": {{ add (mul $sIndex 1000) $i }},
-          "subject": "{{ $sub }}",
-          "title": "{{ $qPage.Title | safeJS }}",
-          "question": {{ $qPage.Params.question | jsonify }},
-          "options": {{ $qPage.Params.options | jsonify }},
-          "correctIndices": {{ $qPage.Params.correctIndices | jsonify }},
-          "solution": {{ $qPage.Params.solution | jsonify }},
-          "question_type": "{{ $qPage.Params.question_type }}",
-          "numerical_answer": {{ $qPage.Params.numerical_answer | jsonify }},
-          "difficulty": {{ if $qPage.Params.difficulty }}"{{ $qPage.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
-          "tags": {{ if $qPage.Params.tags }}{{ $qPage.Params.tags | jsonify }}{{ else }}[]{{ end }},
-          "video_url": {{ if $qPage.Params.video }}"https://www.youtube.com/embed/{{ $qPage.Params.video }}?start={{ $qPage.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
-        }{{ if not (and (eq $sIndex (sub (len $subjects) 1)) (eq $i (sub (len $qList) 1))) }},{{ end }}
-        {{- else }}
-        // No question found at path: {{ $qPath }}
-        {{- end }}
-      {{- end }}
-    {{- end }}
-  {{- end }}
-]
-</script>
+  {{/* Collect questions from paths */}}
+  {{ $mathQs := slice }}
+  {{ range .Params.maths_questions }}
+    {{ $q := site.GetPage . }}
+    {{ if $q }}{{ $mathQs = $mathQs | append $q }}{{ end }}
+  {{ end }}
 
-<script src="/js/mocktest.js"></script>
+  {{ $phyQs := slice }}
+  {{ range .Params.physics_questions }}
+    {{ $q := site.GetPage . }}
+    {{ if $q }}{{ $phyQs = $phyQs | append $q }}{{ end }}
+  {{ end }}
 
-<div class="mt-6">
-  <a href="/mocktests/"
-     class="inline-block bg-blue-500 text-white font-concert py-2 px-4 rounded hover:bg-blue-400 transition">
-    ⬅ Back to Mock Tests
-  </a>
-</div>
+  {{ $chemQs := slice }}
+  {{ range .Params.chemistry_questions }}
+    {{ $q := site.GetPage . }}
+    {{ if $q }}{{ $chemQs = $chemQs | append $q }}{{ end }}
+  {{ end }}
+
+  {{/* Merge all questions but tag them with subject */}}
+  {{ $all := slice }}
+  {{ range $mathQs }}
+    {{ $all = $all | append (dict "subject" "Maths" "page" .) }}
+  {{ end }}
+  {{ range $phyQs }}
+    {{ $all = $all | append (dict "subject" "Physics" "page" .) }}
+  {{ end }}
+  {{ range $chemQs }}
+    {{ $all = $all | append (dict "subject" "Chemistry" "page" .) }}
+  {{ end }}
+
+  {{ if gt (len $all) 0 }}
+    <div class="grid grid-cols-12 gap-4">
+      
+      <!-- Left: Question Palette -->
+      <aside class="col-span-3 bg-gray-900 p-4 rounded-xl shadow-md">
+        <h2 class="text-lg font-bold mb-3 text-yellow-300">Question Palette</h2>
+        <div id="question-palette" class="grid grid-cols-5 gap-2"></div>
+        <div class="mt-6">
+          <button id="submit-test"
+            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold">
+            Submit Test
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right: Main Test Area -->
+      <main class="col-span-9">
+        <div class="flex justify-between items-center mb-4">
+          <div class="text-xl font-bold text-blue-400">Mock Test</div>
+          <div id="timer" class="text-xl font-bold text-red-400">00:00:00</div>
+        </div>
+        <div id="mocktest-app" class="min-h-[400px]"></div>
+      </main>
+    </div>
+
+    <!-- Pass questions to JS -->
+    <script type="application/json" id="mocktest-data">
+      [
+        {{- range $index, $item := $all -}}
+          {{ $q := $item.page }}
+          {
+            "id": {{ $index }},
+            "subject": "{{ $item.subject }}",
+            "question": "{{ $q.Params.question | safeJS }}",
+            "options": [{{ range $i, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $i 1) (len $q.Params.options)) }},{{ end }}{{ end }}],
+            "correctIndices": {{ $q.Params.correctIndices | jsonify }},
+            "solution": "{{ $q.Params.solution | safeJS }}",
+            "question_type": "{{ $q.Params.question_type }}",
+            "numerical_answer": "{{ $q.Params.numerical_answer }}",
+            "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
+            "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},
+            "video_url": {{ if $q.Params.video }}"https://www.youtube.com/embed/{{ $q.Params.video }}?start={{ $q.Params.start_time | default 0 }}&rel=0"{{ else }}""{{ end }}
+          }{{ if not (eq (add $index 1) (len $all)) }},{{ end }}
+        {{- end -}}
+      ]
+    </script>
+
+    <script src="/js/mocktest.js"></script>
+
+  {{ else }}
+    <p class="text-center">No questions found for this Mock Test.</p>
+  {{ end }}
 
 </div>
 {{ end }}

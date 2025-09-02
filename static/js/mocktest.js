@@ -351,9 +351,12 @@ function submitTest() {
 
   // Hook up submit button
   document.getElementById("submit-test").addEventListener("click", () => {
-    // Optional: confirm
-    if (confirm("Are you sure you want to submit the test?")) submitTest();
-  });
+  if (submitted) return; // prevent double-submit
+  if (confirm("Are you sure you want to submit the test?")) {
+    submitTest();
+  }
+});
+
 
   // ---------- INITIAL RENDER ----------
   renderPalette();

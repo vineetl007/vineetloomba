@@ -284,19 +284,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const st = state[i];
   const isInt = q.question_type === "Integer Type";
 
-  // user answer normalized
-  const uAns = isInt ? String(st.selected[0] || "").trim() : (Array.isArray(st.selected) ? st.selected : []);
+  // Normalize user answer
+const uAns = isInt
+  ? String((st.selected?.[0] ?? "")).trim()
+  : Array.isArray(st.selected) ? [...st.selected].map(Number) : [];
 
-  // correct answer(s) normalized
-  const correctRaw = isInt ? String(q.numerical_answer || "").trim() : q.correctIndices;
-  const correctIdxs = Array.isArray(correctRaw)
-    ? correctRaw.map(x => Number(x))
-    : (correctRaw === "" || correctRaw == null ? [] : [Number(correctRaw)]);
+// Normalize correct answer
+const correctRaw = isInt
+  ? String(q.numerical_answer ?? "").trim()
+  : Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : [];
 
-  // decide correctness
-  const gotIt = isInt
-    ? (uAns !== "" && uAns === String(correctRaw).trim())
-    : arraysEqual(uAns, correctIdxs);
+// For MCQ: compare ignoring order
+function compareArrays(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return false;
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort((x, y) => x - y);
+  const sb = [...b].sort((x, y) => x - y);
+  return sa.every((val, idx) => val === sb[idx]);
+}
+
+const gotIt = isInt
+  ? (uAns !== "" && uAns === correctRaw) // compare as string after trimming
+  : compareArrays(uAns, correctRaw);
+
 
   // question HTML
   const rawQ = String(q.question || "");

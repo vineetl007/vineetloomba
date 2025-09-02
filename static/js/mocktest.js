@@ -301,9 +301,20 @@ function arraysEqual(a, b) {
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
     const userMCQ = !isInt ? (Array.isArray(st.selected) ? st.selected.map(Number) : []) : [];
 
-    // Normalize correct answers
-    const correctRaw = isInt ? String(q.numerical_answer ?? "").trim() : (Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
-    const correctIdxs = isInt ? [] : (Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : []);
+   // ✅ Normalize correct answers safely for both array & single-value cases
+let correctIdxs = [];
+if (isInt) {
+  correctIdxs = [];
+} else if (Array.isArray(q.correctIndices)) {
+  correctIdxs = q.correctIndices.map(Number);
+} else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
+  correctIdxs = [Number(q.correctIndices)];
+}
+
+const correctRaw = isInt
+  ? String(q.numerical_answer ?? "").trim()
+  : correctIdxs;
+
 
     // Determine correctness
     const gotIt = isInt

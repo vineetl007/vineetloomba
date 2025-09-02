@@ -284,13 +284,15 @@ function arraysEqual(a, b) {
   `;
 
   // helper: compare arrays ignoring order
-  function compareArrays(a, b) {
-    if (!Array.isArray(a) || !Array.isArray(b)) return false;
-    if (a.length !== b.length) return false;
-    const A = a.map(Number).sort((x, y) => x - y);
-    const B = b.map(Number).sort((x, y) => x - y);
-    return A.every((val, idx) => val === B[idx]);
-  }
+ function compareArrays(a, b) {
+  const A = Array.isArray(a) ? a.map(Number) : [];
+  const B = Array.isArray(b) ? b.map(Number) : [];
+  if (A.length !== B.length) return false;
+  const setB = new Set(B);
+  for (const v of A) if (!setB.has(v)) return false;
+  return true;
+}
+
 
   // Build cards for all questions
   const cards = questions.map((q, i) => {
@@ -299,9 +301,12 @@ function arraysEqual(a, b) {
 
     // Normalize user answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-    const userMCQ = !isInt
-  ? (Array.isArray(st.selected) ? st.selected.map(Number) : (st.selected || st.selected === 0 ? [Number(st.selected)] : []))
+  const userMCQ = !isInt
+  ? (Array.isArray(st.selected)
+      ? st.selected.map(Number)
+      : (st.selected !== undefined && st.selected !== null ? [Number(st.selected)] : []))
   : [];
+
 
 
    // ✅ Normalize correct answers safely for both array & single-value cases
@@ -334,9 +339,29 @@ const correctRaw = isInt
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
     // Correct answer display
-    const correctAnsHtml = isInt
-      ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
-      : `Correct answer: <span class="text-green-400">${(correctIdxs.map(x => String.fromCharCode(65 + Number(x))).join(", "))}</span>`;
+const correctAnsHtml = isInt
+  ? `Correct answer: <span class="text-green-400">${String(correctRaw)}</span>`
+  : (() => {
+      // normalize from the source (covers array / single number / string / missing)
+      const idxs = Array.isArray(q.correctIndices)
+        ? q.correctIndices.map(Number)
+        : (typeof q.correctIndices === 'number' || typeof q.correctIndices === 'string'
+            ? [Number(q.correctIndices)]
+            : []);
+
+      if (idxs.length === 0) return `Correct answer: <span class="text-green-400">—</span>`;
+
+      const texts = idxs.map(i => {
+        if (q.options && q.options[i] !== undefined && q.options[i] !== null && String(q.options[i]).trim() !== "") {
+          return q.options[i];           // prefer the option text
+        }
+        // fallback to letter if option text missing
+        return String.fromCharCode(65 + Number(i));
+      });
+
+      return `Correct answer: <span class="text-green-400">${texts.join(", ")}</span>`;
+    })();
+
 
     // Options HTML for choice questions (with highlights)
     const optionsHtml = !isInt ? `
@@ -354,6 +379,9 @@ const correctRaw = isInt
     // Final card HTML
     return `
       <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
+
+      console.log(i, 'st.selected=', st.selected, 'userMCQ=', userMCQ, 'q.correctIndices=', q.correctIndices, 'correctIdxs=', correctIdxs, 'gotIt=', gotIt);
+
         <div class="flex justify-between items-center mb-2">
           <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
           <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>

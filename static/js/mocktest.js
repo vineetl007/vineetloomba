@@ -11,15 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   optionsLen: Array.isArray(q.options) ? q.options.length : 0
 })));
 
-let rankPreset = payload.rankPreset || [];
-if (typeof rankPreset === "string") {
-  try {
-    rankPreset = JSON.parse(rankPreset);
-  } catch (e) {
-    console.error("Failed to parse rankPreset:", rankPreset);
-    rankPreset = [];
-  }
-}
+const rankPreset = payload.rankPreset || [];
 
   const durationMinutes = Number(payload.durationMinutes || 180);
 

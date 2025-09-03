@@ -339,7 +339,10 @@ function renderAnalysis() {
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
     // numeric-safe arrays for comparison
 const correctIdxs = !isInt && Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : [];
-const userMCQ = !isInt && q.question_type === "Single Choice" && s.selected?.[0] !== undefined ? [Number(s.selected[0])] : [];
+const userMCQ = !isInt && q.question_type === "Single Choice" && st.selected?.[0] !== undefined
+  ? [Number(st.selected[0])]
+  : [];
+
 
 
     // Determine correctness

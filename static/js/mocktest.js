@@ -49,10 +49,11 @@ questions.forEach(q => {
     q.correctIndices = q.correctIndices.map(ci => (!isNaN(ci) ? Number(ci) - 1 : ci));
   }
 
-  // Keep only valid indices (between 0 and options.length - 1) and ensure numbers
-  q.correctIndices = q.correctIndices
-    .filter(ci => !isNaN(ci) && Number(ci) >= 0 && Number(ci) < q.options.length)
-    .map(Number);
+ 
+// Keep only numeric indices (do not filter by options.length here)
+q.correctIndices = q.correctIndices
+  .filter(ci => !isNaN(ci) && Number(ci) >= 0)
+  .map(Number);
 });
 
 

@@ -7,6 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const rankPreset = payload.rankPreset || [];
   const durationMinutes = Number(payload.durationMinutes || 180);
 
+  // 🔧 Normalize question data immediately after loading
+questions.forEach(q => {
+  if (!q.question_type) q.question_type = "Single Choice";
+
+  if (q.question_type === "Integer Type") {
+    q.numerical_answer = String(q.numerical_answer ?? "").trim();
+  } else {
+    if (Array.isArray(q.correctIndices)) {
+      q.correctIndices = q.correctIndices.map(Number);
+    } else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
+      q.correctIndices = [Number(q.correctIndices)];
+    } else {
+      q.correctIndices = [0]; // fallback to first option
+    }
+  }
+});
+
   // State
   let currentIndex = 0;                // 0-based global index
   const state = questions.map(() => ({
@@ -247,38 +264,17 @@ function isCorrect(qIdx) {
     return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
   }
 
-if (q.question_type === "Single Choice") {
-  // Safe fallback: use 0 if correctIndices missing
-  
-  const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
-console.log(`Q${qIdx+1}: comparing user=${Number(s.selected[0])} correct=${Number(correct)}`);
-return s.selected.length > 0 && Number(s.selected[0]) === Number(correct);
+  if (q.question_type === "Single Choice") {
+    const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
+    console.log(`Q${qIdx+1}: comparing user=${Number(s.selected[0])} correct=${Number(correct)}`);
+    return s.selected.length > 0 && Number(s.selected[0]) === Number(correct);
+  }
 
-}
-
-   console.log(`Question ${qIdx+1} (${q.subject}) → user: ${s.selected}, correct: ${q.correctIndices}, result: ${result}`);  
-  return result; // fallback
+  return false;
 }
 
 // ---------- RENDER ANALYSIS ----------
 function renderAnalysis() {
-  // Normalize all questions once
-  questions.forEach(q => {
-    if (!q.question_type) q.question_type = "Single Choice";
-
-    if (q.question_type === "Integer Type") {
-      q.numerical_answer = String(q.numerical_answer ?? "").trim();
-    } else {
-      if (Array.isArray(q.correctIndices)) {
-        q.correctIndices = q.correctIndices.map(Number);
-      } else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
-        q.correctIndices = [Number(q.correctIndices)];
-      } else {
-        q.correctIndices = [0]; // safe fallback
-      }
-    }
-  });
-
   const { correct, wrong, unattempted, score, total } = calculateScore();
   const rank = mapRank(score);
 

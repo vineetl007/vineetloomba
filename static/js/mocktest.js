@@ -11,12 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 questions.forEach(q => {
   q.question_type = (String(q.question_type || "").trim() || "Single Choice");
   if (!Array.isArray(q.options)) q.options = [];
-   if (q.question_type.toLowerCase() === "integer type") {
-    q.numerical_answer = String(q.numerical_answer ?? "").trim();
-    // Integer questions don't use correctIndices as MCQ does
-    q.correctIndices = [];
-    return;
-  }
+  if (q.question_type.toLowerCase() === "integer type") {
+  q.numerical_answer = String(q.numerical_answer ?? "").trim();
+  return; // ✅ don’t overwrite correctIndices unnecessarily
+}
+
 
   // Normalize correctIndices into a clean numeric array
   let correctIndicesArray = [];
@@ -270,26 +269,14 @@ function isCorrect(qIdx) {
   const q = questions[qIdx];
   const s = state[qIdx];
 
-  // Integer Type → compare string
   if (q.question_type === "Integer Type") {
-    const user = String(s.selected?.[0] ?? "").trim();
-    const correct = String(q.numerical_answer ?? "").trim();
-    return user !== "" && user === correct;
+    return (s.selected[0] || "").trim() === String(q.numerical_answer || "").trim();
   }
 
-  // Single / Multiple Choice → compare arrays
-  if (Array.isArray(q.correctIndices) && q.correctIndices.length > 0) {
-    const correctSet = new Set(q.correctIndices.map(Number));
-    const selectedSet = new Set((s.selected || []).map(Number));
-
-    // Must match exactly (no extra selections, no missing ones)
-    if (selectedSet.size !== correctSet.size) return false;
-    for (const val of selectedSet) if (!correctSet.has(val)) return false;
-    return true;
-  }
-
-  // If no correctIndices → mark incorrect
-  return false;
+  // For single & multi: compare sets
+  const user = (s.selected || []).map(Number).sort();
+  const correct = (q.correctIndices || []).map(Number).sort();
+  return JSON.stringify(user) === JSON.stringify(correct);
 }
 
 

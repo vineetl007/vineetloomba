@@ -99,7 +99,6 @@
         "correctIndices": {{ if $q.Params.correctIndices }}{{ $q.Params.correctIndices | jsonify }}{{ else }}[]{{ end }},
         "question_type": "{{ $q.Params.question_type | trim }}",
         "solution": "{{ $q.Params.solution | safeJS }}",
-        "question_type": "{{ $q.Params.question_type }}",
         "numerical_answer": {{ if eq $q.Params.question_type "Integer Type" }}"{{ $q.Params.numerical_answer | safeJS }}"{{ else }}""{{ end }},
         "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},
         "tags": {{ if $q.Params.tags }}{{ $q.Params.tags | jsonify }}{{ else }}[]{{ end }},

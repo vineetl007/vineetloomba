@@ -100,7 +100,7 @@
     "{{ $opt | safeJS }}"{{ if ne (add $j 1) (len $q.Params.options) }},{{ end }}
   {{- end -}}
 ],
-"correctIndices": {{ if $q.Params.correctIndices }}{{ $q.Params.correctIndices | jsonify }}{{ else }}[]{{ end }},
+"correctIndices": {{ $q.Params.correctIndices | default (slice) | jsonify }},
 "question_type": "{{ $q.Params.question_type }}",
 
         "solution": "{{ $q.Params.solution | safeJS }}",

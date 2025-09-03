@@ -4,6 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const payload = JSON.parse(dataEl.textContent);
   const questions = payload.questions || [];
+  console.log("RAW_FROM_HUGO:", questions.map((q,i)=>({
+  i: i+1,
+  question_type: q.question_type,
+  correctIndices: q.correctIndices,
+  optionsLen: Array.isArray(q.options) ? q.options.length : 0
+})));
+
   const rankPreset = payload.rankPreset || [];
   const durationMinutes = Number(payload.durationMinutes || 180);
 
@@ -16,6 +23,12 @@ questions.forEach(q => {
   return; // ✅ don’t overwrite correctIndices unnecessarily
 }
 
+console.log("AFTER_NORMALIZE:", questions.map((q,i)=>({
+  i: i+1,
+  question_type: q.question_type,
+  correctIndices: q.correctIndices,
+  optionsLen: Array.isArray(q.options) ? q.options.length : 0
+})));
 
   // Normalize correctIndices into a clean numeric array
   let correctIndicesArray = [];

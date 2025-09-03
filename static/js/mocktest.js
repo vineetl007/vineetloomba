@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   optionsLen: Array.isArray(q.options) ? q.options.length : 0
 })));
 
-  const rankPreset = payload.rankPreset || [];
+ const rankPreset = payload.rank_preset || [];
   const durationMinutes = Number(payload.durationMinutes || 180);
 
 // ---------- Normalize question data (robust) ----------

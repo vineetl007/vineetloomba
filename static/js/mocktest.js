@@ -15,14 +15,15 @@ questions.forEach(q => {
     q.numerical_answer = String(q.numerical_answer ?? "").trim();
   } else {
     if (Array.isArray(q.correctIndices)) {
-      q.correctIndices = q.correctIndices.map(Number);
-    } else if (typeof q.correctIndices === "number" || typeof q.correctIndices === "string") {
-      q.correctIndices = [Number(q.correctIndices)];
+      q.correctIndices = q.correctIndices.map(i => Number(i)); // ✅ convert each to number
+    } else if (q.correctIndices !== undefined && q.correctIndices !== null) {
+      q.correctIndices = [Number(q.correctIndices)]; // ✅ wrap single value, convert
     } else {
-      q.correctIndices = [0]; // fallback to first option
+      q.correctIndices = []; // ✅ leave empty if truly missing
     }
   }
 });
+
 
   // State
   let currentIndex = 0;                // 0-based global index

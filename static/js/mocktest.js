@@ -210,16 +210,27 @@ questions.forEach((q, i) => {
     `;
 
     // Option selection (no feedback)
-    if (!isInteger) {
-      app.querySelectorAll(".option").forEach(opt => {
-        opt.addEventListener("click", () => {
-          const i = parseInt(opt.dataset.index);
-      state[idx].selected = [Number(i)]; // ✅ ensure numeric          
-          renderQuestion(idx);
-          renderPalette();
-        });
-      });
-    } else {
+   if (!isInteger) {
+  app.querySelectorAll(".option").forEach(opt => {
+    opt.addEventListener("click", () => {
+      const i = parseInt(opt.dataset.index);
+
+      if (q.question_type === "Single Choice") {
+        // overwrite with single index
+        state[idx].selected = [i];
+      } else if (q.question_type === "Multiple Choice") {
+        // toggle presence of index
+        const sel = new Set(state[idx].selected.map(Number));
+        if (sel.has(i)) sel.delete(i);
+        else sel.add(i);
+        state[idx].selected = Array.from(sel);
+      }
+
+      renderQuestion(idx);
+      renderPalette();
+    });
+  });
+}else {
       app.querySelector("#int-answer").addEventListener("input", e => {
         state[idx].selected = [e.target.value.trim()];
         renderPalette();
@@ -362,18 +373,38 @@ const userMCQ = !isInt && Array.isArray(st.selected) ? st.selected.map(Number) :
       ? `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`
       : (q.question_type === "Single Choice" ? `Correct answer: <span class="text-green-400">${q.options[correctIdxs[0]]}</span>` : "Correct answer: —");
 
-    // Options HTML for Single Choice
-const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
-  <ul class="space-y-2">
-    ${q.options.map((opt, oi) => {
-      const oiNum = Number(oi);
-      const cls = (oiNum === (correctIdxs[0] ?? -1))
-        ? 'border-green-500'
-        : (userMCQ.includes(oiNum) ? 'border-red-500' : 'border-gray-700');
-      return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-    }).join("")}
-  </ul>
-` : '';
+    // Options HTML 
+let optionsHtml = '';
+if (!isInt) {
+  if (q.question_type === "Single Choice") {
+    optionsHtml = `
+      <ul class="space-y-2">
+        ${q.options.map((opt, oi) => {
+          const oiNum = Number(oi);
+          const cls = (oiNum === (correctIdxs[0] ?? -1))
+            ? 'border-green-500'
+            : (userMCQ.includes(oiNum) ? 'border-red-500' : 'border-gray-700');
+          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+        }).join("")}
+      </ul>
+    `;
+  } else if (q.question_type === "Multiple Choice") {
+    optionsHtml = `
+      <ul class="space-y-2">
+        ${q.options.map((opt, oi) => {
+          const oiNum = Number(oi);
+          const isCorrect = correctIdxs.includes(oiNum);
+          const isUser = userMCQ.includes(oiNum);
+          const cls = isCorrect
+            ? 'border-green-500'
+            : (isUser ? 'border-red-500' : 'border-gray-700');
+          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+        }).join("")}
+      </ul>
+    `;
+  }
+}
+
 
 
     // Final card

@@ -1,3 +1,8 @@
+// Time tracking per subject
+let timeSpent = { Maths: 0, Physics: 0, Chemistry: 0 };
+let lastTimestamp = null;
+let currentSubject = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const dataEl = document.getElementById("mocktest-data");
   if (!dataEl) return;
@@ -158,6 +163,16 @@ questions.forEach((q, i) => {
     const q = questions[idx];
     const st = state[idx];
     st.visited = true;
+
+    // ----- TIME TRACKING -----
+const now = Date.now();
+if (currentSubject && lastTimestamp) {
+  timeSpent[currentSubject] += (now - lastTimestamp);
+}
+currentSubject = q.subject;
+lastTimestamp = now;
+console.log("DEBUG_TIME_TRACK:", timeSpent);
+
 
     const rawQ = String(q.question || "");
     const questionHtml = rawQ
@@ -564,6 +579,14 @@ questions.forEach((q, i) => {
 
   if (submitted) return;
   submitted = true;
+
+  // ----- FINALIZE TIME TRACKING -----
+const now = Date.now();
+if (currentSubject && lastTimestamp) {
+  timeSpent[currentSubject] += (now - lastTimestamp);
+}
+console.log("FINAL_TIME_SPENT:", timeSpent);
+
   renderPalette();       // recolor palette to correct/wrong/blank
   renderAnalysis();      // render full analysis (answers + solutions)
   // bring the summary into view

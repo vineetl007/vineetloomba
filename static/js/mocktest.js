@@ -189,14 +189,14 @@ app.innerHTML = `
       <div>
         <!-- First row: subject + question type -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="px-2 py-1 text-xs rounded bg-blue-900 text-yellow-300">
+          <span class="px-2 py-1 font-concert rounded bg-blue-900 text-yellow-300">
             ${q.subject}
           </span>
-          <span class="px-2 py-1 text-xs rounded 
+          <span class="px-2 py-1 rounded 
             ${q.question_type === "Single Choice" ? "bg-blue-600" : 
               q.question_type === "Multiple Choice" ? "bg-green-600" : 
-              "bg-orange-600"} 
-            text-white font-semibold">
+              "bg-purple-600"} 
+            text-white font-concert">
             ${q.question_type}
           </span>
         </div>
@@ -207,7 +207,7 @@ app.innerHTML = `
         </h2>
       </div>
 
-      <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} text-white">
+      <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
         ${st.marked ? 'Unmark' : 'Mark for Review'}
       </button>
     </div>

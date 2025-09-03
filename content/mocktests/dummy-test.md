@@ -7,6 +7,7 @@ subjects:
 maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1
+  - questions/jee-math/circles/integer2
 physics_questions:
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k1

@@ -97,7 +97,7 @@
         "question": "{{ $q.Params.question | safeJS }}",
        "options": {{ if $q.Params.options }}{{ $q.Params.options | jsonify }}{{ else }}[]{{ end }},
         "correctIndices": {{ if $q.Params.correctIndices }}{{ $q.Params.correctIndices | jsonify }}{{ else }}[]{{ end }},
-        "question_type": "{{ $q.Params.question_type | trim }}",
+    "question_type": "{{ $q.Params.question_type }}",
         "solution": "{{ $q.Params.solution | safeJS }}",
         "numerical_answer": {{ if eq $q.Params.question_type "Integer Type" }}"{{ $q.Params.numerical_answer | safeJS }}"{{ else }}""{{ end }},
         "difficulty": {{ if $q.Params.difficulty }}"{{ $q.Params.difficulty | safeJS }}"{{ else }}""{{ end }},

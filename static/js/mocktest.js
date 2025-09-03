@@ -181,7 +181,7 @@ questions.forEach(q => {
       app.querySelectorAll(".option").forEach(opt => {
         opt.addEventListener("click", () => {
           const i = parseInt(opt.dataset.index);
-       state[idx].selected = [i]; // single selection only          
+      state[idx].selected = [Number(i)]; // ✅ ensure numeric          
           renderQuestion(idx);
           renderPalette();
         });

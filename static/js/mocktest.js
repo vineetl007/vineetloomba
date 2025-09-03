@@ -9,13 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ---------- Normalize question data (robust) ----------
 questions.forEach(q => {
-  // normalize type string
-  q.question_type = String(q.question_type || "Single Choice").trim();
-
-  // Ensure options exists (helps later checks)
+  q.question_type = (String(q.question_type || "").trim() || "Single Choice");
   if (!Array.isArray(q.options)) q.options = [];
-
-  if (q.question_type === "Integer Type") {
+   if (q.question_type.toLowerCase() === "integer type") {
     q.numerical_answer = String(q.numerical_answer ?? "").trim();
     // Integer questions don't use correctIndices as MCQ does
     q.correctIndices = [];
@@ -31,9 +27,10 @@ questions.forEach(q => {
   }
 
   // Filter out non-numeric values and ensure they are 0-based
-  q.correctIndices = correctIndicesArray
+const optLen = Array.isArray(q.options) ? q.options.length : null;
+ q.correctIndices = correctIndicesArray
     .map(ci => Number(ci))
-    .filter(ci => !isNaN(ci) && ci >= 0 && ci < q.options.length);
+    .filter(ci => Number.isInteger(ci) && ci >= 0 && (optLen === null || ci < optLen));
 });
 
   // State
@@ -334,11 +331,7 @@ function renderAnalysis() {
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
     // numeric-safe arrays for comparison
 const correctIdxs = !isInt && Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : [];
-const userMCQ = !isInt && q.question_type === "Single Choice" && st.selected?.[0] !== undefined
-  ? [Number(st.selected[0])]
-  : [];
-
-
+const userMCQ = !isInt && Array.isArray(st.selected) ? st.selected.map(Number) : [];
 
     // Determine correctness
     const gotIt = isInt ? (userInt !== "" && userInt === q.numerical_answer) : compareArrays(userMCQ, correctIdxs);

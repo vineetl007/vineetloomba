@@ -368,10 +368,24 @@ const userMCQ = !isInt && Array.isArray(st.selected) ? st.selected.map(Number) :
       ? (userInt ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userInt}</span>` : `<span class="text-gray-400">Your answer: —</span>`)
       : (userMCQ.length ? `<span class="${gotIt ? 'text-green-400' : 'text-red-400'}">Your answer: ${userMCQ.map(x => String.fromCharCode(65 + Number(x))).join(", ")}</span>` : `<span class="text-gray-400">Your answer: —</span>`);
 
-    // Correct answer display
-    const correctAnsHtml = isInt
-      ? `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`
-      : (q.question_type === "Single Choice" ? `Correct answer: <span class="text-green-400">${q.options[correctIdxs[0]]}</span>` : "Correct answer: —");
+   // Correct answer display
+let correctAnsHtml;
+if (isInt) {
+  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.numerical_answer}</span>`;
+} else if (q.question_type === "Single Choice") {
+  correctAnsHtml = `Correct answer: <span class="text-green-400">${q.options[correctIdxs[0]]}</span>`;
+} else if (q.question_type === "Multiple Choice") {
+  const labels = correctIdxs.map(i => String.fromCharCode(65 + i)).join(", ");
+  const texts = correctIdxs.map(i => q.options[i]).join("<br>");
+  correctAnsHtml = `
+    Correct answer: 
+    <span class="text-green-400">${labels}</span>
+    <div class="mt-1 text-sm text-gray-300">${texts}</div>
+  `;
+} else {
+  correctAnsHtml = "Correct answer: —";
+}
+
 
     // Options HTML 
 let optionsHtml = '';

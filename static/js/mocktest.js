@@ -3,7 +3,20 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!dataEl) return;
 
   const payload = JSON.parse(dataEl.textContent);
-  const questions = payload.questions || [];
+// ✅ Normalize question data
+const questions = (payload.questions || []).map(q => {
+  // Make sure correctIndices is always an array of numbers
+  q.correctIndices = Array.isArray(q.correctIndices)
+    ? q.correctIndices.map(i => Number(i))
+    : [];
+
+  // For integer type, normalize answer string
+  if (q.question_type === "Integer Type" && typeof q.numerical_answer === "string") {
+    q.numerical_answer = q.numerical_answer.trim();
+  }
+
+  return q;
+});
   const rankPreset = payload.rankPreset || [];
   const durationMinutes = Number(payload.durationMinutes || 180);
 

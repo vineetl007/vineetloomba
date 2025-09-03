@@ -190,10 +190,12 @@ questions.forEach((q, i) => {
             : `
               <ul class="space-y-2">
                ${q.options.map((opt, i) => `
-  <li class="option cursor-pointer border rounded p-2 hover:bg-gray-100/10 ${(st.selected || []).map(Number).includes(i) ? 'bg-blue-600' : ''}"
-      data-index="${i}">
-    <span class="latex-option">${opt}</span>
-  </li>
+ <li class="option cursor-pointer border rounded p-2 ${(st.selected || []).map(Number).includes(i) 
+      ? 'bg-blue-600' 
+      : 'hover:bg-gray-100/10'}" 
+    data-index="${i}">
+  <span class="latex-option">${opt}</span>
+</li>
 `).join("")}
               </ul>
             `

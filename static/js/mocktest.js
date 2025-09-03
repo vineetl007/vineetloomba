@@ -185,12 +185,25 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
 
     app.innerHTML = `
       <div class="border rounded-lg p-4 shadow mb-4">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="font-bold">Q${idx + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></h2>
-          <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} text-white">
-            ${st.marked ? 'Unmark' : 'Mark for Review'}
-          </button>
-        </div>
+       <div class="flex justify-between items-center mb-3">
+  <div>
+    <h2 class="font-bold">
+      Q${idx + 1} 
+      <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span>
+    </h2>
+    <span class="inline-block mt-1 px-2 py-1 text-xs rounded 
+      ${q.question_type === "Single Choice" ? "bg-blue-600" : 
+        q.question_type === "Multiple Choice" ? "bg-green-600" : 
+        "bg-orange-600"} 
+      text-white font-semibold">
+      ${q.question_type}
+    </span>
+  </div>
+  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} text-white">
+    ${st.marked ? 'Unmark' : 'Mark for Review'}
+  </button>
+</div>
+
 
         <div class="question-text mb-4">${questionHtml}</div>
 

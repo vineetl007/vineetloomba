@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const durationMinutes = Number(payload.durationMinutes || 180);
 
 // ---------- Normalize question data (robust) ----------
+// ---------- Normalize question data (robust) ----------
 questions.forEach((q, i) => {
   q.question_type = (String(q.question_type || "").trim() || "Single Choice");
   if (!Array.isArray(q.options)) q.options = [];
@@ -36,7 +37,25 @@ questions.forEach((q, i) => {
     try {
       q.correctIndices = JSON.parse(q.correctIndices);
     } catch (e) {
-      console.error("JSON parse failed for correctIndic
+      console.error("JSON parse failed for correctIndices:", q.correctIndices, e);
+      q.correctIndices = [];
+    }
+  }
+
+  if (!Array.isArray(q.correctIndices)) {
+    q.correctIndices = [];
+  }
+
+  // ✅ Ensure all numbers
+  q.correctIndices = q.correctIndices.map(x => Number(x)).filter(x => Number.isInteger(x));
+
+  console.log("NORMALIZED:", {
+    i: i + 1,
+    type: q.question_type,
+    correctIndices: q.correctIndices,
+    optionsLen: q.options.length
+  });
+});
 
                     
   // State

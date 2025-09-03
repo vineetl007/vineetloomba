@@ -289,30 +289,33 @@ questions.forEach(q => {
   }
 
 // ---------- HELPERS ----------
+// ---------- HELPERS ----------
 function isCorrect(qIdx) {
   const q = questions[qIdx];
   const s = state[qIdx];
 
-  // Integer (numerical) type → string-trim compare (you can change to numeric tolerance later)
+  // Integer Type → compare string
   if (q.question_type === "Integer Type") {
     const user = String(s.selected?.[0] ?? "").trim();
     const correct = String(q.numerical_answer ?? "").trim();
     return user !== "" && user === correct;
   }
 
-  // Single Choice
-  if (q.question_type === "Single Choice") {
-    if (!Array.isArray(q.correctIndices) || q.correctIndices.length === 0) {
-      // no correct index provided → treat as not correct (avoid assuming index 0)
-      return false;
-    }
-    const correct = Number(q.correctIndices[0]);
-    return (Array.isArray(s.selected) && s.selected.length > 0) && Number(s.selected[0]) === correct;
+  // Single / Multiple Choice → compare arrays
+  if (Array.isArray(q.correctIndices) && q.correctIndices.length > 0) {
+    const correctSet = new Set(q.correctIndices.map(Number));
+    const selectedSet = new Set((s.selected || []).map(Number));
+
+    // Must match exactly (no extra selections, no missing ones)
+    if (selectedSet.size !== correctSet.size) return false;
+    for (const val of selectedSet) if (!correctSet.has(val)) return false;
+    return true;
   }
 
-  // default: not correct for unknown types
+  // If no correctIndices → mark incorrect
   return false;
 }
+
 
 // ---------- RENDER ANALYSIS ----------
 function renderAnalysis() {

@@ -189,12 +189,12 @@ app.innerHTML = `
       <div>
         <!-- First row: subject + question type -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="px-2 py-1 font-concert rounded bg-blue-900 text-yellow-300">
+          <span class="px-2 py-1 font-concert rounded bg-sky-500 text-white">
             ${q.subject}
           </span>
           <span class="px-2 py-1 rounded 
             ${q.question_type === "Single Choice" ? "bg-blue-600" : 
-              q.question_type === "Multiple Choice" ? "bg-green-600" : 
+              q.question_type === "Multiple Choice" ? "bg-red-700" : 
               "bg-purple-600"} 
             text-white font-concert">
             ${q.question_type}

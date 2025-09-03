@@ -187,10 +187,13 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
       <div class="border rounded-lg p-4 shadow mb-4">
        <div class="flex justify-between items-center mb-3">
   <div>
-    <h2 class="font-bold">
-      Q${idx + 1} 
-      <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span>
-    </h2>
+   <h2>
+  Q${idx + 1} 
+  <span class="ml-2 px-2 py-1 text-xs rounded bg-blue-900 text-yellow-300">
+    ${q.subject}
+  </span>
+</h2>
+
     <span class="inline-block mt-1 px-2 py-1 text-xs rounded 
       ${q.question_type === "Single Choice" ? "bg-blue-600" : 
         q.question_type === "Multiple Choice" ? "bg-green-600" : 

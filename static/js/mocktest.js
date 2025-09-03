@@ -30,33 +30,24 @@ questions.forEach(q => {
 
   if (q.question_type === "Integer Type") {
     q.numerical_answer = String(q.numerical_answer ?? "").trim();
-    // integer questions don't use correctIndices as MCQ does
+    // Integer questions don't use correctIndices as MCQ does
     q.correctIndices = [];
     return;
   }
 
-  // Normalize correctIndices into numeric array
+  // Normalize correctIndices into a clean numeric array
+  let correctIndicesArray = [];
   if (Array.isArray(q.correctIndices)) {
-    q.correctIndices = q.correctIndices.map(ci => Number(ci));
+    correctIndicesArray = q.correctIndices;
   } else if (q.correctIndices !== undefined && q.correctIndices !== null) {
-    q.correctIndices = [Number(q.correctIndices)];
-  } else {
-    q.correctIndices = [];
+    correctIndicesArray = [q.correctIndices];
   }
 
-  // If indices look 1-based (any idx >= options.length), convert to 0-based
-  if (q.options.length && q.correctIndices.some(ci => !isNaN(ci) && ci >= q.options.length)) {
-    q.correctIndices = q.correctIndices.map(ci => (!isNaN(ci) ? Number(ci) - 1 : ci));
-  }
-
- 
-// Keep only numeric indices (do not filter by options.length here)
-q.correctIndices = q.correctIndices
-  .filter(ci => !isNaN(ci) && Number(ci) >= 0)
-  .map(Number);
+  // Filter out non-numeric values and ensure they are 0-based
+  q.correctIndices = correctIndicesArray
+    .map(ci => Number(ci))
+    .filter(ci => !isNaN(ci) && ci >= 0 && ci < q.options.length);
 });
-
-
 
   // State
   let currentIndex = 0;                // 0-based global index

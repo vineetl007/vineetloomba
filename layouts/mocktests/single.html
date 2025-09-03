@@ -97,8 +97,6 @@
         "question": "{{ $q.Params.question | safeJS }}",
         "options": {{ if eq $q.Params.question_type "Single Choice" }}[{{ range $j, $opt := $q.Params.options }}"{{ $opt | safeJS }}"{{ if not (eq (add $j 1) (len $q.Params.options)) }},{{ end }}{{ end }}]{{ else }}[]{{ end }},
         "correctIndices": {{ $q.Params.correctIndices | jsonify }},
-  <!-- DEBUG OUTPUT -->
-<script>console.log("DEBUG: {{ $item.subject }} Q{{ add $i 1 }} correctIndices = ", {{ $q.Params.correctIndices | jsonify }} );</script>
         "solution": "{{ $q.Params.solution | safeJS }}",
         "question_type": "{{ $q.Params.question_type }}",
         "numerical_answer": {{ if eq $q.Params.question_type "Integer Type" }}"{{ $q.Params.numerical_answer | safeJS }}"{{ else }}""{{ end }},
@@ -110,7 +108,12 @@
   ]
 }
 </script>
-
+<!-- ✅ Debug block (safe, outside JSON) -->
+<script>
+{{- range $i, $item := $all -}}
+  console.log("DEBUG: {{ $item.subject }} Q{{ add $i 1 }} correctIndices =", {{ $item.page.Params.correctIndices | jsonify }});
+{{- end -}}
+</script>
 
     <script src="/js/mocktest.js"></script>
 

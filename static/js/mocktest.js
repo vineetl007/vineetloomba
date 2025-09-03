@@ -163,12 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       app.querySelectorAll(".option").forEach(opt => {
         opt.addEventListener("click", () => {
           const i = parseInt(opt.dataset.index);
-       state[idx].selected = [i]; // single selection only
-          
-console.log(`Question ${idx + 1} (${q.subject}) selected option index:`, i);
-      console.log("Stored user selection:", state[idx].selected);
-      console.log("Correct indices from data:", q.correctIndices);
-          
+       state[idx].selected = [i]; // single selection only          
           renderQuestion(idx);
           renderPalette();
         });
@@ -176,9 +171,6 @@ console.log(`Question ${idx + 1} (${q.subject}) selected option index:`, i);
     } else {
       app.querySelector("#int-answer").addEventListener("input", e => {
         state[idx].selected = [e.target.value.trim()];
-        console.log(`Question ${idx + 1} (${q.subject}) user typed:`, e.target.value.trim());
-  console.log("Stored user selection:", state[idx].selected);
-  console.log("Correct answer from data:", q.numerical_answer);
         renderPalette();
       });
     }
@@ -260,12 +252,8 @@ function isCorrect(qIdx) {
     const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
     return s.selected.length > 0 && s.selected[0] === correct;
   }
-  console.log(`Checking Question ${qIdx + 1} (${q.subject}):`);
-  console.log("User selection:", s.selected);
-  console.log("Correct answer/indices:", q.correctIndices || q.numerical_answer);
-  console.log("isCorrect result:", result);
-  
-  return false; // fallback
+   console.log(`Question ${qIdx+1} (${q.subject}) → user: ${s.selected}, correct: ${q.correctIndices}, result: ${result}`);  
+  return result; // fallback
 }
 
 // ---------- RENDER ANALYSIS ----------
@@ -396,6 +384,18 @@ function renderAnalysis() {
 
 
 function submitTest() {
+  console.log("Submitting test...");
+questions.forEach((q, i) => {
+  const st = state[i];
+  console.log(
+    `Question ${i + 1} (${q.subject})`,
+    "User selection:", st.selected,
+    "Correct indices:", q.correctIndices,
+    "Answered?", isAnswered(i),
+    "Correct?", isCorrect(i)
+  );
+});
+
   if (submitted) return;
   submitted = true;
   renderPalette();       // recolor palette to correct/wrong/blank

@@ -7,22 +7,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const rankPreset = payload.rankPreset || [];
   const durationMinutes = Number(payload.durationMinutes || 180);
 
-  // 🔧 Normalize question data immediately after loading
+// ---------- Normalize question data (robust) ----------
 questions.forEach(q => {
-  if (!q.question_type) q.question_type = "Single Choice";
+  // normalize type string
+  q.question_type = String(q.question_type || "Single Choice").trim();
+
+  // Ensure options exists (helps later checks)
+  if (!Array.isArray(q.options)) q.options = [];
 
   if (q.question_type === "Integer Type") {
     q.numerical_answer = String(q.numerical_answer ?? "").trim();
-  } else {
-    if (Array.isArray(q.correctIndices)) {
-      q.correctIndices = q.correctIndices.map(i => Number(i)); // ✅ convert each to number
-    } else if (q.correctIndices !== undefined && q.correctIndices !== null) {
-      q.correctIndices = [Number(q.correctIndices)]; // ✅ wrap single value, convert
-    } else {
-      q.correctIndices = []; // ✅ leave empty if truly missing
-    }
+    // integer questions don't use correctIndices as MCQ does
+    q.correctIndices = [];
+    return;
   }
+
+  // Normalize correctIndices into numeric array
+  if (Array.isArray(q.correctIndices)) {
+    q.correctIndices = q.correctIndices.map(ci => Number(ci));
+  } else if (q.correctIndices !== undefined && q.correctIndices !== null) {
+    q.correctIndices = [Number(q.correctIndices)];
+  } else {
+    q.correctIndices = [];
+  }
+
+  // If indices look 1-based (any idx >= options.length), convert to 0-based
+  if (q.options.length && q.correctIndices.some(ci => !isNaN(ci) && ci >= q.options.length)) {
+    q.correctIndices = q.correctIndices.map(ci => (!isNaN(ci) ? Number(ci) - 1 : ci));
+  }
+
+  // Keep only valid indices (between 0 and options.length - 1) and ensure numbers
+  q.correctIndices = q.correctIndices
+    .filter(ci => !isNaN(ci) && Number(ci) >= 0 && Number(ci) < q.options.length)
+    .map(Number);
 });
+
 
 
   // State
@@ -261,16 +280,24 @@ function isCorrect(qIdx) {
   const q = questions[qIdx];
   const s = state[qIdx];
 
+  // Integer (numerical) type → string-trim compare (you can change to numeric tolerance later)
   if (q.question_type === "Integer Type") {
-    return (s.selected[0] || "").trim() === (q.numerical_answer || "").trim();
+    const user = String(s.selected?.[0] ?? "").trim();
+    const correct = String(q.numerical_answer ?? "").trim();
+    return user !== "" && user === correct;
   }
 
+  // Single Choice
   if (q.question_type === "Single Choice") {
-    const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
-    console.log(`Q${qIdx+1}: comparing user=${Number(s.selected[0])} correct=${Number(correct)}`);
-    return s.selected.length > 0 && Number(s.selected[0]) === Number(correct);
+    if (!Array.isArray(q.correctIndices) || q.correctIndices.length === 0) {
+      // no correct index provided → treat as not correct (avoid assuming index 0)
+      return false;
+    }
+    const correct = Number(q.correctIndices[0]);
+    return (Array.isArray(s.selected) && s.selected.length > 0) && Number(s.selected[0]) === correct;
   }
 
+  // default: not correct for unknown types
   return false;
 }
 
@@ -310,10 +337,10 @@ function renderAnalysis() {
 
     // User answers
     const userInt = isInt ? String(st.selected?.[0] ?? "").trim() : "";
-    const userMCQ = !isInt && q.question_type === "Single Choice" ? (st.selected[0] !== undefined ? [st.selected[0]] : []) : [];
+    // numeric-safe arrays for comparison
+const correctIdxs = !isInt && Array.isArray(q.correctIndices) ? q.correctIndices.map(Number) : [];
+const userMCQ = !isInt && q.question_type === "Single Choice" && s.selected?.[0] !== undefined ? [Number(s.selected[0])] : [];
 
-    // Correct answers (safe)
-    const correctIdxs = isInt ? [] : q.correctIndices;
 
     // Determine correctness
     const gotIt = isInt ? (userInt !== "" && userInt === q.numerical_answer) : compareArrays(userMCQ, correctIdxs);
@@ -332,14 +359,18 @@ function renderAnalysis() {
       : (q.question_type === "Single Choice" ? `Correct answer: <span class="text-green-400">${q.options[correctIdxs[0]]}</span>` : "Correct answer: —");
 
     // Options HTML for Single Choice
-    const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
-      <ul class="space-y-2">
-        ${q.options.map((opt, oi) => {
-          const cls = (oi === correctIdxs[0]) ? 'border-green-500' : (userMCQ.includes(oi) ? 'border-red-500' : 'border-gray-700');
-          return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
-        }).join("")}
-      </ul>
-    ` : '';
+const optionsHtml = !isInt && q.question_type === "Single Choice" ? `
+  <ul class="space-y-2">
+    ${q.options.map((opt, oi) => {
+      const oiNum = Number(oi);
+      const cls = (oiNum === (correctIdxs[0] ?? -1))
+        ? 'border-green-500'
+        : (userMCQ.includes(oiNum) ? 'border-red-500' : 'border-gray-700');
+      return `<li class="border ${cls} rounded p-2"><span class="latex-option">${opt}</span></li>`;
+    }).join("")}
+  </ul>
+` : '';
+
 
     // Final card
     return `

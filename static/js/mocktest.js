@@ -28,9 +28,9 @@ questions.forEach(q => {
 
   // Filter out non-numeric values and ensure they are 0-based
 const optLen = Array.isArray(q.options) ? q.options.length : null;
- q.correctIndices = correctIndicesArray
-    .map(ci => Number(ci))
-    .filter(ci => Number.isInteger(ci) && ci >= 0 && (optLen === null || ci < optLen));
+q.correctIndices = correctIndicesArray
+  .map(ci => Number(ci))
+  .filter(ci => Number.isInteger(ci) && ci >= 0 && (q.options.length === 0 || ci < q.options.length));
 });
 
   // State

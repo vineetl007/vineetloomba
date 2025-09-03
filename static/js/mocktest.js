@@ -15,36 +15,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const durationMinutes = Number(payload.durationMinutes || 180);
 
 // ---------- Normalize question data (robust) ----------
-questions.forEach(q => {
+questions.forEach((q, i) => {
   q.question_type = (String(q.question_type || "").trim() || "Single Choice");
   if (!Array.isArray(q.options)) q.options = [];
+
   if (q.question_type.toLowerCase() === "integer type") {
-  q.numerical_answer = String(q.numerical_answer ?? "").trim();
-  return; // ✅ don’t overwrite correctIndices unnecessarily
-}
-
-console.log("AFTER_NORMALIZE:", questions.map((q,i)=>({
-  i: i+1,
-  question_type: q.question_type,
-  correctIndices: q.correctIndices,
-  optionsLen: Array.isArray(q.options) ? q.options.length : 0
-})));
-
-  // Normalize correctIndices into a clean numeric array
-  let correctIndicesArray = [];
-  if (Array.isArray(q.correctIndices)) {
-    correctIndicesArray = q.correctIndices;
-  } else if (q.correctIndices !== undefined && q.correctIndices !== null) {
-    correctIndicesArray = [q.correctIndices];
+    // For integer type we only care about numerical_answer
+    q.numerical_answer = String(q.numerical_answer ?? "").trim();
+    console.log("NORMALIZED INTEGER:", {
+      i: i + 1,
+      type: q.question_type,
+      numerical_answer: q.numerical_answer,
+      optionsLen: q.options.length
+    });
+    return;
   }
 
-  // Filter out non-numeric values and ensure they are 0-based
-const optLen = Array.isArray(q.options) ? q.options.length : null;
-q.correctIndices = correctIndicesArray
-  .map(ci => Number(ci))
-  .filter(ci => Number.isInteger(ci) && ci >= 0 && (q.options.length === 0 || ci < q.options.length));
-});
+  // ✅ Normalize correctIndices
+  if (typeof q.correctIndices === "string") {
+    try {
+      q.correctIndices = JSON.parse(q.correctIndices);
+    } catch (e) {
+      console.error("JSON parse failed for correctIndic
 
+                    
   // State
   let currentIndex = 0;                // 0-based global index
   const state = questions.map(() => ({

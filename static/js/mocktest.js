@@ -183,31 +183,35 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
    
     const isInteger = q.question_type === "Integer Type";
 
-    app.innerHTML = `
-      <div class="border rounded-lg p-4 shadow mb-4">
-       <div class="flex justify-between items-center mb-3">
-  <div>
-   <h2>
-  Q${idx + 1} 
-  <span class="ml-2 px-2 py-1 text-xs rounded bg-blue-900 text-yellow-300">
-    ${q.subject}
-  </span>
-</h2>
+app.innerHTML = `
+  <div class="border rounded-lg p-4 shadow mb-4">
+    <div class="flex justify-between items-center mb-3">
+      <div>
+        <!-- First row: subject + question type -->
+        <div class="flex items-center gap-2 mb-1">
+          <span class="px-2 py-1 text-xs rounded bg-blue-900 text-yellow-300">
+            ${q.subject}
+          </span>
+          <span class="px-2 py-1 text-xs rounded 
+            ${q.question_type === "Single Choice" ? "bg-blue-600" : 
+              q.question_type === "Multiple Choice" ? "bg-green-600" : 
+              "bg-orange-600"} 
+            text-white font-semibold">
+            ${q.question_type}
+          </span>
+        </div>
 
-    <span class="inline-block mt-1 px-2 py-1 text-xs rounded 
-      ${q.question_type === "Single Choice" ? "bg-blue-600" : 
-        q.question_type === "Multiple Choice" ? "bg-green-600" : 
-        "bg-orange-600"} 
-      text-white font-semibold">
-      ${q.question_type}
-    </span>
-  </div>
-  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} text-white">
-    ${st.marked ? 'Unmark' : 'Mark for Review'}
-  </button>
-</div>
+        <!-- Second row: question number -->
+        <h2>
+          Q${idx + 1}
+        </h2>
+      </div>
 
-
+      <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} text-white">
+        ${st.marked ? 'Unmark' : 'Mark for Review'}
+      </button>
+    </div>
+    
         <div class="question-text mb-4">${questionHtml}</div>
 
         ${

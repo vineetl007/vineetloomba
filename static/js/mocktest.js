@@ -484,7 +484,7 @@ if (!isInt) {
 
   // Group cards by subject
 const grouped = {};
-cardsArray.forEach((cardHtml, idx) => {
+cards.forEach((cardHtml, idx) => {
   const subj = questions[idx].subject || "General";
   if (!grouped[subj]) grouped[subj] = [];
   grouped[subj].push(cardHtml);

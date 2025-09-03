@@ -8,6 +8,7 @@ maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1
   - questions/jee-math/circles/integer2
+  - questions/jee-math/circles/multiple-choice-questions
 physics_questions:
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k1

@@ -40,6 +40,15 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+button, input, textarea, select {
+  font-family: 'Concert One', sans-serif;
+}
+
+.mjx-math {
+  font-family: initial !important;
+}
+
+
 /* Make headings distinct sizes */
 h1, .prose h1 {
   font-size: 2.2rem;   /* big for main title */

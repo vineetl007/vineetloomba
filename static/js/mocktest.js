@@ -451,7 +451,6 @@ if (!isInt) {
           <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
         </div>
         <div class="mb-3">${qHtml}</div>
-        ${!isInt ? optionsHtml : ''}
         <div class="mt-3 text-sm space-y-1">
           <div>${userAnsHtml}</div>
           <div>${correctAnsHtml}</div>

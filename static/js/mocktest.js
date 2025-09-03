@@ -249,8 +249,11 @@ function isCorrect(qIdx) {
 
 if (q.question_type === "Single Choice") {
   // Safe fallback: use 0 if correctIndices missing
+  
   const correct = Array.isArray(q.correctIndices) && q.correctIndices.length ? q.correctIndices[0] : 0;
-  return s.selected.length > 0 && Number(s.selected[0]) === Number(correct);
+console.log(`Q${qIdx+1}: comparing user=${Number(s.selected[0])} correct=${Number(correct)}`);
+return s.selected.length > 0 && Number(s.selected[0]) === Number(correct);
+
 }
 
    console.log(`Question ${qIdx+1} (${q.subject}) → user: ${s.selected}, correct: ${q.correctIndices}, result: ${result}`);  

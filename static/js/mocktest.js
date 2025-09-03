@@ -456,25 +456,25 @@ if (!isInt) {
           <div>${userAnsHtml}</div>
           <div>${correctAnsHtml}</div>
         </div>
-       <div class="solution mt-3">
+        
+      <div class="solution mt-3">
   <button class="toggle-solution px-3 py-1 bg-gray-700 text-white rounded text-sm">
     Show / Hide Solution
   </button>
   <div class="solution-content hidden mt-2">
-    <div class="text-sm font-semibold mb-1">Solution:</div>
+    ${!isInt ? optionsHtml : ""}
+    <div class="mt-3 text-sm space-y-1">
+      <div>${userAnsHtml}</div>
+      <div>${correctAnsHtml}</div>
+    </div>
+    <div class="text-sm font-semibold mt-3 mb-1">Solution:</div>
     <div>${q.solution}</div>
     ${q.video_url ? `
       <div class="mt-3 flex justify-center">
         <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
-          <iframe
-            src="${q.video_url}"
-            style="width:100%; height:100%; border:0; display:block;"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            referrerpolicy="strict-origin-when-cross-origin"
-            title="Video Solution"></iframe>
+          <iframe src="${q.video_url}" style="width:100%; height:100%; border:0;" allowfullscreen></iframe>
         </div>
-      </div>` : ''}
+      </div>` : ""}
   </div>
 </div>
 
@@ -489,12 +489,13 @@ cards.forEach((cardHtml, idx) => {
   if (!grouped[subj]) grouped[subj] = [];
   grouped[subj].push(cardHtml);
 });
-  const groupedHtml = Object.entries(grouped).map(([subj, arr]) => `
-  <div class="subject-group mt-8">
+const groupedHtml = Object.entries(grouped).map(([subj, arr], idx) => `
+  <div class="subject-group mt-8 ${idx === 0 ? "" : "hidden"}" data-subject="${subj}">
     <h2 class="text-xl font-bold text-yellow-400 mb-4">${subj}</h2>
     ${arr.join("")}
   </div>
 `).join("");
+
 
 const stickySummary = `
   <div id="sticky-summary" class="fixed top-20 right-4 bg-gray-900/90 border border-gray-700 rounded-lg p-3 shadow-lg text-xs z-50">
@@ -507,9 +508,25 @@ const stickySummary = `
   </div>
 `;
 
-app.innerHTML = summaryHtml + stickySummary + groupedHtml;
+app.innerHTML = summaryHtml + stickySummary + tabsHtml + groupedHtml;
 
+// ✅ Add tab listeners here
+app.querySelectorAll(".subject-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const subj = btn.dataset.subject;
 
+    // highlight active button
+    app.querySelectorAll(".subject-tab").forEach(b => 
+      b.classList.remove("bg-blue-600","text-white"));
+    btn.classList.add("bg-blue-600","text-white");
+
+    // show only the chosen subject group
+    app.querySelectorAll(".subject-group").forEach(g => {
+      if (g.dataset.subject === subj) g.classList.remove("hidden");
+      else g.classList.add("hidden");
+    });
+  });
+});
   // Hook up accordion toggles
 app.querySelectorAll(".toggle-solution").forEach(btn => {
   btn.addEventListener("click", () => {

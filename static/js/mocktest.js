@@ -330,6 +330,19 @@ function isCorrect(qIdx) {
 function renderAnalysis() {
   const { correct, wrong, unattempted, score, total } = calculateScore();
   const rank = mapRank(score);
+// subject tabs for analysis
+const subjects = [...new Set(questions.map(q => q.subject))];
+let tabsHtml = `
+  <div class="flex gap-2 mb-4 justify-center">
+    ${subjects.map((subj, i) => `
+      <button 
+        class="subject-tab px-4 py-2 rounded ${i === 0 ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-200'}"
+        data-subject="${subj}">
+        ${subj}
+      </button>
+    `).join("")}
+  </div>
+`;
 
   // Summary
   const summaryHtml = `
@@ -443,27 +456,74 @@ if (!isInt) {
           <div>${userAnsHtml}</div>
           <div>${correctAnsHtml}</div>
         </div>
-        <div class="solution mt-3">
-          <div class="text-sm font-semibold mb-1">Solution:</div>
-          <div>${q.solution}</div>
-          ${q.video_url ? `
-            <div class="mt-3 flex justify-center">
-              <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
-                <iframe
-                  src="${q.video_url}"
-                  style="width:100%; height:100%; border:0; display:block;"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  title="Video Solution"></iframe>
-              </div>
-            </div>` : ''}
+       <div class="solution mt-3">
+  <button class="toggle-solution px-3 py-1 bg-gray-700 text-white rounded text-sm">
+    Show / Hide Solution
+  </button>
+  <div class="solution-content hidden mt-2">
+    <div class="text-sm font-semibold mb-1">Solution:</div>
+    <div>${q.solution}</div>
+    ${q.video_url ? `
+      <div class="mt-3 flex justify-center">
+        <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
+          <iframe
+            src="${q.video_url}"
+            style="width:100%; height:100%; border:0; display:block;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+            title="Video Solution"></iframe>
         </div>
-      </div>
-    `;
-  }).join("");
+      </div>` : ''}
+  </div>
+</div>
 
-  app.innerHTML = summaryHtml + cards;
+</div>
+    `;
+  });
+
+  // Group cards by subject
+const grouped = {};
+cardsArray.forEach((cardHtml, idx) => {
+  const subj = questions[idx].subject || "General";
+  if (!grouped[subj]) grouped[subj] = [];
+  grouped[subj].push(cardHtml);
+});
+  const groupedHtml = Object.entries(grouped).map(([subj, arr]) => `
+  <div class="subject-group mt-8">
+    <h2 class="text-xl font-bold text-yellow-400 mb-4">${subj}</h2>
+    ${arr.join("")}
+  </div>
+`).join("");
+
+const stickySummary = `
+  <div id="sticky-summary" class="fixed top-20 right-4 bg-gray-900/90 border border-gray-700 rounded-lg p-3 shadow-lg text-xs z-50">
+    <div>Total: ${total}</div>
+    <div class="text-green-400">Correct: ${correct}</div>
+    <div class="text-red-400">Wrong: ${wrong}</div>
+    <div>Unattempted: ${unattempted}</div>
+    <div class="text-yellow-300">Score: ${score}</div>
+    ${rank ? `<div class="mt-1">Rank: <span class="font-bold">${rank}</span></div>` : ``}
+  </div>
+`;
+
+app.innerHTML = summaryHtml + stickySummary + groupedHtml;
+
+
+  // Hook up accordion toggles
+app.querySelectorAll(".toggle-solution").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const content = btn.nextElementSibling;
+    if (content.classList.contains("hidden")) {
+      content.classList.remove("hidden");
+      btn.textContent = "Hide Solution";
+    } else {
+      content.classList.add("hidden");
+      btn.textContent = "Show Solution";
+    }
+  });
+});
+
 
   // Safe MathJax typeset
   if (window.MathJax) {

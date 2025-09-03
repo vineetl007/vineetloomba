@@ -291,6 +291,9 @@ questions.forEach((q, i) => {
     return { correct, wrong, unattempted, score, total: questions.length };
   }
 
+  console.log("DEBUG_SCORE:", score);
+console.log("DEBUG_RANK_PRESET:", rankPreset);
+
   function mapRank(score) {
     if (!Array.isArray(rankPreset) || rankPreset.length === 0) return null;
     // Sort presets descending by marks

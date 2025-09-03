@@ -31,27 +31,27 @@
       <!-- Left: Question Palette -->
       <aside class="col-span-3 bg-gray-900 p-4 rounded-xl shadow-md">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg font-bold text-yellow-300">Question Palette</h2>
+          <h2 class="text-lg text-yellow-300">Question Palette</h2>
           <div id="timer" class="text-sm font-bold text-red-400">00:00:00</div>
         </div>
 
         <!-- Legend -->
         <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-gray-700"></span>Not Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-white"></span>Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-green-600"></span>Answered</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded bg-purple-600"></span>Marked</div>
+          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-gray-700"></span>Not Visited</div>
+          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-white"></span>Visited</div>
+          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-green-600"></span>Answered</div>
+          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-purple-600"></span>Marked</div>
         </div>
 
         <!-- Section Headers for Palette -->
         <div id="question-palette" class="space-y-3">
-          {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-semibold text-sm">Maths</div>{{ end }}
+          {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert text-sm">Maths</div>{{ end }}
           <div class="grid grid-cols-5 gap-2" id="maths-palette"></div>
 
-          {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-semibold text-sm mt-2">Physics</div>{{ end }}
+          {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Physics</div>{{ end }}
           <div class="grid grid-cols-5 gap-2" id="physics-palette"></div>
 
-          {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-semibold text-sm mt-2">Chemistry</div>{{ end }}
+          {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Chemistry</div>{{ end }}
           <div class="grid grid-cols-5 gap-2" id="chemistry-palette"></div>
         </div>
 

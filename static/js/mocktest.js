@@ -493,7 +493,7 @@ if (!isInt) {
           <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
           
           ${q.difficulty ? `
-  <span class="ml-2 inline-block px-2 py-0.5 text-xs rounded-full bg-blue-600 text-white">
+  <span class="ml-2 inline-block px-2 py-0.5 text-sm rounded-full font-concert bg-blue-600 text-white">
     Difficulty: ${q.difficulty}
   </span>
 ` : ``}

@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("palette-toggle");
   const drawer = document.getElementById("palette-drawer");
   const mobile = document.getElementById("palette-mobile");
+  const closeBtn = document.getElementById("palette-close"); // ✅ added
   const mainWrapper = document.getElementById("question-palette-wrapper") || document.getElementById("question-palette");
 
   if (!toggle || !drawer || !mobile || !mainWrapper) return;

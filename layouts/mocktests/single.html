@@ -44,6 +44,16 @@
   </div>
 
   <!-- Section Headers for Palette -->
+<div id="question-palette-wrapper">
+  <!-- Legend -->
+  <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-gray-700"></span>Not Visited</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-white"></span>Visited</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-green-600"></span>Answered</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-purple-600"></span>Marked</div>
+  </div>
+
+  <!-- Sections -->
   <div id="question-palette" class="space-y-3">
     {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert text-sm">Maths</div>{{ end }}
     <div class="grid grid-cols-5 gap-2" id="maths-palette"></div>
@@ -54,6 +64,8 @@
     {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Chemistry</div>{{ end }}
     <div class="grid grid-cols-5 gap-2" id="chemistry-palette"></div>
   </div>
+</div>
+
 
   <div class="mt-6 space-y-2">
     <button id="submit-test"
@@ -143,17 +155,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("palette-toggle");
   const drawer = document.getElementById("palette-drawer");
   const mobile = document.getElementById("palette-mobile");
-  const mainPalette = document.getElementById("question-palette");
+  const mainWrapper = document.getElementById("question-palette-wrapper");
 
   if (toggle) {
     toggle.addEventListener("click", () => {
       drawer.classList.toggle("-translate-x-full");
-      if (mainPalette && mobile) {
-        mobile.innerHTML = mainPalette.innerHTML; // copy palette content
 
-        // ✅ auto-close drawer when user clicks on a question button
-        mobile.querySelectorAll("button, div, span, a").forEach(el => {
-          el.addEventListener("click", () => {
+      if (mainWrapper && mobile) {
+        mobile.innerHTML = mainWrapper.innerHTML; // ✅ copy legend + buttons
+
+        // ✅ re-bind click events to scroll to question & close drawer
+        mobile.querySelectorAll("button[data-qid]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const qid = btn.getAttribute("data-qid");
+            const target = document.querySelector(`[data-question-id="${qid}"]`);
+            if (target) {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
             drawer.classList.add("-translate-x-full");
           });
         });

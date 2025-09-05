@@ -189,21 +189,24 @@ app.innerHTML = `
     <div class="flex justify-between items-center mb-3">
       <div>
         <!-- First row: subject + question type -->
-        <div class="flex items-center gap-2 mb-1">
-          <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
-            ${q.subject}
-          </span>
-          <span class="px-2 py-1 rounded 
-            ${q.question_type === "Single Choice" ? "bg-blue-600" : 
-              q.question_type === "Multiple Choice" ? "bg-red-700" : 
-              "bg-purple-600"} 
-            text-white font-concert">
-            ${q.question_type}
-          </span>
-          <button id="mark-btn" class="ml-2 px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
+       <div class="flex items-center justify-between mb-1">
+  <div class="flex items-center gap-2">
+    <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
+      ${q.subject}
+    </span>
+    <span class="px-2 py-1 rounded 
+      ${q.question_type === "Single Choice" ? "bg-blue-600" : 
+        q.question_type === "Multiple Choice" ? "bg-red-700" : 
+        "bg-purple-600"} 
+      text-white font-concert">
+      ${q.question_type}
+    </span>
+  </div>
+  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
     ${st.marked ? 'Unmark' : 'Mark for Review'}
-        </button>
-        </div>
+  </button>
+</div>
+
         
         <!-- Second row: question number -->
         <h2>

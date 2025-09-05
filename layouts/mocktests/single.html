@@ -58,16 +58,6 @@
     </div>
   </div>
 
-  <div class="mt-6 space-y-2">
-    <button id="submit-test"
-      class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold">
-      Submit Test
-    </button>
-    <a href="/question-bank/"
-       class="block text-center bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-lg font-bold">
-      ⬅ Exit
-    </a>
-  </div>
 </aside>
 
 <!-- Mobile palette: toggle button + drawer (leave these here) -->
@@ -100,6 +90,18 @@
         </div>
 
         <div id="mocktest-app" class="min-h-[400px]"></div>
+        <!-- Submit and Back Button -->
+        <div class="flex justify-between items-center mt-6">
+  <a href="/question-bank/"
+     class="bg-blue-500 hover:bg-blue-400 text-white py-2 px-6 rounded-lg font-bold">
+    ⬅ Exit
+  </a>
+  <button id="submit-test"
+    class="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg font-bold">
+    Submit Test
+  </button>
+        </div>
+
       </main>
     </div>
 

@@ -185,37 +185,34 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
     const isInteger = q.question_type === "Integer Type";
 
 app.innerHTML = `
-  <div class="border rounded-lg p-4 shadow mb-4">
-    <div class="flex justify-between items-center mb-3">
-      <div>
-        <!-- First row: subject + question type -->
-       <div class="flex items-center justify-between mb-1">
-  <div class="flex items-center gap-2">
-    <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
-      ${q.subject}
-    </span>
-    <span class="px-2 py-1 rounded 
-      ${q.question_type === "Single Choice" ? "bg-blue-600" : 
-        q.question_type === "Multiple Choice" ? "bg-red-700" : 
-        "bg-purple-600"} 
-      text-white font-concert">
-      ${q.question_type}
-    </span>
-  </div>
-  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
-    ${st.marked ? 'Unmark' : 'Mark for Review'}
-  </button>
-</div>
+<div class="border rounded-lg p-4 shadow mb-4">
 
-        
-        <!-- Second row: question number -->
-        <h2>
-          Q${idx + 1}
-        </h2>
-      </div>
-
-      
+  <div class="flex justify-between items-center mb-2">
+    
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
+        ${q.subject}
+      </span>
+      <span class="px-2 py-1 rounded
+        ${q.question_type === "Single Choice" ? "bg-blue-600" : 
+          q.question_type === "Multiple Choice" ? "bg-red-700" : 
+          "bg-purple-600"} 
+        text-white font-concert">
+        ${q.question_type}
+      </span>
     </div>
+    
+    <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
+      ${st.marked ? 'Unmark' : 'Mark for Review'}
+    </button>
+
+  </div>
+
+  <h2>
+    Q${idx + 1}
+  </h2>
+  
+</div>
     
         <div class="question-text mb-4">${questionHtml}</div>
 

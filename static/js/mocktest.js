@@ -481,7 +481,14 @@ if (!isInt) {
 
     // Final card
     return `
-      <div id="analysis-q-${i + 1}" class="border rounded-lg p-4 mb-4 ${gotIt ? 'bg-green-950/30' : (isAnswered(i) ? 'bg-red-950/30' : 'bg-gray-900/40')}">
+  <div id="analysis-q-${i + 1}" 
+       class="border rounded-lg p-4 mb-4
+              ${gotIt 
+                ? 'bg-green-950/30 border-green-500' 
+                : (isAnswered(i) 
+                    ? 'bg-red-950/30 border-red-500' 
+                    : 'bg-gray-900/40 border-gray-700')}"> <!-- Controls the colour of boxes and borders in analysis -->
+
         <div class="flex justify-between items-center mb-2">
           <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
           <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>

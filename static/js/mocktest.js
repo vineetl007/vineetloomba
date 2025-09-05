@@ -491,6 +491,16 @@ if (!isInt) {
 
         <div class="flex justify-between items-center mb-2">
           <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
+          
+          ${q.difficulty ? `
+  <span class="px-2 py-0.5 text-xs rounded 
+    ${q.difficulty === 'Easy' ? 'bg-green-600 text-white' : 
+      q.difficulty === 'Medium' ? 'bg-yellow-600 text-white' : 
+      q.difficulty === 'Hard' ? 'bg-red-600 text-white' : 'bg-gray-600 text-white'}">
+    ${q.difficulty}
+  </span>
+` : ``}
+
           <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
         </div>
         <div class="mb-3">${qHtml}</div>

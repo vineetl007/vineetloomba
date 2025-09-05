@@ -9,13 +9,60 @@ maths_questions:
   - questions/jee-math/parabola/p1
   - questions/jee-math/circles/integer2
   - questions/jee-math/circles/multiple-choice-questions
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/d10
 physics_questions:
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k1
   - questions/jee-physics/kinematics/k3
-chemistry_questions:
-  - questions/jee-chemistry/atomic-structure/as4
-  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+  - questions/jee-physics/kinematics/k2
+chemistry_questions: []
 rank_preset:
   - marks: 24
     rank: 100

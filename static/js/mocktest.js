@@ -206,7 +206,7 @@ app.innerHTML = `
          font-concert text-white text-base">
 
   <span class="sm:hidden">
-    ${st.marked ? 'Unmark' : 'Review'}
+    ${st.marked ? 'Unmark' : 'Mark'}
   </span>
   <span class="hidden sm:inline">
     ${st.marked ? 'Unmark' : 'Mark for Review'}

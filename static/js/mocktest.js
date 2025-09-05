@@ -200,9 +200,19 @@ app.innerHTML = `
     </span>
   </div>
 
-  <button id="mark-btn" class="ml-auto px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
+ <button id="mark-btn" 
+  class="ml-auto sm:ml-0 px-2 py-0.5 sm:px-3 sm:py-1 rounded 
+         ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} 
+         font-concert text-white text-sm sm:text-base">
+
+  <span class="sm:hidden">
+    ${st.marked ? 'Unmark' : 'Review'}
+  </span>
+  <span class="hidden sm:inline">
     ${st.marked ? 'Unmark' : 'Mark for Review'}
-  </button>
+  </span>
+</button>
+
 </div>
 
 <!-- Second row: question number -->

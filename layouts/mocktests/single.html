@@ -29,43 +29,56 @@
     <div class="grid grid-cols-12 gap-4">
 
       <!-- Left: Question Palette -->
-      <aside class="col-span-3 bg-gray-900 p-4 rounded-xl shadow-md">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg text-yellow-300">Question Palette</h2>
-    <!--      <div id="timer" class="text-sm font-bold text-red-400">00:00:00</div> -->
-        </div>
+     <!-- Left: Question Palette -->
+<aside class="col-span-3 bg-gray-900 p-4 rounded-xl shadow-md hidden md:block">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg text-yellow-300">Question Palette</h2>
+  </div>
 
-        <!-- Legend -->
-        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-gray-700"></span>Not Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-white"></span>Visited</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-green-600"></span>Answered</div>
-          <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-purple-600"></span>Marked</div>
-        </div>
+  <!-- Legend -->
+  <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-gray-700"></span>Not Visited</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-white"></span>Visited</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-green-600"></span>Answered</div>
+    <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-purple-600"></span>Marked</div>
+  </div>
 
-        <!-- Section Headers for Palette -->
-        <div id="question-palette" class="space-y-3">
-          {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert text-sm">Maths</div>{{ end }}
-          <div class="grid grid-cols-5 gap-2" id="maths-palette"></div>
+  <!-- Section Headers for Palette -->
+  <div id="question-palette" class="space-y-3">
+    {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert text-sm">Maths</div>{{ end }}
+    <div class="grid grid-cols-5 gap-2" id="maths-palette"></div>
 
-          {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Physics</div>{{ end }}
-          <div class="grid grid-cols-5 gap-2" id="physics-palette"></div>
+    {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Physics</div>{{ end }}
+    <div class="grid grid-cols-5 gap-2" id="physics-palette"></div>
 
-          {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Chemistry</div>{{ end }}
-          <div class="grid grid-cols-5 gap-2" id="chemistry-palette"></div>
-        </div>
+    {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Chemistry</div>{{ end }}
+    <div class="grid grid-cols-5 gap-2" id="chemistry-palette"></div>
+  </div>
 
-        <div class="mt-6 space-y-2">
-          <button id="submit-test"
-            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold">
-            Submit Test
-          </button>
-          <a href="/question-bank/"
-             class="block text-center bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-lg font-bold">
-            ⬅ Exit
-          </a>
-        </div>
-      </aside>
+  <div class="mt-6 space-y-2">
+    <button id="submit-test"
+      class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold">
+      Submit Test
+    </button>
+    <a href="/question-bank/"
+       class="block text-center bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-lg font-bold">
+      ⬅ Exit
+    </a>
+  </div>
+</aside>
+
+<!-- ✅ Mobile Palette Drawer -->
+<button id="palette-toggle" class="md:hidden fixed bottom-4 left-4 bg-blue-600 text-white px-3 py-2 rounded-lg shadow-lg z-50">
+  Open Palette
+</button>
+
+<div id="palette-drawer" class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform -translate-x-full transition-transform duration-300 z-50 md:hidden">
+  <div class="p-4 font-bold border-b border-gray-700">Question Palette</div>
+  <div id="palette-mobile" class="p-4">
+    <!-- JS will copy buttons here -->
+  </div>
+</div>
+
 
       <!-- Right: Main Test Area -->
       <main class="col-span-9">
@@ -123,6 +136,33 @@
   console.log("DEBUG: {{ $item.subject }} Q{{ add $i 1 }} correctIndices =", {{ $item.page.Params.correctIndices | jsonify }});
 {{- end -}}
 </script>
+
+<!-- script for pallette on mobile -->
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("palette-toggle");
+  const drawer = document.getElementById("palette-drawer");
+  const mobile = document.getElementById("palette-mobile");
+  const mainPalette = document.getElementById("question-palette");
+
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      drawer.classList.toggle("-translate-x-full");
+      if (mainPalette && mobile) {
+        mobile.innerHTML = mainPalette.innerHTML; // copy palette content
+
+        // ✅ auto-close drawer when user clicks on a question button
+        mobile.querySelectorAll("button, div, span, a").forEach(el => {
+          el.addEventListener("click", () => {
+            drawer.classList.add("-translate-x-full");
+          });
+        });
+      }
+    });
+  }
+});
+</script>
+
 
     <script src="/js/mocktest.js"></script>
 

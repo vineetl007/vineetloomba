@@ -77,7 +77,8 @@ questions.forEach((q, i) => {
   const app = document.getElementById("mocktest-app");
   const palette = document.getElementById("question-palette");
   const timerEl = document.getElementById("timer");
-
+const timerValueEl = document.getElementById("time-value");
+  
   // ---------- TIMER ----------
   const endTime = Date.now() + durationMinutes * 60 * 1000;
   function formatTime(ms) {
@@ -89,7 +90,7 @@ questions.forEach((q, i) => {
   function updateTimer() {
     if (submitted) return;
     const remaining = Math.max(0, endTime - Date.now());
-    timerEl.textContent = formatTime(remaining);
+    timerValueEl.textContent = formatTime(remaining);
     if (remaining <= 0) {
       submitTest();
     } else {

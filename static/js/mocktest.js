@@ -201,9 +201,9 @@ app.innerHTML = `
             ${q.question_type}
           </span>
         </div>
-      <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
-        ${st.marked ? 'Unmark' : 'Mark for Review'}
-      </button>
+        <button id="mark-btn" class="ml-2 px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
+    ${st.marked ? 'Unmark' : 'Mark for Review'}
+        </button>
         <!-- Second row: question number -->
         <h2>
           Q${idx + 1}

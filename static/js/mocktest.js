@@ -235,30 +235,29 @@ app.innerHTML = `
             `
         }
 
-<div class="flex flex-wrap justify-between mt-6 gap-2">
-  <button id="prev-btn" 
-    class="px-4 py-2 font-concert bg-blue-600 text-white rounded flex-1 sm:flex-none order-1 sm:order-1"
-    ${idx === 0 ? 'style="visibility:hidden"' : ""}>
+<div class="mt-6 grid grid-cols-2 gap-2 sm:flex sm:justify-between sm:items-center">
+  <!-- Row 1 / Column 1 -->
+  <button id="prev-btn" class="px-4 py-2 font-concert bg-blue-600 text-white rounded sm:ml-0" ${idx === 0 ? 'style="visibility:hidden"' : ""}>
     Previous
   </button>
 
-  <button id="next-btn" 
-    class="px-4 py-2 bg-blue-600 font-concert text-white rounded flex-1 sm:flex-none order-2 sm:order-2"
-    ${idx === questions.length - 1 ? 'style="visibility:hidden"' : ""}>
+  <!-- Row 1 / Column 2 -->
+  <button id="next-btn" class="px-4 py-2 bg-blue-600 font-concert text-white rounded sm:ml-2" ${idx === questions.length - 1 ? 'style="visibility:hidden"' : ""}>
     Save & Next
   </button>
 
-  <button id="clear-btn" 
-    class="px-3 py-2 bg-gray-700 font-concert text-white rounded flex-1 sm:flex-none order-3 sm:order-3">
+  <!-- Row 2 / Column 1 -->
+  <button id="clear-btn" class="px-3 py-2 bg-gray-700 font-concert text-white rounded sm:ml-0">
     Clear Response
   </button>
 
-  <button id="mark-btn" 
-    class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white text-base flex-1 sm:flex-none order-4 sm:order-4">
+  <!-- Row 2 / Column 2 -->
+  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white text-base">
     <span class="sm:hidden">${st.marked ? 'Unmark' : 'Mark'}</span>
     <span class="hidden sm:inline">${st.marked ? 'Unmark' : 'Mark for Review'}</span>
   </button>
 </div>
+
 
       </div>
     `;

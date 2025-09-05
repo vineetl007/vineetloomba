@@ -186,29 +186,29 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
 
 app.innerHTML = `
   <div class="border rounded-lg p-4 shadow mb-4">
-    <div class="flex justify-between items-center mb-3">
-  <!-- Left side: subject + type + question number -->
-  <div>
-    <div class="flex items-center gap-2 mb-1">
-      <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
-        ${q.subject}
-      </span>
-      <span class="px-2 py-1 rounded 
-        ${q.question_type === "Single Choice" ? "bg-blue-600" : 
-          q.question_type === "Multiple Choice" ? "bg-red-700" : 
-          "bg-purple-600"} 
-        text-white font-concert">
-        ${q.question_type}
-      </span>
-    </div>
-    <h2>Q${idx + 1}</h2>
+ <div class="flex items-center mb-1">
+  <div class="flex items-center gap-2">
+    <span class="px-2 py-1 font-concert rounded bg-blue-600 text-white">
+      ${q.subject}
+    </span>
+    <span class="px-2 py-1 rounded 
+      ${q.question_type === "Single Choice" ? "bg-blue-600" : 
+        q.question_type === "Multiple Choice" ? "bg-red-700" : 
+        "bg-purple-600"} 
+      text-white font-concert">
+      ${q.question_type}
+    </span>
   </div>
 
-  <!-- Right side: mark for review -->
-  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
+  <button id="mark-btn" class="ml-auto px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white">
     ${st.marked ? 'Unmark' : 'Mark for Review'}
   </button>
 </div>
+
+<!-- Second row: question number -->
+<h2 class="mt-2">
+  Q${idx + 1}
+</h2>
     
         <div class="question-text mb-4">${questionHtml}</div>
 

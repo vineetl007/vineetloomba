@@ -252,10 +252,10 @@ app.innerHTML = `
   </button>
 
   <!-- Row 2 / Column 2 -->
-  <button id="mark-btn" class="px-3 py-1 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white text-base">
-    <span class="sm:hidden">${st.marked ? 'Unmark' : 'Mark'}</span>
-    <span class="hidden sm:inline">${st.marked ? 'Unmark' : 'Mark for Review'}</span>
-  </button>
+<button id="mark-btn" 
+        class="px-3 py-2 rounded ${st.marked ? 'bg-purple-600' : 'bg-gray-700'} font-concert text-white text-base">
+  ${st.marked ? 'Unmark' : 'Mark for Review'}
+</button>
 </div>
 
 

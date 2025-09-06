@@ -126,7 +126,7 @@ const timerValueEl = document.getElementById("time-value");
 
   function renderPalette() {
   let html = "";
-  let currentSubject = null;
+//  let currentSubject = null;
 
   questions.forEach((q, i) => {
     if (q.subject !== currentSubject) {

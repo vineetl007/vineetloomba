@@ -561,7 +561,7 @@ const groupedHtml = Object.entries(grouped).map(([subj, arr], idx) => `
 
 
 const stickySummary = `
-  <div id="sticky-summary" class="fixed top-20 right-4 bg-gray-900/90 border border-gray-700 rounded-lg p-3 shadow-lg text-xs z-50">
+  <div id="sticky-summary" class="bg-gray-900 border border-gray-700 rounded-lg p-3 text-xs mb-4">
     <div>Total: ${total}</div>
     <div class="text-green-400">Correct: ${correct}</div>
     <div class="text-red-400">Wrong: ${wrong}</div>
@@ -571,11 +571,34 @@ const stickySummary = `
   </div>
 `;
 
-  const chartHtml = `
-  <div class="mt-4 mb-6">
-    <canvas id="time-subject-chart" width="300" height="300"></canvas>
+const chartHtml = `
+  <div class="mt-4 mb-6 flex flex-col md:flex-row items-start gap-6">
+    <!-- Pie chart -->
+    <div class="flex-shrink-0" style="width:250px;">
+      <canvas id="time-subject-chart" width="250" height="250"></canvas>
+    </div>
+    <!-- Table -->
+    <div class="flex-1">
+      <table class="w-full text-sm text-left border border-gray-700 rounded-lg">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="px-3 py-2 border-b border-gray-700">Subject</th>
+            <th class="px-3 py-2 border-b border-gray-700">Time Spent (min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(window.analysisData.timeSpent).map(([subj, mins]) => `
+            <tr class="border-b border-gray-700">
+              <td class="px-3 py-1">${subj}</td>
+              <td class="px-3 py-1">${mins}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
   </div>
-  `;
+`;
+
 
 app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
 

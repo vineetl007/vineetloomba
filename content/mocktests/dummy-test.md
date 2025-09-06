@@ -4,6 +4,7 @@ uid: DT-1
 subjects:
   - Maths
   - Physics
+duration: 125
 maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1

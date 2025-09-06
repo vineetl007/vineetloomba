@@ -373,6 +373,7 @@ CMS.init({
   fields: [
     { label: "Test Name", name: "title", widget: "string" },
     { label: "Test UID", name: "uid", widget: "string" },
+    { label: "Duration (minutes)",  name: "duration",  widget: "number",  default: 180,  min: 30,  step: 5},
 
     {
       label: "Maths Questions",

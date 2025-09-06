@@ -559,7 +559,7 @@ const groupedHtml = Object.entries(grouped).map(([subj, arr], idx) => `
   </div>
 `).join("");
 
-
+/*
 const stickySummary = `
   <div id="sticky-summary" class="bg-gray-900 border border-gray-700 rounded-lg p-3 text-xs mb-4">
     <div>Total: ${total}</div>
@@ -570,6 +570,7 @@ const stickySummary = `
     ${rank ? `<div class="mt-1">Rank: <span class="font-bold">${rank}</span></div>` : ``}
   </div>
 `;
+*/
 
 const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col md:flex-row items-start gap-6">
@@ -599,8 +600,9 @@ const chartHtml = `
   </div>
 `;
 
+app.innerHTML = summaryHtml + chartHtml + tabsHtml + groupedHtml;
 
-app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
+//app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
 
   const ctx = document.getElementById('time-subject-chart').getContext('2d');
 if (ctx && window.analysisData?.timeSpent) {

@@ -571,7 +571,32 @@ const stickySummary = `
   </div>
 `;
 
-app.innerHTML = summaryHtml + stickySummary + tabsHtml + groupedHtml;
+  const chartHtml = `
+  <div class="mt-4 mb-6">
+    <canvas id="time-subject-chart" width="300" height="300"></canvas>
+  </div>
+  `;
+
+app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
+
+  const ctx = document.getElementById('time-subject-chart').getContext('2d');
+if (ctx && window.analysisData?.timeSpent) {
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: Object.keys(window.analysisData.timeSpent),
+      datasets: [{
+        data: Object.values(window.analysisData.timeSpent),
+        backgroundColor: ['#f59e0b','#10b981','#8b5cf6'] // Maths, Physics, Chemistry
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+
 
 // ✅ Add tab listeners here
 app.querySelectorAll(".subject-tab").forEach(btn => {

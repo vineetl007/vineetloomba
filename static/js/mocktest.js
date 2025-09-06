@@ -634,7 +634,17 @@ const now = Date.now();
 if (currentSubject && lastTimestamp) {
   timeSpent[currentSubject] += (now - lastTimestamp);
 }
-console.log("FINAL_TIME_SPENT:", timeSpent);
+// Convert ms → minutes (rounded)
+const timeSpentMinutes = Object.fromEntries(
+  Object.entries(timeSpent).map(([subj, ms]) => [subj, Math.round(ms / 60000)])
+);
+
+console.log("FINAL_TIME_SPENT:", timeSpentMinutes);
+
+// ✅ Save for charts
+window.analysisData = window.analysisData || {};
+window.analysisData.timeSpent = timeSpentMinutes;
+
 
   renderPalette();       // recolor palette to correct/wrong/blank
   renderAnalysis();      // render full analysis (answers + solutions)

@@ -708,7 +708,7 @@ function computeDifficultyAccuracy(subject) {
 `;
 
 
-app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + chartHtml + tabsHtml + groupedHtml;
+app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + difficultyChartsHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
   

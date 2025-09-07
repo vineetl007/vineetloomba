@@ -607,14 +607,15 @@ const difficultyHtml = `
   <div class="mt-6 mb-6">
     <h2 class="text-xl font-bold text-yellow-400 underline mb-4 text-center">Difficulty Analysis</h2>
     <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
+      <table class="w-full text-sm border border-gray-700 rounded-lg mx-auto">
         <thead>
-          <tr class="bg-gray-800">
-            <th class="px-3 py-2 border-b border-gray-700">Subject</th>
-            <th class="px-3 py-2 border-b border-gray-700">Difficulty</th>
-            <th class="px-3 py-2 border-b border-gray-700">Correct</th>
-            <th class="px-3 py-2 border-b border-gray-700">Incorrect</th>
-            <th class="px-3 py-2 border-b border-gray-700">Unattempted</th>
+          <tr class="bg-gray-800 text-center">
+            <th class="px-3 py-2 border border-gray-700">Subject</th>
+            <th class="px-3 py-2 border border-gray-700">Difficulty</th>
+            <th class="px-3 py-2 border border-gray-700">Correct</th>
+            <th class="px-3 py-2 border border-gray-700">Incorrect</th>
+            <th class="px-3 py-2 border border-gray-700">Unattempted</th>
+            <th class="px-3 py-2 border border-gray-700">Total</th>
           </tr>
         </thead>
         <tbody id="difficulty-table-body"></tbody>
@@ -622,6 +623,7 @@ const difficultyHtml = `
     </div>
   </div>
 `;
+
 
 
 
@@ -747,16 +749,21 @@ questions.forEach((q, i) => {
 const tbody = document.getElementById("difficulty-table-body");
 tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
   const levels = Object.entries(diffs);
-  return levels.map(([level, stats], idx) => `
-    <tr class="border-b border-gray-700">
-      ${idx === 0 ? `<td class="px-3 py-1" rowspan="${levels.length}">${subj}</td>` : ""}
-      <td class="px-3 py-1">${level}</td>
-      <td class="px-3 py-1 text-green-400">${stats.correct}</td>
-      <td class="px-3 py-1 text-red-400">${stats.wrong}</td>
-      <td class="px-3 py-1 text-gray-400">${stats.unattempted}</td>
-    </tr>
-  `).join("");
+  return levels.map(([level, stats], idx) => {
+    const total = stats.correct + stats.wrong + stats.unattempted;
+    return `
+      <tr class="border-b border-gray-700 text-center">
+        ${idx === 0 ? `<td class="px-3 py-1 border border-gray-700" rowspan="${levels.length}">${subj}</td>` : ""}
+        <td class="px-3 py-1 border border-gray-700">${level}</td>
+        <td class="px-3 py-1 border border-gray-700 text-green-400">${stats.correct}</td>
+        <td class="px-3 py-1 border border-gray-700 text-red-400">${stats.wrong}</td>
+        <td class="px-3 py-1 border border-gray-700 text-gray-400">${stats.unattempted}</td>
+        <td class="px-3 py-1 border border-gray-700 font-bold">${total}</td>
+      </tr>
+    `;
+  }).join("");
 }).join("");
+
 
 
 

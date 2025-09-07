@@ -802,10 +802,15 @@ app.querySelectorAll(".subject-tab").forEach(btn => {
   btn.addEventListener("click", () => {
     const subj = btn.dataset.subject;
 
-    // highlight active button
-    app.querySelectorAll(".subject-tab").forEach(b => 
-      b.classList.remove("bg-blue-600","text-white"));
-    btn.classList.add("bg-blue-600","text-white");
+    // reset all tabs to inactive (gray)
+    app.querySelectorAll(".subject-tab").forEach(b => {
+      b.classList.remove("bg-blue-600", "text-white");
+      b.classList.add("bg-gray-700", "text-gray-200");
+    });
+
+    // highlight clicked tab
+    btn.classList.add("bg-blue-600", "text-white");
+    btn.classList.remove("bg-gray-700", "text-gray-200");
 
     // show only the chosen subject group
     app.querySelectorAll(".subject-group").forEach(g => {

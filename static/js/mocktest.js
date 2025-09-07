@@ -605,9 +605,9 @@ const stickySummary = `
 // ---- Difficulty Analysis ----
 const difficultyHtml = `
   <div class="mt-6 mb-6">
-    <h2 class="text-xl font-bold text-yellow-400 mb-4 text-center underline">Difficulty Analysis</h2>
+    <h2 class="text-xl font-bold text-yellow-400 underline mb-4 text-center">Difficulty Analysis</h2>
     <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left border border-gray-700 rounded-lg">
+      <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
         <thead>
           <tr class="bg-gray-800">
             <th class="px-3 py-2 border-b border-gray-700">Subject</th>
@@ -617,24 +617,12 @@ const difficultyHtml = `
             <th class="px-3 py-2 border-b border-gray-700">Unattempted</th>
           </tr>
         </thead>
-        <tbody>
-          ${Object.entries(window.analysisData.difficulty || {}).map(([subj, levels]) => {
-            const difficulties = ["Easy", "Medium", "Difficult"];
-            return difficulties.map((level, i) => `
-              <tr class="border-b border-gray-700">
-                ${i === 0 ? `<td class="px-3 py-2 font-bold" rowspan="3">${subj}</td>` : ""}
-                <td class="px-3 py-2">${level}</td>
-                <td class="px-3 py-2">${levels[level]?.correct || 0}</td>
-                <td class="px-3 py-2">${levels[level]?.incorrect || 0}</td>
-                <td class="px-3 py-2">${levels[level]?.unattempted || 0}</td>
-              </tr>
-            `).join("");
-          }).join("")}
-        </tbody>
+        <tbody id="difficulty-table-body"></tbody>
       </table>
     </div>
   </div>
 `;
+
 
   
 

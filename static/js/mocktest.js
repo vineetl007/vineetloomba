@@ -424,10 +424,10 @@ let tabsHtml = `
         <table class="w-full text-sm border border-gray-700 rounded-lg mx-auto">
           <thead>
             <tr class="bg-gray-800 text-center">
-              <th class="px-3 py-2 border-b border-gray-700">Subject</th>
-              <th class="px-3 py-2 border-b border-gray-700">Total</th>
-              <th class="px-3 py-2 border-b border-gray-700">Negative</th>
-              <th class="px-3 py-2 border-b border-gray-700">Final Score</th>
+              <th class="px-3 py-2 border border-gray-700">Subject</th>
+              <th class="px-3 py-2 border border-gray-700">Total</th>
+              <th class="px-3 py-2 border border-gray-700">Negative</th>
+              <th class="px-3 py-2 border border-gray-700">Final Score</th>
             </tr>
           </thead>
           <tbody id="score-table-body"></tbody>
@@ -644,8 +644,8 @@ const chartHtml = `
         <table class="w-full text-sm border border-gray-700 rounded-lg mx-auto">
           <thead>
             <tr class="bg-gray-800 text-center">
-              <th class="px-3 py-2 border-b border-gray-700">Subject</th>
-              <th class="px-3 py-2 border-b border-gray-700">Time Spent (min)</th>
+              <th class="px-3 py-2 border border-gray-700">Subject</th>
+              <th class="px-3 py-2 border border-gray-700">Time Spent (min)</th>
             </tr>
           </thead>
           <tbody>
@@ -758,7 +758,7 @@ tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
         <td class="px-3 py-1 border border-gray-700 text-green-400">${stats.correct}</td>
         <td class="px-3 py-1 border border-gray-700 text-red-400">${stats.wrong}</td>
         <td class="px-3 py-1 border border-gray-700 text-gray-400">${stats.unattempted}</td>
-        <td class="px-3 py-1 border border-gray-700 font-bold">${total}</td>
+        <td class="px-3 py-1 border border-gray-700">${total}</td>
       </tr>
     `;
   }).join("");

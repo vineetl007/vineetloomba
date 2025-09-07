@@ -423,7 +423,7 @@ let tabsHtml = `
       <div class="flex-1 w-full md:w-auto">
         <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
           <thead>
-            <tr class="bg-gray-800">
+            <tr class="bg-gray-800 text-center">
               <th class="px-3 py-2 border-b border-gray-700">Subject</th>
               <th class="px-3 py-2 border-b border-gray-700">Total</th>
               <th class="px-3 py-2 border-b border-gray-700">Negative</th>
@@ -643,7 +643,7 @@ const chartHtml = `
       <div class="flex-1 w-full md:w-auto">
         <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
           <thead>
-            <tr class="bg-gray-800">
+            <tr class="bg-gray-800 text-center">
               <th class="px-3 py-2 border-b border-gray-700">Subject</th>
               <th class="px-3 py-2 border-b border-gray-700">Time Spent (min)</th>
             </tr>

@@ -635,7 +635,7 @@ const difficultyHtml = `
 `;
 
 // ✅ Add charts below difficulty table
-const chartsHtml = `
+const difficultyChartsHtml = `
   <div class="mt-8">
     <h2 class="text-xl font-bold mb-4">Difficulty Analysis (Pie)</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -692,7 +692,7 @@ const chartHtml = `
 `;
 
 
-app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + chartsHtml + chartHtml + tabsHtml + groupedHtml;
+app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + difficultyChartsHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
   

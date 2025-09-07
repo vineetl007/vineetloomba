@@ -650,7 +650,7 @@ const chartHtml = `
           </thead>
           <tbody>
             ${Object.entries(window.analysisData.timeSpent).map(([subj, mins]) => `
-              <tr class="border-b border-gray-700 font-concert text-center">
+              <tr class="border border-gray-700 font-concert text-center">
                 <td class="px-3 py-1">${subj}</td>
                 <td class="px-3 py-1">${mins}</td>
               </tr>
@@ -722,7 +722,7 @@ if (ctxScore) {
   // --- Table rows ---
   const tbody = document.getElementById("score-table-body");
   tbody.innerHTML = subjectScores.map(s => `
-    <tr class="border-b border-gray-700 font-concert text-center">
+    <tr class="border border-gray-700 font-concert text-center">
       <td class="px-3 py-2">${s.subj}</td>
       <td class="px-3 py-2 text-green-400">${s.total}</td>
       <td class="px-3 py-2 text-red-400">${s.negative}</td>
@@ -752,7 +752,7 @@ tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
   return levels.map(([level, stats], idx) => {
     const total = stats.correct + stats.wrong + stats.unattempted;
     return `
-      <tr class="border-b border-gray-700 font-concert text-center">
+      <tr class="border border-gray-700 font-concert text-center">
         ${idx === 0 ? `<td class="px-3 py-1 border border-gray-700" rowspan="${levels.length}">${subj}</td>` : ""}
         <td class="px-3 py-1 border border-gray-700">${level}</td>
         <td class="px-3 py-1 border border-gray-700 text-green-400">${stats.correct}</td>

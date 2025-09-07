@@ -651,8 +651,8 @@ const chartHtml = `
           <tbody>
             ${Object.entries(window.analysisData.timeSpent).map(([subj, mins]) => `
               <tr class="border border-gray-700 font-concert text-center">
-                <td class="px-3 py-1">${subj}</td>
-                <td class="px-3 py-1">${mins}</td>
+                <td class="border border-gray-700 px-3 py-1">${subj}</td>
+                <td class="border border-gray-700 px-3 py-1">${mins}</td>
               </tr>
             `).join("")}
           </tbody>
@@ -723,10 +723,10 @@ if (ctxScore) {
   const tbody = document.getElementById("score-table-body");
   tbody.innerHTML = subjectScores.map(s => `
     <tr class="border border-gray-700 font-concert text-center">
-      <td class="px-3 py-2">${s.subj}</td>
-      <td class="px-3 py-2 text-green-400">${s.total}</td>
-      <td class="px-3 py-2 text-red-400">${s.negative}</td>
-      <td class="px-3 py-2 text-blue-400">${s.final}</td>
+      <td class="px-3 py-2 border border-gray-700">${s.subj}</td>
+      <td class="px-3 py-2 border border-gray-700 text-green-400">${s.total}</td>
+      <td class="px-3 py-2 border border-gray-700 text-red-400">${s.negative}</td>
+      <td class="px-3 py-2 border border-gray-700 text-blue-400">${s.final}</td>
     </tr>
   `).join("");
 }

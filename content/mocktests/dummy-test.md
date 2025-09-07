@@ -4,13 +4,12 @@ uid: DT-1
 subjects:
   - Maths
   - Physics
-duration: 125
+duration: 180
 maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1
   - questions/jee-math/circles/integer2
   - questions/jee-math/circles/multiple-choice-questions
-  - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10
@@ -58,12 +57,18 @@ physics_questions:
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k2
   - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k2
-  - questions/jee-physics/kinematics/k2
-chemistry_questions: []
+chemistry_questions:
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
+  - questions/jee-chemistry/atomic-structure/as1
 rank_preset:
   - marks: 24
     rank: 100

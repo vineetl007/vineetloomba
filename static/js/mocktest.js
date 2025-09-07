@@ -745,17 +745,19 @@ questions.forEach((q, i) => {
 });
 
 const tbody = document.getElementById("difficulty-table-body");
-tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) =>
-  Object.entries(diffs).map(([level, stats]) => `
+tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
+  const levels = Object.entries(diffs);
+  return levels.map(([level, stats], idx) => `
     <tr>
-      <td class="px-3 py-1">${subj}</td>
+      ${idx === 0 ? `<td class="px-3 py-1" rowspan="${levels.length}">${subj}</td>` : ""}
       <td class="px-3 py-1">${level}</td>
       <td class="px-3 py-1 text-green-400">${stats.correct}</td>
       <td class="px-3 py-1 text-red-400">${stats.wrong}</td>
       <td class="px-3 py-1 text-gray-400">${stats.unattempted}</td>
     </tr>
-  `).join("")
-).join("");
+  `).join("");
+}).join("");
+
 
 //time analysis pie chart
   const ctx = document.getElementById('time-subject-chart').getContext('2d');

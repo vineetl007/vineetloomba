@@ -412,7 +412,7 @@ let tabsHtml = `
    const scoreHtml = `
   <div class="mt-6 mb-6 flex flex-col items-center gap-4">
     <!-- Heading -->
-    <h2 class="text-xl font-bold text-yellow-400 underline mb-4 text-center">Score Analysis</h2>
+    <h2 class="text-xl font-concert text-yellow-400 underline mb-4 text-center">Score Analysis</h2>
 
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6 w-full">
       <!-- Bar chart -->
@@ -421,9 +421,9 @@ let tabsHtml = `
       </div>
       <!-- Table -->
       <div class="flex-1 w-full md:w-auto">
-        <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
+        <table class="w-full text-sm font-concert border border-gray-700 rounded-lg mx-auto">
           <thead>
-            <tr class="bg-gray-800 text-center">
+            <tr class="bg-gray-800 text-center font-concert">
               <th class="px-3 py-2 border-b border-gray-700">Subject</th>
               <th class="px-3 py-2 border-b border-gray-700">Total</th>
               <th class="px-3 py-2 border-b border-gray-700">Negative</th>
@@ -605,9 +605,9 @@ const stickySummary = `
 // ---- Difficulty Analysis ----
 const difficultyHtml = `
   <div class="mt-6 mb-6">
-    <h2 class="text-xl font-bold text-yellow-400 underline mb-4 text-center">Difficulty Analysis</h2>
+    <h2 class="text-xl font-concert text-yellow-400 underline mb-4 text-center">Difficulty Analysis</h2>
     <div class="overflow-x-auto">
-      <table class="w-full text-sm border border-gray-700 rounded-lg mx-auto">
+      <table class="w-full text-sm font-concert border border-gray-700 rounded-lg mx-auto">
         <thead>
           <tr class="bg-gray-800 text-center">
             <th class="px-3 py-2 border border-gray-700">Subject</th>
@@ -632,7 +632,7 @@ const difficultyHtml = `
 const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col items-center gap-4">
     <!-- Heading -->
-    <h2 class="text-xl font-bold text-yellow-400 mb-4 text-center">Time Analysis</h2>
+    <h2 class="text-xl font-concert underline text-yellow-400 mb-4 text-center">Time Analysis</h2>
     
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6 w-full">
       <!-- Pie chart -->
@@ -641,16 +641,16 @@ const chartHtml = `
       </div>
       <!-- Table -->
       <div class="flex-1 w-full md:w-auto">
-        <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
+        <table class="w-full text-sm font-concert border border-gray-700 rounded-lg mx-auto">
           <thead>
-            <tr class="bg-gray-800 text-center">
+            <tr class="bg-gray-800 text-center font-concert">
               <th class="px-3 py-2 border-b border-gray-700">Subject</th>
               <th class="px-3 py-2 border-b border-gray-700">Time Spent (min)</th>
             </tr>
           </thead>
           <tbody>
             ${Object.entries(window.analysisData.timeSpent).map(([subj, mins]) => `
-              <tr class="border-b border-gray-700 text-center">
+              <tr class="border-b border-gray-700 font-concert text-center">
                 <td class="px-3 py-1">${subj}</td>
                 <td class="px-3 py-1">${mins}</td>
               </tr>
@@ -722,7 +722,7 @@ if (ctxScore) {
   // --- Table rows ---
   const tbody = document.getElementById("score-table-body");
   tbody.innerHTML = subjectScores.map(s => `
-    <tr class="border-b border-gray-700 text-center">
+    <tr class="border-b border-gray-700 font-concert text-center">
       <td class="px-3 py-2">${s.subj}</td>
       <td class="px-3 py-2 text-green-400">${s.total}</td>
       <td class="px-3 py-2 text-red-400">${s.negative}</td>
@@ -752,7 +752,7 @@ tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
   return levels.map(([level, stats], idx) => {
     const total = stats.correct + stats.wrong + stats.unattempted;
     return `
-      <tr class="border-b border-gray-700 text-center">
+      <tr class="border-b border-gray-700 font-concert text-center">
         ${idx === 0 ? `<td class="px-3 py-1 border border-gray-700" rowspan="${levels.length}">${subj}</td>` : ""}
         <td class="px-3 py-1 border border-gray-700">${level}</td>
         <td class="px-3 py-1 border border-gray-700 text-green-400">${stats.correct}</td>

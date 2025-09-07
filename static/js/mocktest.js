@@ -634,6 +634,45 @@ const difficultyHtml = `
   </div>
 `;
 
+ 
+  // Difficulty Analysis Charts
+const difficultyChartsHtml = `
+  <div class="mt-6">
+    <h2 class="text-xl font-concert text-yellow-400 underline mb-4 text-center">Difficulty Analysis (Accuracy %)</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-gray-900 p-4 rounded-xl shadow">
+        <h3 class="text-center mb-2 text-white">Maths</h3>
+        <canvas id="mathsPie"></canvas>
+      </div>
+      <div class="bg-gray-900 p-4 rounded-xl shadow">
+        <h3 class="text-center mb-2 text-white">Physics</h3>
+        <canvas id="physicsPie"></canvas>
+      </div>
+      <div class="bg-gray-900 p-4 rounded-xl shadow">
+        <h3 class="text-center mb-2 text-white">Chemistry</h3>
+        <canvas id="chemistryPie"></canvas>
+      </div>
+    </div>
+  </div>
+`;
+
+  // ✅ Helper to compute accuracy by difficulty
+function computeDifficultyAccuracy(subject) {
+  const levels = { Easy: { correct: 0, total: 0 }, Medium: { correct: 0, total: 0 }, Hard: { correct: 0, total: 0 } };
+  questions.forEach((q, i) => {
+    if (q.subject !== subject) return;
+    const diff = q.difficulty || "Medium"; // default if missing
+    levels[diff].total++;
+    if (isCorrect(i)) levels[diff].correct++;
+  });
+
+  return ["Easy", "Medium", "Hard"].map(lvl => {
+    const { correct, total } = levels[lvl];
+    return total > 0 ? Math.round((correct / total) * 100) : 0;
+  });
+}
+
+
 
   const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col items-center gap-4">
@@ -770,6 +809,30 @@ tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
   }).join("");
 }).join("");
 
+// ✅ Chart helper
+function makePieChart(ctxId, data) {
+  new Chart(document.getElementById(ctxId), {
+    type: "pie",
+    data: {
+      labels: ["Easy", "Medium", "Hard"],
+      datasets: [{
+        data: data,
+        backgroundColor: ["#22c55e", "#eab308", "#ef4444"], // green, yellow, red
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom", labels: { color: "#fff" } }
+      }
+    }
+  });
+}
+
+// ✅ Render charts for each subject
+makePieChart("mathsPie", computeDifficultyAccuracy("Maths"));
+makePieChart("physicsPie", computeDifficultyAccuracy("Physics"));
+makePieChart("chemistryPie", computeDifficultyAccuracy("Chemistry"));
  
 
 

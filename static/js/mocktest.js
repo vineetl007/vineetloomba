@@ -623,6 +623,41 @@ const difficultyHtml = `
   </div>
 `;
 
+// 🔹 populate rows after analysis render
+(function buildDifficultyTable() {
+  const subjects = [...new Set(questions.map(q => q.subject))];
+  const levels = ["Easy", "Medium", "Difficult"];
+  const tbody = [];
+
+  subjects.forEach(subj => {
+    levels.forEach(level => {
+      let c = 0, w = 0, u = 0;
+      questions.forEach((q, i) => {
+        if (q.subject === subj && (q.difficulty || "").toLowerCase() === level.toLowerCase()) {
+          if (!isAnswered(i)) u++;
+          else if (isCorrect(i)) c++;
+          else w++;
+        }
+      });
+      tbody.push(`
+        <tr>
+          <td class="px-3 py-2 border-b border-gray-700">${subj}</td>
+          <td class="px-3 py-2 border-b border-gray-700">${level}</td>
+          <td class="px-3 py-2 border-b border-gray-700 text-green-400">${c}</td>
+          <td class="px-3 py-2 border-b border-gray-700 text-red-400">${w}</td>
+          <td class="px-3 py-2 border-b border-gray-700">${u}</td>
+        </tr>
+      `);
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("difficulty-table-body");
+    if (el) el.innerHTML = tbody.join("");
+  });
+})();
+
+
 
   
 

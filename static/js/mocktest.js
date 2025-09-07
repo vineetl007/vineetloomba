@@ -602,7 +602,41 @@ const stickySummary = `
 `;
 */
 
- 
+// ---- Difficulty Analysis ----
+const difficultyHtml = `
+  <div class="mt-6 mb-6">
+    <h2 class="text-xl font-bold text-yellow-400 mb-4 text-center underline">Difficulty Analysis</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left border border-gray-700 rounded-lg">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="px-3 py-2 border-b border-gray-700">Subject</th>
+            <th class="px-3 py-2 border-b border-gray-700">Difficulty</th>
+            <th class="px-3 py-2 border-b border-gray-700">Correct</th>
+            <th class="px-3 py-2 border-b border-gray-700">Incorrect</th>
+            <th class="px-3 py-2 border-b border-gray-700">Unattempted</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(window.analysisData.difficulty || {}).map(([subj, levels]) => {
+            const difficulties = ["Easy", "Medium", "Difficult"];
+            return difficulties.map((level, i) => `
+              <tr class="border-b border-gray-700">
+                ${i === 0 ? `<td class="px-3 py-2 font-bold" rowspan="3">${subj}</td>` : ""}
+                <td class="px-3 py-2">${level}</td>
+                <td class="px-3 py-2">${levels[level]?.correct || 0}</td>
+                <td class="px-3 py-2">${levels[level]?.incorrect || 0}</td>
+                <td class="px-3 py-2">${levels[level]?.unattempted || 0}</td>
+              </tr>
+            `).join("");
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>
+`;
+
+  
 
 const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col items-center gap-4">
@@ -638,7 +672,7 @@ const chartHtml = `
 `;
 
 
-app.innerHTML = summaryHtml + scoreHtml + chartHtml + tabsHtml + groupedHtml;
+app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
   

@@ -817,17 +817,27 @@ function makePieChart(ctxId, data) {
       labels: ["Easy", "Medium", "Hard"],
       datasets: [{
         data: data,
-        backgroundColor: ["#22c55e", "#eab308", "#ef4444"], // green, yellow, red
+        backgroundColor: ["#22c55e", "#eab308", "#ef4444"],
       }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { position: "bottom", labels: { color: "#fff" } }
+        legend: { position: "bottom", labels: { color: "#fff" } },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              return `${label}: ${value}%`; // Add % sign
+            }
+          }
+        }
       }
     }
   });
 }
+
 
 // ✅ Render charts for each subject
 makePieChart("mathsPie", computeDifficultyAccuracy("Maths"));

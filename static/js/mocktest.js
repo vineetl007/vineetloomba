@@ -634,31 +634,8 @@ const difficultyHtml = `
   </div>
 `;
 
-// ✅ Add charts below difficulty table
-const difficultyChartsHtml = `
-  <div class="mt-8">
-    <h2 class="text-xl font-bold mb-4">Difficulty Analysis (Pie)</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-gray-800 p-4 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold mb-2 text-center">Maths</h3>
-        <canvas id="mathsPie"></canvas>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold mb-2 text-center">Physics</h3>
-        <canvas id="physicsPie"></canvas>
-      </div>
-      <div class="bg-gray-800 p-4 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold mb-2 text-center">Chemistry</h3>
-        <canvas id="chemistryPie"></canvas>
-      </div>
-    </div>
-  </div>
-`;
 
-
-  
-
-const chartHtml = `
+  const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col items-center gap-4">
     <!-- Heading -->
     <h2 class="text-xl font-concert underline text-yellow-400 mb-4 text-center">Time Analysis</h2>
@@ -692,7 +669,7 @@ const chartHtml = `
 `;
 
 
-app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + difficultyChartsHtml + chartHtml + tabsHtml + groupedHtml;
+app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
   
@@ -793,42 +770,7 @@ tbody.innerHTML = Object.entries(diffStats).map(([subj, diffs]) => {
   }).join("");
 }).join("");
 
-// Difficulty analysis charts
-  const ctxMaths = document.getElementById("mathsPie");
-const ctxPhysics = document.getElementById("physicsPie");
-const ctxChemistry = document.getElementById("chemistryPie");
-  // ✅ Chart.js helper
-function makePie(ctxId, subjectKey) {
-  const stats = subjectStats[subjectKey].difficulty;
-  const total = stats["Easy"] + stats["Medium"] + stats["Hard"];
-  const data = total > 0 ? [
-    Math.round((stats["Easy"] / total) * 100),
-    Math.round((stats["Medium"] / total) * 100),
-    Math.round((stats["Hard"] / total) * 100)
-  ] : [0,0,0];
-
-  new Chart(document.getElementById(ctxId), {
-    type: "pie",
-    data: {
-      labels: ["Easy", "Medium", "Hard"],
-      datasets: [{
-        data: data,
-        backgroundColor: ["#22c55e", "#eab308", "#ef4444"], // green, yellow, red
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: "bottom", labels: { color: "#fff" } } }
-    }
-  });
-}
-
-// ✅ Call for each subject
-makePie("mathsPie", "Maths");
-makePie("physicsPie", "Physics");
-makePie("chemistryPie", "Chemistry");
-
-  
+ 
 
 
 //time analysis pie chart

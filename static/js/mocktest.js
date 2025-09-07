@@ -136,7 +136,8 @@ const timerValueEl = document.getElementById("time-value");
 
     const base = `palette-btn w-10 h-10 rounded-full ${paletteBtnClass(i)} hover:opacity-90 transition`;
     const ring = i === currentIndex ? " outline outline-2 outline-yellow-400" : "";
-    html += `<button data-index="${i}" class="${base}${ring}">${i + 1}</button>`;
+    // build buttons (include subject)
+  html += `<button data-index="${i}" data-subject="${q.subject}" class="${base}${ring}">${i + 1}</button>`;
   });
 
   palette.innerHTML = html;
@@ -144,14 +145,23 @@ const timerValueEl = document.getElementById("time-value");
   palette.querySelectorAll(".palette-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const idx = parseInt(btn.dataset.index);
+
       if (!submitted) {
         currentIndex = idx;
         renderQuestion(currentIndex);
         renderPalette();
-      } else {
-        const card = document.getElementById(`analysis-q-${idx + 1}`);
-        if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
       }
+
+      // Analysis mode: ensure correct subject tab is opened, then scroll
+      const subj = btn.dataset.subject;
+      if (subj) {
+        const tab = document.querySelector(`.subject-tab[data-subject="${subj}"]`);
+        if (tab) tab.click();
+      }
+
+      const card = document.getElementById(`analysis-q-${idx + 1}`);
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 }

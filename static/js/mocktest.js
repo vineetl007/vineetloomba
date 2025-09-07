@@ -409,26 +409,33 @@ let tabsHtml = `
   `;
 
   // Score analysis Bar graphs 
-    const scoreSectionHtml = `
-    <div class="mb-6">
-      <h2 class="text-xl font-bold underline mb-3 text-center text-yellow-300">Score Analysis</h2>
-      <div class="h-64 mb-4">
+   const scoreHtml = `
+  <div class="mt-6 mb-6 flex flex-col items-center gap-4">
+    <!-- Heading -->
+    <h2 class="text-xl font-bold text-yellow-400 underline mb-4 text-center">Score Analysis</h2>
+
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6 w-full">
+      <!-- Bar chart -->
+      <div class="flex-shrink-0 w-full md:w-1/2" style="max-width:400px; height:300px;">
         <canvas id="score-bar-chart"></canvas>
       </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm border border-gray-700 rounded-lg">
-          <thead class="bg-gray-800 text-yellow-300">
-            <tr>
-              <th class="px-3 py-2">Subject</th>
-              <th class="px-3 py-2">Total</th>
-              <th class="px-3 py-2">Negative</th>
+      <!-- Table -->
+      <div class="flex-1 w-full md:w-auto">
+        <table class="w-full text-sm text-left border border-gray-700 rounded-lg mx-auto">
+          <thead>
+            <tr class="bg-gray-800">
+              <th class="px-3 py-2 border-b border-gray-700">Subject</th>
+              <th class="px-3 py-2 border-b border-gray-700">Total</th>
+              <th class="px-3 py-2 border-b border-gray-700">Negative</th>
+              <th class="px-3 py-2 border-b border-gray-700">Final Score</th>
             </tr>
           </thead>
           <tbody id="score-table-body"></tbody>
         </table>
       </div>
     </div>
-  `;
+  </div>
+`;
 
 
   // Compare arrays ignoring order
@@ -631,66 +638,75 @@ const chartHtml = `
 `;
 
 
-app.innerHTML = summaryHtml + scoreSectionHtml + chartHtml + tabsHtml + groupedHtml;
+app.innerHTML = summaryHtml + scoreHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
   
     // --- Score chart setup ---
-  const ctxScore = document.getElementById("score-bar-chart")?.getContext("2d");
-  if (ctxScore) {
-    const subjectScores = subjects.map(subj => {
-      const subjQs = questions.filter(q => q.subject === subj);
-      let correct = 0, wrong = 0;
-      subjQs.forEach((_, i) => {
-        const globalIdx = questions.indexOf(subjQs[i]);
-        if (isAnswered(globalIdx)) {
-          if (isCorrect(globalIdx)) correct++;
-          else wrong++;
-        }
-      });
-      return { subj, total: correct * 4, negative: wrong * -1 };
-    });
-
-    new Chart(ctxScore, {
-      type: "bar",
-      data: {
-        labels: subjectScores.map(s => s.subj),
-        datasets: [
-          {
-            label: "Total Score",
-            data: subjectScores.map(s => s.total),
-            backgroundColor: "rgba(34,197,94,0.7)" // green
-          },
-          {
-            label: "Negatives",
-            data: subjectScores.map(s => s.negative),
-            backgroundColor: "rgba(239,68,68,0.7)" // red
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: "#fff" } } },
-        scales: {
-          x: { ticks: { color: "#fff" } },
-          y: { ticks: { color: "#fff" }, beginAtZero: true }
-        }
+const ctxScore = document.getElementById("score-bar-chart")?.getContext("2d");
+if (ctxScore) {
+  const subjectScores = subjects.map(subj => {
+    const subjQs = questions.filter(q => q.subject === subj);
+    let correct = 0, wrong = 0;
+    subjQs.forEach(q => {
+      const idx = questions.indexOf(q);
+      if (isAnswered(idx)) {
+        if (isCorrect(idx)) correct++;
+        else wrong++;
       }
     });
+    const total = correct * 4;
+    const negative = wrong * -1;
+    const final = total + negative;
+    return { subj, total, negative, final };
+  });
 
-    // --- Table rows ---
-    const tbody = document.getElementById("score-table-body");
-    tbody.innerHTML = subjectScores.map(s => `
-      <tr class="border-t border-gray-700">
-        <td class="px-3 py-2">${s.subj}</td>
-        <td class="px-3 py-2 text-green-400">${s.total}</td>
-        <td class="px-3 py-2 text-red-400">${s.negative}</td>
-      </tr>
-    `).join("");
-  }
+  new Chart(ctxScore, {
+    type: "bar",
+    data: {
+      labels: subjectScores.map(s => s.subj),
+      datasets: [
+        {
+          label: "Total",
+          data: subjectScores.map(s => s.total),
+          backgroundColor: "rgba(34,197,94,0.7)" // green
+        },
+        {
+          label: "Negative",
+          data: subjectScores.map(s => s.negative),
+          backgroundColor: "rgba(239,68,68,0.7)" // red
+        },
+        {
+          label: "Final Score",
+          data: subjectScores.map(s => s.final),
+          backgroundColor: "rgba(59,130,246,0.7)" // blue
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: "#fff" } } },
+      scales: {
+        x: { ticks: { color: "#fff" } },
+        y: { ticks: { color: "#fff" }, beginAtZero: true }
+      }
+    }
+  });
 
+  // --- Table rows ---
+  const tbody = document.getElementById("score-table-body");
+  tbody.innerHTML = subjectScores.map(s => `
+    <tr class="border-b border-gray-700">
+      <td class="px-3 py-2">${s.subj}</td>
+      <td class="px-3 py-2 text-green-400">${s.total}</td>
+      <td class="px-3 py-2 text-red-400">${s.negative}</td>
+      <td class="px-3 py-2 text-blue-400">${s.final}</td>
+    </tr>
+  `).join("");
+}
 
+//time analysis pie chart
   const ctx = document.getElementById('time-subject-chart').getContext('2d');
 if (ctx && window.analysisData?.timeSpent) {
   new Chart(ctx, {

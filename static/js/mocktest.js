@@ -573,6 +573,9 @@ if (!isInt) {
     <div class="text-sm font-semibold mt-3 mb-1">Solution:</div>
     <div>${q.solution}</div>
     ${q.video_url ? `
+    <div class="mt-3 font-bold text-lg flex items-center gap-2">
+    <span>🎬 Video Solution</span>
+    </div>
       <div class="mt-3 flex justify-center">
         <div style="width:100%; max-width:720px; aspect-ratio:16/9; overflow:hidden; border-radius:12px;">
           <iframe src="${q.video_url}" style="width:100%; height:100%; border:0;" allowfullscreen></iframe>

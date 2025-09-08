@@ -47,14 +47,14 @@
 
     <!-- Section Headers for Palette -->
     <div id="question-palette" class="space-y-3">
-      {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert text-sm">Maths</div>{{ end }}
-      <div class="grid grid-cols-5 gap-2" id="maths-palette"></div>
+      {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert">Maths</div>{{ end }}
+      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="maths-palette"></div>
 
-      {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Physics</div>{{ end }}
-      <div class="grid grid-cols-5 gap-2" id="physics-palette"></div>
+      {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert mt-2">Physics</div>{{ end }}
+      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="physics-palette"></div>
 
-      {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert text-sm mt-2">Chemistry</div>{{ end }}
-      <div class="grid grid-cols-5 gap-2" id="chemistry-palette"></div>
+      {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert mt-2">Chemistry</div>{{ end }}
+      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="chemistry-palette"></div>
     </div>
   </div>
 
@@ -62,12 +62,12 @@
 
 <!-- Mobile palette: toggle button + drawer (leave these here) -->
 <button id="palette-toggle" class="md:hidden fixed bottom-4 left-4 bg-purple-600 text-white px-3 py-2 rounded-lg shadow-lg z-50">
-  Open Palette
+  Question Palette
 </button>
 
 <div id="palette-drawer" class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform -translate-x-full transition-transform duration-300 z-50 md:hidden">
 <div class="p-4 flex items-center justify-between border-b border-gray-700">
-  <span class="font-bold">Question Palette</span>
+  <span class="font-concert">Question Palette</span>
   <button id="palette-close" class="text-gray-300 hover:text-white text-sm px-2 py-1">✕</button>
 </div>
 

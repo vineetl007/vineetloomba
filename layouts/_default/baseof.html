@@ -90,12 +90,21 @@
 </header>
 
 
-  <!-- Main content -->
-  <main class="w-full bg-[#0d1117] py-8">
+<!-- Main content -->
+<main class="w-full bg-[#0d1117] py-8">
+  {{ if and (eq .Type "mocktests") (eq .Kind "page") }}
+    <!-- Wider layout only for single mocktest pages -->
+    <div class="w-full max-w-[1800px] mx-auto px-2 sm:px-4">
+      {{ block "main" . }}{{ end }}
+    </div>
+  {{ else }}
+    <!-- Default for everything else -->
     <div class="max-w-full sm:max-w-6xl mx-auto px-2 sm:px-4">
       {{ block "main" . }}{{ end }}
     </div>
-  </main>
+  {{ end }}
+</main>
+
 
     <!-- hamburger menu behavior -->
 <script>

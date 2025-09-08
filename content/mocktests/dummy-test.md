@@ -12,7 +12,7 @@ maths_questions:
   - questions/jee-math/circles/multiple-choice-questions
   - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10
-  - questions/jee-math/circles/d10
+  - questions/jee-math/circles/p23
   - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10
   - questions/jee-math/circles/d10

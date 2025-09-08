@@ -46,16 +46,24 @@
       <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded font-concert bg-purple-600"></span>Marked</div>
     </div>
 
+
     <!-- Section Headers for Palette -->
     <div id="question-palette" class="space-y-3">
       {{ if gt (len $mathQs) 0 }}<div class="text-yellow-400 font-concert">Maths</div>{{ end }}
-      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="maths-palette"></div>
+         <div class="grid gap-2" id="maths-palette"
+     style="grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));">
+</div>
 
       {{ if gt (len $phyQs) 0 }}<div class="text-yellow-400 font-concert mt-2">Physics</div>{{ end }}
-      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="physics-palette"></div>
+     <div class="grid gap-2" id="physics-palette"
+     style="grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));">
+</div>
 
       {{ if gt (len $chemQs) 0 }}<div class="text-yellow-400 font-concert mt-2">Chemistry</div>{{ end }}
-      <div class="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2" id="chemistry-palette"></div>
+     <div class="grid gap-2" id="chemistry-palette"
+     style="grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));">
+</div>
+      
     </div>
   </div>
 

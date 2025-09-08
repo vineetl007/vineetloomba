@@ -1,27 +1,24 @@
-<!-- Question Metadata Inline -->
+<!-- Question Metadata Inline (Non-clickable) -->
 <div class="mb-6 flex flex-wrap gap-2 items-center">
   
   {{ with .Params.tags }}
     {{ range . }}
-      <a href="/tags/{{ . | urlize }}/" 
-         class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full hover:bg-yellow-300 transition"> 
+      <span class="bg-yellow-400 text-black font-concert text-sm px-3 py-1 rounded-full">
         {{ . }}
-      </a>
+      </span>
     {{ end }}
   {{ end }}
 
   {{ with .Params.difficulty }}
-    <a href="/difficulty/{{ . | urlize }}/" 
-       class="bg-blue-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-blue-400 transition">
+    <span class="bg-blue-500 text-white font-concert text-sm px-3 py-1 rounded-full">
       Difficulty: {{ . }}
-    </a>
+    </span>
   {{ end }}
 
   {{ with .Params.question_type }}
-    <a href="/question-type/{{ . | urlize }}/" 
-       class="bg-purple-500 text-white font-concert text-sm px-3 py-1 rounded-full hover:bg-purple-400 transition">
+    <span class="bg-purple-500 text-white font-concert text-sm px-3 py-1 rounded-full">
       Type: {{ . | title }}
-    </a>
+    </span>
   {{ end }}
 
 </div>

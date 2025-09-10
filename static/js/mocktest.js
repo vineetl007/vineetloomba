@@ -4,34 +4,33 @@ let lastTimestamp = null;
 let currentSubject = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Pause test until user clicks Start
-const modal = document.getElementById("instruction-modal");
-const startBtn = document.getElementById("start-test");
-const nameInput = document.getElementById("student-name");
-const emailInput = document.getElementById("student-email");
+  const modal = document.getElementById("instructionModal");
+  const startBtn = document.getElementById("startTestBtn");
+  const nameInput = document.getElementById("userName");
+  const emailInput = document.getElementById("userEmail");
 
-let studentName = "";
-let studentEmail = "";
+  let userName = "";
+  let userEmail = "";
 
-function beginTest() {
-  studentName = nameInput.value.trim();
-  studentEmail = emailInput.value.trim();
-  if (!studentName || !studentEmail) {
-    alert("Please enter both name and email to proceed.");
-    return;
-  }
-  modal.style.display = "none";
-  // ✅ Now allow timer + test to run
-  updateTimer();
-  renderPalette();
-  renderQuestion(0);
-}
+  // Show modal on page load
+  modal.classList.remove("hidden");
 
-startBtn.addEventListener("click", beginTest);
+  startBtn.addEventListener("click", function () {
+    if (!nameInput.value || !emailInput.value) {
+      alert("Please enter both name and email to start the test.");
+      return;
+    }
+    userName = nameInput.value;
+    userEmail = emailInput.value;
+    modal.classList.add("hidden");
+    beginTest();
+  });
 
-// Stop auto-start
-return; // <--- IMPORTANT: prevent test from starting until Start clicked
-
+  function beginTest() {
+    const dataEl = document.getElementById("mocktest-data");
+    if (!dataEl) return;
+//old code
+  
   const dataEl = document.getElementById("mocktest-data");
   if (!dataEl) return;
 
@@ -996,4 +995,6 @@ document.getElementById("submit-test").addEventListener("click", () => {
   // ---------- INITIAL RENDER ----------
   renderPalette();
   renderQuestion(currentIndex);
-});
+
+}
+}); //-----> DOM Closes

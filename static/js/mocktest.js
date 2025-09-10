@@ -23,6 +23,9 @@ const emailInput = document.getElementById("student-email");
     userName = nameInput.value;
     userEmail = emailInput.value;
     modal.classList.add("hidden");
+   document.getElementById("user-info").textContent =
+  `Name: ${userName} | Email: ${userEmail}`;
+
     beginTest();
   });
 

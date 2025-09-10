@@ -27,9 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function beginTest() {
-    const dataEl = document.getElementById("mocktest-data");
-    if (!dataEl) return;
-//old code
+
+    //old code
   
   const dataEl = document.getElementById("mocktest-data");
   if (!dataEl) return;

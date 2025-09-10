@@ -4,6 +4,34 @@ let lastTimestamp = null;
 let currentSubject = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Pause test until user clicks Start
+const modal = document.getElementById("instruction-modal");
+const startBtn = document.getElementById("start-test");
+const nameInput = document.getElementById("student-name");
+const emailInput = document.getElementById("student-email");
+
+let studentName = "";
+let studentEmail = "";
+
+function beginTest() {
+  studentName = nameInput.value.trim();
+  studentEmail = emailInput.value.trim();
+  if (!studentName || !studentEmail) {
+    alert("Please enter both name and email to proceed.");
+    return;
+  }
+  modal.style.display = "none";
+  // ✅ Now allow timer + test to run
+  updateTimer();
+  renderPalette();
+  renderQuestion(0);
+}
+
+startBtn.addEventListener("click", beginTest);
+
+// Stop auto-start
+return; // <--- IMPORTANT: prevent test from starting until Start clicked
+
   const dataEl = document.getElementById("mocktest-data");
   if (!dataEl) return;
 

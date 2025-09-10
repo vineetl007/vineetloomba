@@ -4,10 +4,10 @@ let lastTimestamp = null;
 let currentSubject = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("instructionModal");
-  const startBtn = document.getElementById("startTestBtn");
-  const nameInput = document.getElementById("userName");
-  const emailInput = document.getElementById("userEmail");
+ const modal = document.getElementById("instruction-modal");
+const startBtn = document.getElementById("start-test");
+const nameInput = document.getElementById("student-name");
+const emailInput = document.getElementById("student-email");
 
   let userName = "";
   let userEmail = "";

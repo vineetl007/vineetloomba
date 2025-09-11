@@ -25,17 +25,6 @@ const emailInput = document.getElementById("student-email");
     modal.classList.add("hidden");
    document.getElementById("user-info").textContent =
   `Name: ${userName} | Email: ${userEmail}`;
-
-   // ✅ Send to Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycbwfl61tPirqJg4J7KOKHh-mMqsScGJbOHQ14OlOwBOb8wQ5gpAnMuPB5yfr2XEveHtC/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: userName, email: userEmail })
-  })
-  .then(res => res.json())
-  .then(data => console.log("User info saved:", data))
-  .catch(err => console.error("Failed to save user info:", err));
-
     beginTest();
   });
 

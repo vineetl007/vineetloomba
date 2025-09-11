@@ -9,7 +9,6 @@ const startBtn = document.getElementById("start-test");
 const nameInput = document.getElementById("student-name");
 const emailInput = document.getElementById("student-email");
 
-
   let userName = "";
   let userEmail = "";
 
@@ -976,60 +975,6 @@ console.log("FINAL_TIME_SPENT:", timeSpentMinutes);
 window.analysisData = window.analysisData || {};
 window.analysisData.timeSpent = timeSpentMinutes;
 
-
- // -----------------------------
-// Send results to Google Sheet
-// -----------------------------
-try {
-  // overall counts (use current state via calculateScore() which you already have)
-  const { correct, wrong, unattempted, score, total } = calculateScore();
-
-  // minimal per-subject scores (same +4 / -1 convention used in your charts)
-  const subjectsList = ["Maths", "Physics", "Chemistry"];
-  const subjectScores = { Maths: 0, Physics: 0, Chemistry: 0 };
-
-  subjectsList.forEach(subj => {
-    const subjQs = questions.filter(q => (q.subject || "General") === subj);
-    let c = 0, w = 0;
-    subjQs.forEach(q => {
-      const idx = questions.indexOf(q);
-      if (isAnswered(idx)) {
-        if (isCorrect(idx)) c++;
-        else w++;
-      }
-    });
-    subjectScores[subj] = c * 4 - w * 1; // same scheme as used elsewhere
-  });
-
-  // test title: use payload if available, else document.title fallback
-  const testTitle = (typeof payload !== "undefined" && (payload.testTitle || payload.title)) || document.title || "Mock Test";
-
-  // userName and userEmail exist in this closure (declared earlier). Use them directly.
-  fetch("https://script.google.com/macros/s/AKfycbwH-tsK8a-h_HwAtvK2tsEjvARksuxkOq_NxaCTLpYSnmGjmlqvDgkrLFkl09p4KThg/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: userName || "",
-      email: userEmail || "",
-      testTitle: testTitle,
-      totalQuestions: total,
-      correct: correct,
-      wrong: wrong,
-      unattempted: unattempted,
-      score: score,
-      mathsScore: subjectScores.Maths,
-      physicsScore: subjectScores.Physics,
-      chemistryScore: subjectScores.Chemistry
-    })
-  })
-  .then(resp => resp.json().then(j => ({ status: resp.status, json: j })))
-  .then(obj => console.log("Sheet result:", obj))
-  .catch(err => console.error("Error sending results to sheet:", err));
-} catch (err) {
-  console.error("Failed to prepare/send sheet payload:", err);
-}
-
- // google sheet code ends
 
   renderPalette();       // recolor palette to correct/wrong/blank
   renderAnalysis();      // render full analysis (answers + solutions)

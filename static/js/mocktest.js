@@ -27,7 +27,7 @@ const emailInput = document.getElementById("student-email");
   `Name: ${userName} | Email: ${userEmail}`;
 
      // ✅ Send data to Google Sheet via GET (no CORS issues)
-  const url = `https://script.google.com/macros/s/YOUR_WEB_APP_ID/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=f9X7bQ2vR8sLpT4zY1wM`;
+  const url = `https://script.google.com/macros/s/AKfycby5agHYNtb8MG1LCGK30mJmCjuCVTsFIMnrSHlCZc9IAw5wRZJ4eitWmA3x6KVZBvOR/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=f9X7bQ2vR8sLpT4zY1wM`;
 
 fetch(url)
   .then(() => console.log("User info sent"))

@@ -26,13 +26,11 @@ const emailInput = document.getElementById("student-email");
    document.getElementById("user-info").textContent =
   `Name: ${userName} | Email: ${userEmail}`;
 
-  // ✅ Send name & email to Google Sheet
-  fetch("https://script.google.com/macros/s/AKfycby0Lpxrey4DiAqQP4tjt_PGqyUy7_GkehTXL-gX76aEjrL1nPBUNTY-9APhjngyYVGf/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: userName, email: userEmail })
-  }).catch(err => console.log("Failed to save user info:", err));
+     // ✅ Send data to Google Sheet via GET (no CORS issues)
+  const url = `https://script.google.com/macros/s/AKfycbxWfyFbx0Y8Osez12lYaEukmcivwFzR0_8eVDoWnUNf79siX-TzsH57wjCldEoJlkuy/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}`;
+  fetch(url)
+    .then(() => console.log("User info sent"))
+    .catch(err => console.log("Failed to send user info:", err));
    
     beginTest();
   });

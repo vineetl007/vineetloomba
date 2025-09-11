@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 const startBtn = document.getElementById("start-test");
 const nameInput = document.getElementById("student-name");
 const emailInput = document.getElementById("student-email");
+ const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxu5LE3LoRlHj9L75LtSwK0am-IiE8RLbXwlApx_mDmPK18vcvyipf-6v8_PKEWGrVt/exec";
+
 
   let userName = "";
   let userEmail = "";
@@ -418,6 +420,28 @@ function isCorrect(qIdx) {
 // ---------- RENDER ANALYSIS ----------
 function renderAnalysis() {
   const { correct, wrong, unattempted, score, total } = calculateScore();
+ // ----- SEND DATA TO GOOGLE SHEETS -----
+const payload = {
+  Timestamp: new Date().toISOString(),
+  Name: userName,
+  Email: userEmail,
+  "Test Title": document.title || "Mock Test",
+  "Total Questions": total,
+  Correct: correct,
+  Wrong: wrong,
+  Unattempted: unattempted,
+  Score: score
+};
+
+fetch(GOOGLE_SHEET_WEBAPP_URL, {
+  method: "POST",
+  body: JSON.stringify(payload),
+  headers: { "Content-Type": "application/json" }
+})
+.then(res => res.text())
+.then(txt => console.log("Google Sheets response:", txt))
+.catch(err => console.error("Error saving to Google Sheets:", err));
+
   const rank = mapRank(score);
 // subject tabs for analysis
 const subjects = [...new Set(questions.map(q => q.subject))];

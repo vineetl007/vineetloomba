@@ -27,7 +27,7 @@ const emailInput = document.getElementById("student-email");
   `Name: ${userName} | Email: ${userEmail}`;
 
   // ✅ Send name & email to Google Sheet
-  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+  fetch("https://script.google.com/macros/s/AKfycby0Lpxrey4DiAqQP4tjt_PGqyUy7_GkehTXL-gX76aEjrL1nPBUNTY-9APhjngyYVGf/exec", {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },

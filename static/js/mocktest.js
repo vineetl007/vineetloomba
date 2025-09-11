@@ -26,6 +26,16 @@ const emailInput = document.getElementById("student-email");
    document.getElementById("user-info").textContent =
   `Name: ${userName} | Email: ${userEmail}`;
 
+   // ✅ Send to Google Sheet
+  fetch("YOUR_WEB_APP_URL_HERE", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: userName, email: userEmail })
+  })
+  .then(res => res.json())
+  .then(data => console.log("User info saved:", data))
+  .catch(err => console.error("Failed to save user info:", err));
+
     beginTest();
   });
 

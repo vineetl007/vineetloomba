@@ -27,12 +27,12 @@ const emailInput = document.getElementById("student-email");
   `Name: ${userName} | Email: ${userEmail}`;
 
      // ✅ Send data to Google Sheet via GET (no CORS issues)
-  const SECRET_TOKEN = "f9X7bQ2vR8sLpT4zY1wM"; // same as in Apps Script
+  const url = `https://script.google.com/macros/s/YOUR_WEB_APP_ID/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=f9X7bQ2vR8sLpT4zY1wM`;
 
-const url = `https://script.google.com/macros/s/AKfycbzO8wP4ubRzScRBdJSb3grAgCx6BCXjyvBAlQ4PZEuSYN7DXUP_FtaYHmSaiSehecEq/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=${encodeURIComponent(SECRET_TOKEN)}`;
 fetch(url)
   .then(() => console.log("User info sent"))
   .catch(err => console.log("Failed to send user info:", err));
+
 
    
     beginTest();

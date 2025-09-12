@@ -4,16 +4,58 @@ let lastTimestamp = null;
 let currentSubject = null;
 
 document.addEventListener("DOMContentLoaded", () => {
- const modal = document.getElementById("instruction-modal");
-const startBtn = document.getElementById("start-test");
-const nameInput = document.getElementById("student-name");
-const emailInput = document.getElementById("student-email");
+  const modal = document.getElementById("instruction-modal");
+  const startBtn = document.getElementById("start-test");
+  const nameInput = document.getElementById("student-name");
+  const emailInput = document.getElementById("student-email");
 
   let userName = "";
   let userEmail = "";
 
-  // Show modal on page load
-  modal.classList.remove("hidden");
+  // ----- Read payload early so we can compute storageKey and decide whether to show modal -----
+  const dataEl = document.getElementById("mocktest-data");
+  let payload = {};
+  let testUID = 'mocktest';
+  let storageKey = `mocktest:${testUID}`;
+
+  try {
+    if (dataEl && dataEl.textContent) {
+      payload = JSON.parse(dataEl.textContent);
+      testUID = payload.uid || (payload.title ? String(payload.title).replace(/\s+/g,'_') : 'mocktest');
+      storageKey = `mocktest:${testUID}`;
+    }
+  } catch (e) {
+    console.warn("Unable to parse mocktest-data; continuing without saved progress:", e);
+  }
+
+  // Safe loader: if parse of saved data fails, clear it (prevents broken JSON causing errors)
+  function safeLoadRawSaved() {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      console.warn("Saved progress corrupted (JSON.parse failed). Clearing saved progress:", storageKey, e);
+      try { localStorage.removeItem(storageKey); } catch (er) {}
+      return null;
+    }
+  }
+
+  const initialSaved = safeLoadRawSaved();
+
+  // If saved progress exists for this test, skip the instruction modal and auto-resume
+  if (initialSaved) {
+    modal.classList.add("hidden");
+    userName = initialSaved.userName || "";
+    userEmail = initialSaved.userEmail || "";
+    if (userName || userEmail) {
+      const ui = document.getElementById("user-info");
+      if (ui) ui.textContent = `Name: ${userName} | Email: ${userEmail}`;
+    }
+    // beginTest is a function declaration later in the file — safe to call on next tick
+    setTimeout(beginTest, 0);
+  } else {
+    modal.classList.remove("hidden");
+  }
 
   startBtn.addEventListener("click", function () {
     if (!nameInput.value || !emailInput.value) {
@@ -21,27 +63,23 @@ const emailInput = document.getElementById("student-email");
       return;
     }
 
-   if (!/^[^@]+@[^@]+\.[^@]+$/.test(emailInput.value)) {
-  alert("Please enter a valid email address to get personalised In-Depth Test Analysis");
-  return;
-   }
-
+    if (!/^[^@]+@[^@]+\.[^@]+$/.test(emailInput.value)) {
+      alert("Please enter a valid email address to get personalised In-Depth Test Analysis");
+      return;
+    }
 
     userName = nameInput.value;
     userEmail = emailInput.value;
     modal.classList.add("hidden");
-   document.getElementById("user-info").textContent =
-  `Name: ${userName} | Email: ${userEmail}`;
+    const ui = document.getElementById("user-info");
+    if (ui) ui.textContent = `Name: ${userName} | Email: ${userEmail}`;
 
-     // ✅ Send data to Google Sheet via GET (no CORS issues)
-  const url = `https://script.google.com/macros/s/AKfycby5agHYNtb8MG1LCGK30mJmCjuCVTsFIMnrSHlCZc9IAw5wRZJ4eitWmA3x6KVZBvOR/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=f9X7bQ2vR8sLpT4zY1wM`;
+    // send to Google Sheet (existing code)
+    const url = `https://script.google.com/macros/s/AKfycby5agHYNtb8MG1LCGK30mJmCjuCVTsFIMnrSHlCZc9IAw5wRZJ4eitWmA3x6KVZBvOR/exec?name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&token=f9X7bQ2vR8sLpT4zY1wM`;
+    fetch(url)
+      .then(() => console.log("User info sent"))
+      .catch(err => console.log("Failed to send user info:", err));
 
-fetch(url)
-  .then(() => console.log("User info sent"))
-  .catch(err => console.log("Failed to send user info:", err));
-
-
-   
     beginTest();
   });
 
@@ -134,13 +172,17 @@ function saveProgress() {
       currentSubject,
       lastTimestamp,
       submitted,
-      endTime // may be undefined; ok
+      endTime, // may be undefined; ok
+      userName: userName || "",
+      userEmail: userEmail || ""
     };
     localStorage.setItem(storageKey, JSON.stringify(toSave));
   } catch (e) {
     console.warn("saveProgress failed", e);
   }
 }
+
+
 
 function loadProgress() {
   try {
@@ -154,26 +196,49 @@ function loadProgress() {
 }
 
 // attempt restore (apply onto freshly created `state` safely)
+// attempt restore (apply onto freshly created `state` safely)
 const _saved = loadProgress();
 if (_saved) {
-  _savedRestore = _saved; // keep reference for timer initialization
-  if (_saved.timeSpent) {
-    // ensure keys exist
-    Object.keys(timeSpent).forEach(k => { timeSpent[k] = Number(_saved.timeSpent[k] || 0); });
-  }
-  if (Array.isArray(_saved.state)) {
-    for (let i = 0; i < Math.min(state.length, _saved.state.length); i++) {
-      state[i].visited = !!_saved.state[i].visited;
-      state[i].marked = !!_saved.state[i].marked;
-      state[i].selected = Array.isArray(_saved.state[i].selected) ? _saved.state[i].selected : [];
+  // Basic validation: ensure minimal structure exists. If it fails, clear storage and continue fresh.
+  const looksValid = (
+    typeof _saved === 'object' &&
+    Array.isArray(_saved.state) &&
+    typeof _saved.currentIndex === 'number' &&
+    _saved.timeSpent && typeof _saved.timeSpent === 'object'
+  );
+
+  if (!looksValid) {
+    console.warn("Saved data appears corrupted — clearing storage for test:", storageKey, _saved);
+    try { localStorage.removeItem(storageKey); } catch(e) {}
+  } else {
+    _savedRestore = _saved; // keep reference for timer initialization
+
+    // restore timeSpent safely
+    if (_saved.timeSpent) {
+      Object.keys(timeSpent).forEach(k => { timeSpent[k] = Number(_saved.timeSpent[k] || 0); });
+    }
+
+    if (Array.isArray(_saved.state)) {
+      for (let i = 0; i < Math.min(state.length, _saved.state.length); i++) {
+        state[i].visited = !!_saved.state[i].visited;
+        state[i].marked = !!_saved.state[i].marked;
+        state[i].selected = Array.isArray(_saved.state[i].selected) ? _saved.state[i].selected : [];
+      }
+    }
+    currentIndex = (typeof _saved.currentIndex === "number") ? _saved.currentIndex : currentIndex;
+    currentSubject = _saved.currentSubject || currentSubject;
+    lastTimestamp = _saved.lastTimestamp || lastTimestamp;
+    submitted = !!_saved.submitted;
+
+    // restore user info if saved
+    userName = _saved.userName || userName;
+    userEmail = _saved.userEmail || userEmail;
+    if (userName || userEmail) {
+      const ui = document.getElementById("user-info");
+      if (ui) ui.textContent = `Name: ${userName} | Email: ${userEmail}`;
     }
   }
-  currentIndex = (typeof _saved.currentIndex === "number") ? _saved.currentIndex : currentIndex;
-  currentSubject = _saved.currentSubject || currentSubject;
-  lastTimestamp = _saved.lastTimestamp || lastTimestamp;
-  submitted = !!_saved.submitted;
 }
-
 
   // Elements
   const app = document.getElementById("mocktest-app");
@@ -792,7 +857,19 @@ function computeDifficultyAccuracy(subject) {
 
 
 
-  const chartHtml = `
+// compute minutes from the restored `timeSpent` (ms) as a fallback
+const computedTimeSpentMinutes = Object.fromEntries(
+  Object.entries(timeSpent).map(([subj, ms]) => [subj, Math.round((Number(ms) || 0) / 60000)])
+);
+
+// prefer explicit window.analysisData.timeSpent (if set from submit), otherwise use computed
+const analysisTimeSpent = (window.analysisData && window.analysisData.timeSpent) ? window.analysisData.timeSpent : computedTimeSpentMinutes;
+
+// ensure window.analysisData.timeSpent exists for later chart code
+window.analysisData = window.analysisData || {};
+window.analysisData.timeSpent = analysisTimeSpent;
+
+const chartHtml = `
   <div class="mt-4 mb-6 flex flex-col items-center gap-4">
     <!-- Heading -->
     <h2 class="text-xl font-concert underline text-yellow-400 mb-4 text-center">Time Analysis</h2>
@@ -812,7 +889,7 @@ function computeDifficultyAccuracy(subject) {
             </tr>
           </thead>
           <tbody>
-            ${Object.entries(window.analysisData.timeSpent).map(([subj, mins]) => `
+            ${Object.entries(analysisTimeSpent).map(([subj, mins]) => `
               <tr class="border border-gray-700 font-concert text-center">
                 <td class="border border-gray-700 px-3 py-1">${subj}</td>
                 <td class="border border-gray-700 px-3 py-1">${mins}</td>
@@ -824,6 +901,7 @@ function computeDifficultyAccuracy(subject) {
     </div>
   </div>
 `;
+
 
 
 app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + difficultyChartsHtml + chartHtml + tabsHtml + groupedHtml;

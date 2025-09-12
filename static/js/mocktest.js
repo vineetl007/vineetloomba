@@ -17,9 +17,15 @@ const emailInput = document.getElementById("student-email");
 
   startBtn.addEventListener("click", function () {
     if (!nameInput.value || !emailInput.value) {
-      alert("Please enter both name and email to start the test.");
+      alert("Please enter both name and email to get personalised In-Depth Test Analysis.");
       return;
     }
+
+   if (!/^[^@]+@[^@]+$/.test(emailInput.value) || !emailInput.value.endsWith(".com")) {
+  alert("Please enter an active email to get personalised In-Depth Test Analysis");
+  return;
+    }
+
     userName = nameInput.value;
     userEmail = emailInput.value;
     modal.classList.add("hidden");

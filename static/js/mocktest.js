@@ -65,6 +65,12 @@ const rankPreset = payload.rankPreset || [];
 
   const durationMinutes = Number(payload.durationMinutes || 180);
 
+   // persistence key for this test (comes from Hugo JSON)
+const testUID = payload.uid || (payload.title ? String(payload.title).replace(/\s+/g,'_') : 'mocktest');
+const storageKey = `mocktest:${testUID}`;
+let _savedRestore = null; // temp holder used by restore step
+
+
 // ---------- Normalize question data (robust) ----------
 // ---------- Normalize question data (robust) ----------
 questions.forEach((q, i) => {
@@ -118,6 +124,57 @@ questions.forEach((q, i) => {
   }));
   let submitted = false;
 
+   // --------- persistence helpers ----------
+function saveProgress() {
+  try {
+    const toSave = {
+      timeSpent,
+      state,
+      currentIndex,
+      currentSubject,
+      lastTimestamp,
+      submitted,
+      endTime // may be undefined; ok
+    };
+    localStorage.setItem(storageKey, JSON.stringify(toSave));
+  } catch (e) {
+    console.warn("saveProgress failed", e);
+  }
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    console.warn("loadProgress failed", e);
+    return null;
+  }
+}
+
+// attempt restore (apply onto freshly created `state` safely)
+const _saved = loadProgress();
+if (_saved) {
+  _savedRestore = _saved; // keep reference for timer initialization
+  if (_saved.timeSpent) {
+    // ensure keys exist
+    Object.keys(timeSpent).forEach(k => { timeSpent[k] = Number(_saved.timeSpent[k] || 0); });
+  }
+  if (Array.isArray(_saved.state)) {
+    for (let i = 0; i < Math.min(state.length, _saved.state.length); i++) {
+      state[i].visited = !!_saved.state[i].visited;
+      state[i].marked = !!_saved.state[i].marked;
+      state[i].selected = Array.isArray(_saved.state[i].selected) ? _saved.state[i].selected : [];
+    }
+  }
+  currentIndex = (typeof _saved.currentIndex === "number") ? _saved.currentIndex : currentIndex;
+  currentSubject = _saved.currentSubject || currentSubject;
+  lastTimestamp = _saved.lastTimestamp || lastTimestamp;
+  submitted = !!_saved.submitted;
+}
+
+
   // Elements
   const app = document.getElementById("mocktest-app");
   const palette = document.getElementById("question-palette");
@@ -125,7 +182,10 @@ questions.forEach((q, i) => {
 const timerValueEl = document.getElementById("time-value");
   
   // ---------- TIMER ----------
-  const endTime = Date.now() + durationMinutes * 60 * 1000;
+//  const endTime = Date.now() + durationMinutes * 60 * 1000;
+   // ---------- TIMER ----------
+let endTime = ( _savedRestore && _savedRestore.endTime ) ? Number(_savedRestore.endTime) : Date.now() + durationMinutes * 60 * 1000;
+
   function formatTime(ms) {
     const hrs = String(Math.floor(ms / 3600000)).padStart(2, "0");
     const mins = String(Math.floor((ms % 3600000) / 60000)).padStart(2, "0");
@@ -143,6 +203,8 @@ const timerValueEl = document.getElementById("time-value");
     }
   }
   updateTimer();
+// persist initial endTime so reload keeps remaining time
+saveProgress();
 
   // ---------- HELPERS ----------
   function isAnswered(qIdx) {
@@ -336,12 +398,16 @@ app.innerHTML = `
 
       renderQuestion(idx);
       renderPalette();
+     saveProgress();
+
     });
   });
 }else {
       app.querySelector("#int-answer").addEventListener("input", e => {
         state[idx].selected = [e.target.value.trim()];
         renderPalette();
+       saveProgress();
+
       });
     }
 
@@ -350,6 +416,8 @@ app.innerHTML = `
       state[idx].marked = !state[idx].marked;
       renderQuestion(idx);
       renderPalette();
+     saveProgress();
+
     });
 
     // Clear
@@ -357,6 +425,8 @@ app.innerHTML = `
       state[idx].selected = [];
       renderQuestion(idx);
       renderPalette();
+     saveProgress();
+
     });
 
     // Nav
@@ -759,6 +829,21 @@ function computeDifficultyAccuracy(subject) {
 app.innerHTML = summaryHtml + scoreHtml + difficultyHtml + difficultyChartsHtml + chartHtml + tabsHtml + groupedHtml;
 
 //app.innerHTML = summaryHtml + stickySummary + chartHtml + tabsHtml + groupedHtml;
+
+ // add reattempt button to the summary block and wire it
+const reattemptHTML = `<div class="mt-3 text-center"><button id="reattempt-btn" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Reattempt</button></div>`;
+const summaryBlock = app.querySelector('div.border.rounded-xl.p-4.mb-4.bg-gray-900');
+if (summaryBlock) summaryBlock.insertAdjacentHTML('beforeend', reattemptHTML);
+
+const reBtn = document.getElementById('reattempt-btn');
+if (reBtn) {
+  reBtn.addEventListener('click', () => {
+    if (!confirm('Clear saved progress and start this test again?')) return;
+    localStorage.removeItem(storageKey);
+    location.reload();
+  });
+}
+
   
     // --- Score chart setup ---
 const ctxScore = document.getElementById("score-bar-chart")?.getContext("2d");
@@ -975,6 +1060,10 @@ questions.forEach((q, i) => {
   if (submitted) return;
   submitted = true;
 
+ // persist final state so analysis can be restored after reload
+saveProgress();
+
+
   // ----- FINALIZE TIME TRACKING -----
 const now = Date.now();
 if (currentSubject && lastTimestamp) {
@@ -1013,6 +1102,14 @@ document.getElementById("submit-test").addEventListener("click", () => {
   // ---------- INITIAL RENDER ----------
   renderPalette();
   renderQuestion(currentIndex);
+
+   // if this load restored a submitted attempt show analysis directly
+if (submitted) {
+  renderPalette();
+  renderAnalysis();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 
 }
 }); //-----> DOM Closes

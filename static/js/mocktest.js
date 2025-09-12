@@ -172,9 +172,6 @@ if (_saved) {
   currentSubject = _saved.currentSubject || currentSubject;
   lastTimestamp = _saved.lastTimestamp || lastTimestamp;
   submitted = !!_saved.submitted;
-
-   // ✅ hide modal if already started
-    if (modal) modal.style.display = "none";
 }
 
 

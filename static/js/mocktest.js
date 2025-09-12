@@ -13,7 +13,7 @@ const emailInput = document.getElementById("student-email");
   let userEmail = "";
 
   // Show modal on page load
- modal.classList.remove("hidden");
+  modal.classList.remove("hidden");
 
   startBtn.addEventListener("click", function () {
     if (!nameInput.value || !emailInput.value) {

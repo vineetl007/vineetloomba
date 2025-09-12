@@ -13,19 +13,7 @@ const emailInput = document.getElementById("student-email");
   let userEmail = "";
 
   // Show modal on page load
-//  modal.classList.remove("hidden");
-
- // ✅ Check if test already started in localStorage
-const hasProgress = localStorage.getItem(`mocktest:${document.getElementById("mocktest-data")?.dataset?.uid || "default"}`);
-if (hasProgress) {
-  // Skip modal, restore test directly
-  modal.classList.add("hidden");
-  beginTest();
-} else {
-  // Show modal for fresh attempt
-  modal.classList.remove("hidden");
-}
-
+ modal.classList.remove("hidden");
 
   startBtn.addEventListener("click", function () {
     if (!nameInput.value || !emailInput.value) {
@@ -184,6 +172,9 @@ if (_saved) {
   currentSubject = _saved.currentSubject || currentSubject;
   lastTimestamp = _saved.lastTimestamp || lastTimestamp;
   submitted = !!_saved.submitted;
+
+   // ✅ hide modal if already started
+    if (modal) modal.style.display = "none";
 }
 
 

@@ -21,10 +21,11 @@ const emailInput = document.getElementById("student-email");
       return;
     }
 
-   if (!/^[^@]+@[^@]+$/.test(emailInput.value) || !emailInput.value.endsWith(".com")) {
-  alert("Please enter an active email to get personalised In-Depth Test Analysis");
+   if (!/^[^@]+@[^@]+\.[^@]+$/.test(emailInput.value)) {
+  alert("Please enter a valid email address to get personalised In-Depth Test Analysis");
   return;
-    }
+   }
+
 
     userName = nameInput.value;
     userEmail = emailInput.value;

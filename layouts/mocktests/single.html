@@ -125,6 +125,7 @@
 <script type="application/json" id="mocktest-data">
 {
   "durationMinutes": {{ or .Params.duration 180 }},
+  "uid": {{ if .Params.uid }}"{{ .Params.uid | safeJS }}"{{ else }}""{{ end }},
   "rankPreset": {{ if .Params.rank_preset }}{{ .Params.rank_preset | jsonify | safeJS }}{{ else }}[]{{ end }},
   "questions": [
     {{- range $i, $item := $all -}}

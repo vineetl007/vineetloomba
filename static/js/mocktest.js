@@ -154,27 +154,20 @@ function loadProgress() {
 }
 
 // attempt restore (apply onto freshly created `state` safely)
-// attempt restore (apply onto freshly created `state` safely)
 const _saved = loadProgress();
-if (_saved && typeof _saved === "object") { // ✅ check object
+if (_saved) {
   _savedRestore = _saved; // keep reference for timer initialization
-
-  if (_saved.timeSpent && typeof _saved.timeSpent === "object") { // ✅ check object
+  if (_saved.timeSpent) {
     // ensure keys exist
-    Object.keys(timeSpent).forEach(k => {
-      timeSpent[k] = Number(_saved.timeSpent[k] || 0);
-    });
+    Object.keys(timeSpent).forEach(k => { timeSpent[k] = Number(_saved.timeSpent[k] || 0); });
   }
-
   if (Array.isArray(_saved.state)) {
     for (let i = 0; i < Math.min(state.length, _saved.state.length); i++) {
-      const s = _saved.state[i] || {}; // ✅ fallback if undefined
-      state[i].visited = !!s.visited;
-      state[i].marked = !!s.marked;
-      state[i].selected = Array.isArray(s.selected) ? s.selected : [];
+      state[i].visited = !!_saved.state[i].visited;
+      state[i].marked = !!_saved.state[i].marked;
+      state[i].selected = Array.isArray(_saved.state[i].selected) ? _saved.state[i].selected : [];
     }
   }
-
   currentIndex = (typeof _saved.currentIndex === "number") ? _saved.currentIndex : currentIndex;
   currentSubject = _saved.currentSubject || currentSubject;
   lastTimestamp = _saved.lastTimestamp || lastTimestamp;

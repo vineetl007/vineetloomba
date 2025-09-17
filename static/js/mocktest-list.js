@@ -1,52 +1,19 @@
-{{ define "main" }}
-<div class="max-w-6xl mx-auto px-4 py-10 font-concert text-white">
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
-    <h1 class="text-3xl md:text-4xl font-bold">Mock Tests</h1>
-    <div class="w-full sm:w-1/2">
-      <input id="mocktest-search" type="search" placeholder="Search tests or tags"
-             class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-    </div>
-  </div>
+document.addEventListener('DOMContentLoaded', function () {
+  const input = document.getElementById('mocktest-search');
+  if (!input) return;
+  const cards = Array.from(document.querySelectorAll('.mocktest-card'));
 
-  <div id="mocktests-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {{ range .Pages }}
-    <article class="mocktest-card bg-gray-800 border border-gray-700 rounded-2xl p-5 flex flex-col justify-between shadow-md transform transition-transform duration-150 hover:-translate-y-1"
-             data-title="{{ .Title | lower }}" data-tags="{{ delimit .Params.tags "," }}">
-      <div>
-        <h2 class="text-xl md:text-2xl font-semibold mb-2">{{ .Title }}</h2>
-
-        {{ with .Params.short_description }}
-          <p class="text-sm text-gray-300 mb-3">{{ . }}</p>
-        {{ else }}
-          <p class="text-sm text-gray-400 mb-3">{{ .Summary | plainify | truncate 160 }}</p>
-        {{ end }}
-      </div>
-
-      <div class="mt-4 flex items-center justify-between">
-        <div class="flex items-center gap-4 text-sm text-gray-300">
-          <span class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            {{ with .Params.duration }}{{ . }} min{{ else }}—{{ end }}
-          </span>
-
-          <span class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
-            </svg>
-            {{ if .Params.maths_questions }}{{ len .Params.maths_questions }}{{ else if .Params.questions_count }}{{ .Params.questions_count }}{{ else }}—{{ end }}
-          </span>
-        </div>
-
-        <a href="{{ .RelPermalink }}" class="start-btn inline-block px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-500">
-          Start Test
-        </a>
-      </div>
-    </article>
-    {{ end }}
-  </div>
-</div>
-
-<script src="{{ "js/mocktest-list.js" | relURL }}" defer></script>
-{{ end }}
+  input.addEventListener('input', function (e) {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) {
+      cards.forEach(c => c.style.display = '');
+      return;
+    }
+    cards.forEach(card => {
+      const title = (card.dataset.title || '').toLowerCase();
+      const tags = (card.dataset.tags || '').toLowerCase();
+      const match = title.includes(q) || tags.includes(q);
+      card.style.display = match ? '' : 'none';
+    });
+  });
+});

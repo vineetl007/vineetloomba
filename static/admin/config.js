@@ -386,7 +386,7 @@ CMS.init({
       name: "tags", 
       widget: "list", 
       required: false, 
-      hint: "Add keywords for searching/filtering tests" 
+      hint: "fst,parttest,maths,physics,chemistry" 
     },
 
 
@@ -398,7 +398,7 @@ CMS.init({
         label: "Question Path",
         name: "path",
         widget: "string",
-        hint: "Enter full path e.g. questions/jee-math/chapter1/q1.md"
+        hint: "Enter full path e.g. questions/jee-math/chapter1/q1 without .md"
       }
     },
     {
@@ -409,7 +409,7 @@ CMS.init({
         label: "Question Path",
         name: "path",
         widget: "string",
-        hint: "Enter full path e.g. questions/jee-physics/chapter2/q15.md"
+        hint: "Enter full path e.g. questions/jee-physics/chapter2/q15 without .md"
       }
     },
     {
@@ -420,7 +420,7 @@ CMS.init({
         label: "Question Path",
         name: "path",
         widget: "string",
-        hint: "Enter full path e.g. questions/jee-chemistry/chapter3/q20.md"
+        hint: "Enter full path e.g. questions/jee-chemistry/chapter3/q20 without .md"
       }
     },
 

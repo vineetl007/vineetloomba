@@ -102,3 +102,24 @@ h6, .prose h6 {
   width: 100%;
   height: 100%;
 }
+
+/* ---- mocktests cards ---- */
+.mocktest-card {
+  border-left-width: 4px;
+  border-left-color: rgba(99,102,241,0.06);
+}
+
+/* subtle card focus for keyboard users */
+.mocktest-card:focus-within {
+  outline: 2px solid rgba(99,102,241,0.12);
+  outline-offset: 2px;
+}
+
+/* Start button micro-interaction */
+.start-btn {
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.start-btn:active {
+  transform: translateY(1px);
+}
+

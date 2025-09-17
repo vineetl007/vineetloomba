@@ -17,8 +17,8 @@ maths_questions:
   - questions/jee-math/circles/c56
   - questions/jee-math/circles/c56
 rank_preset:
-  - marks: 1
-    rank: 1200000
   - marks: 40
     rank: 100
+  - marks: 1
+    rank: 1200000
 ---

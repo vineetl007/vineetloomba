@@ -374,6 +374,21 @@ CMS.init({
     { label: "Test Name", name: "title", widget: "string" },
     { label: "Test UID", name: "uid", widget: "string" },
     { label: "Duration (minutes)",  name: "duration",  widget: "number",  default: 180,  min: 30,  step: 5},
+        { 
+      label: "Short Description", 
+      name: "short_description", 
+      widget: "text", 
+      required: false, 
+      hint: "Brief summary shown on the mock test card" 
+    },
+    { 
+      label: "Tags", 
+      name: "tags", 
+      widget: "list", 
+      required: false, 
+      hint: "Add keywords for searching/filtering tests" 
+    },
+
 
     {
       label: "Maths Questions",

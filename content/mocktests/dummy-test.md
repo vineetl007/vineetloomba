@@ -7,7 +7,7 @@ uid: DT-1
 duration: 180
 short_description: this is a dummy test
 tags:
-  - fullsyllabus
+  - fst
 maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1

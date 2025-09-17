@@ -1,10 +1,13 @@
 ---
-title: dummy test
-uid: DT-1
 subjects:
   - Maths
   - Physics
+title: dummy test
+uid: DT-1
 duration: 180
+short_description: this is a dummy test
+tags:
+  - fullsyllabus
 maths_questions:
   - questions/jee-math/circles/d10
   - questions/jee-math/parabola/p1

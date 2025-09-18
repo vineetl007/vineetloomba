@@ -21,7 +21,7 @@
 
   <div id="mocktests-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {{ range .Pages }}
-    <article class="mocktest-card bg-gray-800 border border-gray-700 rounded-2xl p-5 flex flex-col justify-between shadow-md transform transition-transform duration-150 hover:-translate-y-1"
+    <article class="mocktest-card bg-gray-800 border border-white rounded-2xl p-5 flex flex-col justify-between shadow-md transform transition-transform duration-150 hover:-translate-y-1"
              data-title="{{ .Title | lower }}"  {{ with .Params.tags }}data-tags="{{ delimit . "," }}"{{ else }}data-tags=""{{ end }}>
       <div>
         <h2 class="text-xl md:text-2xl font-concert mb-2">{{ .Title }}</h2>
@@ -43,7 +43,7 @@
           </span>
 
   <span class="flex items-center gap-2">
-  <p> # </p>
+  <p> | </p>
     {{ $maths := 0 }}
 {{ with .Params.maths_questions }}
   {{ $maths = len . }}

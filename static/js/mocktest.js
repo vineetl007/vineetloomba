@@ -538,16 +538,34 @@ console.log("DEBUG_SCORE:", debugResult.score);
 console.log("DEBUG_RANK_PRESET:", rankPreset);
 
 
-  function mapRank(score) {
-    if (!Array.isArray(rankPreset) || rankPreset.length === 0) return null;
-    // Sort presets descending by marks
-    const sorted = [...rankPreset].sort((a, b) => b.marks - a.marks);
-    for (const r of sorted) {
-      if (score >= Number(r.marks)) return Number(r.rank);
+ function mapRank(score) {
+  if (!Array.isArray(rankPreset) || rankPreset.length === 0) return null;
+
+  // Sort presets descending by marks
+  const sorted = [...rankPreset].sort((a, b) => b.marks - a.marks);
+
+  for (let i = 0; i < sorted.length; i++) {
+    const curr = sorted[i];
+    const next = sorted[i + 1];
+
+    if (score >= Number(curr.marks)) {
+      return Number(curr.rank); // exact or above threshold → take this rank
     }
-    // If below all thresholds, take the last one's rank (worst)
-    return Number(sorted[sorted.length - 1].rank);
+
+    if (next && score < curr.marks && score >= next.marks) {
+      // interpolate between curr and next
+      const m1 = Number(curr.marks), r1 = Number(curr.rank);
+      const m2 = Number(next.marks), r2 = Number(next.rank);
+
+      const fraction = (score - m2) / (m1 - m2);
+      return Math.round(r2 + (r1 - r2) * fraction);
+    }
   }
+
+  // If below all thresholds, take the last one's rank
+  return Number(sorted[sorted.length - 1].rank);
+}
+
 
 // ---------- HELPERS ----------
 // ---------- HELPERS ----------

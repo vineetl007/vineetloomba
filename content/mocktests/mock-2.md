@@ -19,6 +19,8 @@ maths_questions:
 rank_preset:
   - marks: 40
     rank: 100
+  - marks: 20
+    rank: 600000
   - marks: 1
     rank: 1200000
 ---

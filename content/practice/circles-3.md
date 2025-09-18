@@ -1,5 +1,5 @@
 ---
-title: "Circles "
+title: Circles DPP-3
 subject: maths
 chapter: circles
 dpp: 3

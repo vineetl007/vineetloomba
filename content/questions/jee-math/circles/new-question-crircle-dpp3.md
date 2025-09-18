@@ -2,7 +2,7 @@
 title: new question crircle dpp3
 slug: circle-2-dpp
 chapter: circles
-dpp: 3
+dpp: 2
 tags:
   - jeemain
 difficulty: Easy

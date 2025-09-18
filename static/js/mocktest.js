@@ -934,7 +934,7 @@ if (summaryBlock) summaryBlock.insertAdjacentHTML('beforeend', reattemptHTML);
 const reBtn = document.getElementById('reattempt-btn');
 if (reBtn) {
   reBtn.addEventListener('click', () => {
-    if (!confirm('Clear saved progress and start this test again?')) return;
+    if (!confirm('Want to Give it one more try? This analysis will be Erased !!')) return;
     localStorage.removeItem(storageKey);
     location.reload();
   });

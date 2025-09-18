@@ -445,7 +445,7 @@ CMS.init({
   label: "Practice Pages",
   folder: "content/practice",
   create: true,
-  slug: "{{chapter}}-{{dpp}}",   // e.g., circles-dpp-1
+  slug: "{{chapter}}-dpp-{{dpp}}",   // e.g., circles-dpp-1
   fields: [
     { label: "Title", name: "title", widget: "string" },
     { 

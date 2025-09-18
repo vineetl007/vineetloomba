@@ -1193,6 +1193,15 @@ document.getElementById("submit-test").addEventListener("click", () => {
   }
 });
 
+// hook for during test reattempt button
+    document.addEventListener("click", e => {
+  if (e.target && e.target.id === "reattempt-btn") {
+    if (!confirm("Clear saved progress and start this test again?")) return;
+    localStorage.removeItem(storageKey); // ✅ clears only this test
+    location.reload();
+  }
+});
+
 
 
   // ---------- INITIAL RENDER ----------

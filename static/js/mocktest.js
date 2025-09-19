@@ -786,6 +786,14 @@ if (!isInt) {
     `;
   });
 
+     if (window.MathJax) {
+  if (typeof MathJax.typesetPromise === "function") {
+    MathJax.typesetPromise().catch(() => { /* ignore */ });
+  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  }
+};
+
   // Group cards by subject
 const grouped = {};
 cards.forEach((cardHtml, idx) => {

@@ -786,24 +786,6 @@ if (!isInt) {
     `;
   });
 
-// --- MathJax: typeset only visible nodes in the analysis view (skip hidden solutions) ---
-if (window.MathJax) {
-  try {
-    // pick only elements that are currently visible (offsetParent !== null means rendered)
-    const visibleNodes = Array.from(app.querySelectorAll('*')).filter(el => el.offsetParent !== null);
-
-    if (typeof MathJax.typesetPromise === "function") {
-      // v3: typeset only visible nodes
-      MathJax.typesetPromise(visibleNodes).catch(() => { /* ignore */ });
-    } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-      // v2 fallback: typeset the app (v2 doesn't support typesetting an array reliably)
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, app]);
-    }
-  } catch (e) {
-    console.warn("MathJax visible-typeset failed:", e);
-  }
-}
-
 
   // Group cards by subject
 const grouped = {};
@@ -1185,12 +1167,12 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
 
 
 
-/*
+
   // Safe MathJax typeset
   if (window.MathJax) {
     if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});
     else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-  } */
+  } 
 } 
 
 

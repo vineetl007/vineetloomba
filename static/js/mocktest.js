@@ -1149,7 +1149,7 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
   });
 });
 
-
+}
   // Safe MathJax typeset
 /*  if (window.MathJax) {
     if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});

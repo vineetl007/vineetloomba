@@ -1121,7 +1121,7 @@ app.querySelectorAll(".subject-tab").forEach(btn => {
   });
 });
   // Hook up accordion toggles
-// ✅ Toggle solution visibility with safe MathJax re-typeset
+// ✅ Toggle solution visibility with simple MathJax render on reveal
 app.querySelectorAll(".toggle-solution").forEach(btn => {
   btn.addEventListener("click", async () => {
     const content = btn.nextElementSibling;
@@ -1132,29 +1132,15 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
       content.classList.remove("hidden");
       btn.textContent = "Hide Solution";
 
-      // Wait for one frame so the browser lays out the content
+      // Wait a frame so the browser applies layout
       await new Promise(resolve => requestAnimationFrame(resolve));
 
-      // ✅ Handle MathJax rendering safely
-      if (window.MathJax) {
+      // ✅ Typeset this block freshly if MathJax is available
+      if (window.MathJax && typeof MathJax.typesetPromise === "function") {
         try {
-          if (typeof MathJax.typesetPromise === "function") {
-            // Only clear if MathJax already touched this block
-            if (content.querySelector("mjx-container")) {
-              MathJax.typesetClear([content]);
-            }
-            await MathJax.typesetPromise([content]);
-          } else if (
-            MathJax.Hub &&
-            typeof MathJax.Hub.Queue === "function"
-          ) {
-            MathJax.Hub.Queue(["Reprocess", MathJax.Hub, content]);
-          }
+          await MathJax.typesetPromise([content]);
         } catch (e) {
-          console.warn(
-            "MathJax re-typeset after showing solution failed:",
-            e
-          );
+          console.warn("MathJax typeset on reveal failed:", e);
         }
       }
     } else {
@@ -1168,30 +1154,15 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
 
 
 
-// === Replace the old blanket MathJax typeset with this selective visible-only typeset ===
-if (window.MathJax) {
-  try {
-    // Wait a frame so the browser has applied the app.innerHTML and layout
-    requestAnimationFrame(() => {
-      // Collect nodes that are visible AND NOT inside a .solution-content subtree
-      const visibleNodes = Array.from(app.querySelectorAll('*')).filter(el =>
-        el.offsetParent !== null && !el.closest('.solution-content')
-      );
 
-      if (typeof MathJax.typesetPromise === 'function') {
-        // MathJax v3: typeset only the visible nodes (fast and skips hidden solutions)
-        if (visibleNodes.length) {
-          MathJax.typesetPromise(visibleNodes).catch(() => { /* ignore errors */ });
-        }
-      } else if (MathJax.Hub && typeof MathJax.Hub.Queue === 'function') {
-        // MathJax v2 fallback: queue typeset for each visible node so we don't typeset hidden solutions
-        visibleNodes.forEach(node => MathJax.Hub.Queue(["Typeset", MathJax.Hub, node]));
-      }
-    });
-  } catch (e) {
-    console.warn("MathJax visible-typeset failed:", e);
+if (window.MathJax && typeof MathJax.typesetPromise === "function") {
+  const visibleBlocks = Array.from(app.querySelectorAll(".question-block"))
+    .filter(el => el.offsetParent !== null); // only visible now
+  if (visibleBlocks.length) {
+    MathJax.typesetPromise(visibleBlocks).catch(() => {});
   }
 }
+
 
 } 
 

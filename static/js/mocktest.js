@@ -1168,11 +1168,31 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
 
 
 
-  // Safe MathJax typeset
-  if (window.MathJax) {
-    if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});
-    else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-  } 
+// === Replace the old blanket MathJax typeset with this selective visible-only typeset ===
+if (window.MathJax) {
+  try {
+    // Wait a frame so the browser has applied the app.innerHTML and layout
+    requestAnimationFrame(() => {
+      // Collect nodes that are visible AND NOT inside a .solution-content subtree
+      const visibleNodes = Array.from(app.querySelectorAll('*')).filter(el =>
+        el.offsetParent !== null && !el.closest('.solution-content')
+      );
+
+      if (typeof MathJax.typesetPromise === 'function') {
+        // MathJax v3: typeset only the visible nodes (fast and skips hidden solutions)
+        if (visibleNodes.length) {
+          MathJax.typesetPromise(visibleNodes).catch(() => { /* ignore errors */ });
+        }
+      } else if (MathJax.Hub && typeof MathJax.Hub.Queue === 'function') {
+        // MathJax v2 fallback: queue typeset for each visible node so we don't typeset hidden solutions
+        visibleNodes.forEach(node => MathJax.Hub.Queue(["Typeset", MathJax.Hub, node]));
+      }
+    });
+  } catch (e) {
+    console.warn("MathJax visible-typeset failed:", e);
+  }
+}
+
 } 
 
 

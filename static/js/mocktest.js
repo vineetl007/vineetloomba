@@ -931,6 +931,7 @@ const reattemptHTML = `<div class="mt-3 text-center"><button id="reattempt-btn" 
 const summaryBlock = app.querySelector('div.border.rounded-xl.p-4.mb-4.bg-gray-900');
 if (summaryBlock) summaryBlock.insertAdjacentHTML('beforeend', reattemptHTML);
 
+  /*
 const reBtn = document.getElementById('reattempt-btn');
 if (reBtn) {
   reBtn.addEventListener('click', () => {
@@ -939,6 +940,7 @@ if (reBtn) {
     location.reload();
   });
 }
+*/
 
   
     // --- Score chart setup ---

@@ -1149,13 +1149,13 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
   });
 });
 
-}
+
   // Safe MathJax typeset
-/*  if (window.MathJax) {
+  if (window.MathJax) {
     if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});
     else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
-} */
+} 
 
 /*     if (window.MathJax) {
   if (typeof MathJax.typesetPromise === "function") {

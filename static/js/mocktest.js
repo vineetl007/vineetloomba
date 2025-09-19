@@ -1139,32 +1139,44 @@ app.querySelectorAll(".subject-tab").forEach(btn => {
   });
 });
   // Hook up accordion toggles
+// ✅ Toggle solution visibility with safe MathJax re-typeset
 app.querySelectorAll(".toggle-solution").forEach(btn => {
   btn.addEventListener("click", async () => {
     const content = btn.nextElementSibling;
     const willShow = content.classList.contains("hidden");
 
     if (willShow) {
+      // Show the solution
       content.classList.remove("hidden");
       btn.textContent = "Hide Solution";
 
-      // Wait a frame so browser applies layout
+      // Wait for one frame so the browser lays out the content
       await new Promise(resolve => requestAnimationFrame(resolve));
 
-      // ✅ Clear & re-typeset to fix overflow from hidden render
+      // ✅ Handle MathJax rendering safely
       if (window.MathJax) {
         try {
           if (typeof MathJax.typesetPromise === "function") {
-            MathJax.typesetClear([content]);            // remove old SVG
-            await MathJax.typesetPromise([content]);    // re-render correctly
-          } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-            MathJax.Hub.Queue(["Reprocess", MathJax.Hub, content]); // v2
+            // Only clear if MathJax already touched this block
+            if (content.querySelector("mjx-container")) {
+              MathJax.typesetClear([content]);
+            }
+            await MathJax.typesetPromise([content]);
+          } else if (
+            MathJax.Hub &&
+            typeof MathJax.Hub.Queue === "function"
+          ) {
+            MathJax.Hub.Queue(["Reprocess", MathJax.Hub, content]);
           }
         } catch (e) {
-          console.warn("MathJax re-typeset after showing solution failed:", e);
+          console.warn(
+            "MathJax re-typeset after showing solution failed:",
+            e
+          );
         }
       }
     } else {
+      // Hide the solution
       content.classList.add("hidden");
       btn.textContent = "Show Solution";
     }

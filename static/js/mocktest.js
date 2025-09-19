@@ -1137,18 +1137,16 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
       content.classList.remove("hidden");
       btn.textContent = "Hide Solution";
 
-      // Re-typeset only the revealed content so MathJax measures visible layout
+      // ✅ Re-typeset MathJax now that content is visible
       if (window.MathJax) {
         try {
           if (typeof MathJax.typesetPromise === "function") {
-            // MathJax v3: typeset only the revealed subtree
-            await MathJax.typesetPromise([content]);
+            await MathJax.typesetPromise([content]);  // v3
           } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-            // MathJax v2 fallback
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, content]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, content]);  // v2
           }
         } catch (e) {
-          console.warn("MathJax typeset after showing solution failed:", e);
+          console.warn("MathJax re-typeset failed:", e);
         }
       }
     } else {

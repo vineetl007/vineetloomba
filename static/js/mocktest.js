@@ -3,17 +3,6 @@ let timeSpent = { Maths: 0, Physics: 0, Chemistry: 0 };
 let lastTimestamp = null;
 let currentSubject = null;
 
-// ✅ MathJax render helper
-function renderMath() {
-  if (window.MathJax) {
-    if (typeof MathJax.typesetPromise === "function") {
-      MathJax.typesetPromise().catch(() => { /* ignore */ });
-    } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("instruction-modal");
   const startBtn = document.getElementById("start-test");
@@ -455,8 +444,6 @@ app.innerHTML = `
       </div>
     `;
 
-    renderMath();
-
     // Option selection (no feedback)
    if (!isInteger) {
   app.querySelectorAll(".option").forEach(opt => {
@@ -523,14 +510,14 @@ app.innerHTML = `
       }
     });
 
-/*   if (window.MathJax) {
+   if (window.MathJax) {
   if (typeof MathJax.typesetPromise === "function") {
-    MathJax.typesetPromise().catch(() => { /* ignore / });
+    MathJax.typesetPromise().catch(() => { /* ignore */ });
   } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
 };
-  } */
+  }
 
   // ---------- SUBMIT / ANALYSIS ----------
   function calculateScore() {
@@ -798,10 +785,7 @@ if (!isInt) {
 </div>
     `;
   });
-  
-// ✅ Render Math after question & options inserted
-renderMath();
-  
+
   // Group cards by subject
 const grouped = {};
 cards.forEach((cardHtml, idx) => {
@@ -1151,30 +1135,13 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
 
 
   // Safe MathJax typeset
- /* if (window.MathJax) {
+  if (window.MathJax) {
     if (typeof MathJax.typesetPromise === "function") MathJax.typesetPromise().catch(() => {});
     else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
-} 
-*/
-    if (window.MathJax) {
-  if (typeof MathJax.typesetPromise === "function") {
-    MathJax.typesetPromise().catch(() => { /* ignore */ });
-  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-  }
 }
 
-/*     if (window.MathJax) {
-  if (typeof MathJax.typesetPromise === "function") {
-    MathJax.typesetPromise().catch(() => { /* ignore / });
-  } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-  }
-};
-  }
-*/
-  
+
 function submitTest() {
   console.log("Submitting test...");
 questions.forEach((q, i) => {

@@ -1145,27 +1145,26 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
     const willShow = content.classList.contains("hidden");
 
     if (willShow) {
-      // reveal first
       content.classList.remove("hidden");
       btn.textContent = "Hide Solution";
 
-      // wait for the browser to paint (two RAFs for robustness)
-      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      // Wait a frame so browser applies layout
+      await new Promise(resolve => requestAnimationFrame(resolve));
 
-      // now typeset only the revealed subtree
+      // ✅ Clear & re-typeset to fix overflow from hidden render
       if (window.MathJax) {
         try {
           if (typeof MathJax.typesetPromise === "function") {
-            await MathJax.typesetPromise([content]);  // MathJax v3
+            MathJax.typesetClear([content]);            // remove old SVG
+            await MathJax.typesetPromise([content]);    // re-render correctly
           } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, content]); // v2 fallback
+            MathJax.Hub.Queue(["Reprocess", MathJax.Hub, content]); // v2
           }
         } catch (e) {
           console.warn("MathJax re-typeset after showing solution failed:", e);
         }
       }
     } else {
-      // hide
       content.classList.add("hidden");
       btn.textContent = "Show Solution";
     }

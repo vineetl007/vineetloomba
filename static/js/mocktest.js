@@ -1129,17 +1129,35 @@ app.querySelectorAll(".subject-tab").forEach(btn => {
 });
   // Hook up accordion toggles
 app.querySelectorAll(".toggle-solution").forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
     const content = btn.nextElementSibling;
-    if (content.classList.contains("hidden")) {
+    const willShow = content.classList.contains("hidden");
+
+    if (willShow) {
       content.classList.remove("hidden");
       btn.textContent = "Hide Solution";
+
+      // Re-typeset only the revealed content so MathJax measures visible layout
+      if (window.MathJax) {
+        try {
+          if (typeof MathJax.typesetPromise === "function") {
+            // MathJax v3: typeset only the revealed subtree
+            await MathJax.typesetPromise([content]);
+          } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
+            // MathJax v2 fallback
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, content]);
+          }
+        } catch (e) {
+          console.warn("MathJax typeset after showing solution failed:", e);
+        }
+      }
     } else {
       content.classList.add("hidden");
       btn.textContent = "Show Solution";
     }
   });
 });
+
 
 
   // Safe MathJax typeset

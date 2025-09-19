@@ -1154,12 +1154,15 @@ app.querySelectorAll(".toggle-solution").forEach(btn => {
 
 
 
-
 if (window.MathJax && typeof MathJax.typesetPromise === "function") {
-  const visibleBlocks = Array.from(app.querySelectorAll(".question-block"))
-    .filter(el => el.offsetParent !== null); // only visible now
-  if (visibleBlocks.length) {
-    MathJax.typesetPromise(visibleBlocks).catch(() => {});
+  try {
+    const visible = Array.from(app.querySelectorAll(".mb-3, .mt-3.text-sm.space-y-1")) // qHtml, userAns, correctAns
+      .filter(el => el.offsetParent !== null); // only visible
+    if (visible.length) {
+      MathJax.typesetPromise(visible).catch(() => {});
+    }
+  } catch (e) {
+    console.warn("MathJax initial typeset failed:", e);
   }
 }
 

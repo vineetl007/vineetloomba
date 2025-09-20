@@ -244,20 +244,20 @@ ${q.video_url ? `
     } */
 
     // Render KaTeX after HTML is added
+// Render KaTeX in all newly added content
 if (typeof renderMathInElement === "function") {
-  const elements = document.querySelectorAll(".question-text, .option"); // update selectors to match your practice HTML
-  elements.forEach(el => {
-    renderMathInElement(el, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "\\[", right: "\\]", display: true },
-        { left: "$", right: "$", display: false },
-        { left: "\\(", right: "\\)", display: false }
-      ],
-      throwOnError: false
-    });
+  const container = document.getElementById("practice-app") || document.body; // container of all practice content
+  renderMathInElement(container, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
   });
 }
+
 
   }
 

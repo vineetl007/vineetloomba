@@ -26,22 +26,26 @@ mjx-container > svg {
   }
 }
 
-/* Base: equations centered */
 .katex-display {
   text-align: center;
   margin: 0.75em 0;
-  overflow-x: auto;      /* fallback scroll if too wide */
-  white-space: nowrap;    /* prevent wrapping */
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .katex-display > .katex {
   display: inline-block;
   max-width: 100%;
-  white-space: nowrap;    /* prevent inner break */
+  white-space: nowrap;       /* prevent wrapping */
   transform-origin: left center;
 }
 
+/* prevent wrapping for inner KaTeX spans */
+.katex .katex-html, 
+.katex .katex-mathml, 
+.katex .katex-html > span {
+  white-space: nowrap !important;
+}
 
 /* Step 1: slightly shrink on tablets */
 @media (max-width: 1024px) {

@@ -26,6 +26,41 @@ mjx-container > svg {
   }
 }
 
+/* Base: equations centered */
+.katex-display {
+  text-align: center;
+  margin: 0.75em 0;
+  overflow-x: auto;              /* fallback scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  max-width: 100%;
+  transform-origin: left center; /* scaling reference */
+}
+
+/* Step 1: slightly shrink on tablets */
+@media (max-width: 1024px) {
+  .katex-display > .katex {
+    transform: scale(0.95);
+  }
+}
+
+/* Step 2: shrink more on small phones */
+@media (max-width: 640px) {
+  .katex-display > .katex {
+    transform: scale(0.85);
+  }
+}
+
+/* Step 3: extra shrink on very narrow screens */
+@media (max-width: 400px) {
+  .katex-display > .katex {
+    transform: scale(0.75);
+  }
+}
+
 /* Custom Blog Styles */
 /* Headings should use Concert One without extra bolding */
 h1, h2, h3, h4, h5, h6 {

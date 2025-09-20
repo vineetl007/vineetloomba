@@ -238,10 +238,27 @@ ${q.video_url ? `
       }
     });
 
-    // Render LaTeX after HTML is added
+  /*  // Render LaTeX after HTML is added
     if (window.MathJax) {
       MathJax.typesetPromise();
-    }
+    } */
+
+    // Render KaTeX after HTML is added
+if (typeof renderMathInElement === "function") {
+  const elements = document.querySelectorAll(".question-text, .option"); // update selectors to match your practice HTML
+  elements.forEach(el => {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  });
+}
+
   }
 
   // Render first question

@@ -509,14 +509,32 @@ app.innerHTML = `
         renderPalette();
       }
     });
-
+/*
    if (window.MathJax) {
   if (typeof MathJax.typesetPromise === "function") {
-    MathJax.typesetPromise().catch(() => { /* ignore */ });
+    MathJax.typesetPromise().catch(() => { /* ignore / });
   } else if (MathJax.Hub && typeof MathJax.Hub.Queue === "function") {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   }
-};
+}; */
+
+    //Katex Replacement code 
+    if (typeof renderMathInElement === "function") {
+  // ✅ Render all questions and options once
+  const testElements = document.querySelectorAll(".question, .option"); // adjust selectors if needed
+  testElements.forEach(el => {
+    renderMathInElement(el, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false }
+      ],
+      throwOnError: false
+    });
+  });
+}
+
   }
 
   // ---------- SUBMIT / ANALYSIS ----------

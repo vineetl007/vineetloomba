@@ -30,15 +30,18 @@ mjx-container > svg {
 .katex-display {
   text-align: center;
   margin: 0.75em 0;
-  overflow-x: auto;              /* fallback scroll */
+  overflow-x: auto;      /* fallback scroll if too wide */
+  white-space: nowrap;    /* prevent wrapping */
   -webkit-overflow-scrolling: touch;
 }
 
 .katex-display > .katex {
   display: inline-block;
   max-width: 100%;
-  transform-origin: left center; /* scaling reference */
+  white-space: nowrap;    /* prevent inner break */
+  transform-origin: left center;
 }
+
 
 /* Step 1: slightly shrink on tablets */
 @media (max-width: 1024px) {

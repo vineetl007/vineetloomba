@@ -1121,6 +1121,8 @@ app.querySelectorAll(".subject-tab").forEach(btn => {
   });
 });
   // Hook up accordion toggles
+
+  /*
 // ✅ Toggle solution visibility with simple MathJax render on reveal
 app.querySelectorAll(".toggle-solution").forEach(btn => {
   btn.addEventListener("click", async () => {
@@ -1164,6 +1166,36 @@ if (window.MathJax && typeof MathJax.typesetPromise === "function") {
   } catch (e) {
     console.warn("MathJax initial typeset failed:", e);
   }
+}
+*/
+
+  // New Katex LOGIC
+  app.querySelectorAll(".toggle-solution").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const content = btn.nextElementSibling;
+    const willShow = content.classList.contains("hidden");
+
+    if (willShow) {
+      content.classList.remove("hidden");
+      btn.textContent = "Hide Solution";
+    } else {
+      content.classList.add("hidden");
+      btn.textContent = "Show Solution";
+    }
+  });
+});
+
+// ✅ Run once for whole page
+if (typeof renderMathInElement === "function") {
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false }
+    ],
+    throwOnError: false
+  });
 }
 
 

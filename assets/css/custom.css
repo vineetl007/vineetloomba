@@ -5,10 +5,11 @@
 }
 
 /* ✅ Keep MathJax equations inside container on all screens */
+/*
 mjx-container[display="true"] {
   display: block;
   max-width: 100%;
-  overflow-x: auto;  /* allow scroll if equation is very wide */
+  overflow-x: auto;  /* allow scroll if equation is very wide /
   text-align: center;
   padding: 0.5rem 0;
   box-sizing: border-box;
@@ -19,12 +20,13 @@ mjx-container > svg {
   height: auto;
 }
 
-/* Mobile-friendly MathJax scaling */
+/* Mobile-friendly MathJax scaling /
 @media (max-width: 768px) {
   mjx-container[display="true"] {
-    font-size: 1.05em; /* very slight bump, avoid breaking layout */
+    font-size: 1.05em; /* very slight bump, avoid breaking layout /
   }
 }
+*/
 
 .katex-display {
   text-align: center;

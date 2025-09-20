@@ -521,7 +521,7 @@ app.innerHTML = `
     //Katex Replacement code 
     if (typeof renderMathInElement === "function") {
   // ✅ Render all questions and options once
-  const testElements = document.querySelectorAll(".question, .option"); // adjust selectors if needed
+  const testElements = document.querySelectorAll(".question-text, .option"); // adjust selectors if needed
   testElements.forEach(el => {
     renderMathInElement(el, {
       delimiters: [

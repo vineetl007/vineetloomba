@@ -54,20 +54,11 @@ const tags = (() => {
 // difficulty and tags and question type pulled dynamically 
 
 // ✅ First: prepare questionHtml OUTSIDE the template string
-function renderImages(mdText) {
-  return mdText.replace(
-    /!\[.*?\]\((.*?)\)/g,
-    `<img src="$1" class="w-full max-w-sm mx-auto my-4" style="height:auto;" />`
-  );
-}
-
-
 const rawQ = String(q.question || "");
 const questionHtml = rawQ
   .split(/\n\s*\n/)                       // split paragraphs on blank lines
-  .map(p => `<p>${renderImages(p).replace(/\n/g, '<br>')}</p>`) // convert single newlines to <br>
+  .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // convert single newlines to <br>
   .join("");
-
 
 // ✅ Then build the HTML normally
 app.innerHTML = `

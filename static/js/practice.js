@@ -57,7 +57,7 @@ const tags = (() => {
 function renderImages(mdText) {
   return mdText.replace(
     /!\[.*?\]\((.*?)\)/g,
-    `<img src="$1" class="w-full max-w-sm md:max-w-2xl mx-auto my-4" style="height:auto;" />`
+    `<img src="$1" class="w-full max-w-sm mx-auto my-4" style="height:auto;" />`
   );
 }
 

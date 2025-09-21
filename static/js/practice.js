@@ -55,8 +55,12 @@ const tags = (() => {
 
 // ✅ First: prepare questionHtml OUTSIDE the template string
 function renderImages(mdText) {
-  return mdText.replace(/!\[.*?\]\((.*?)\)/g, '<img src="$1" class="max-w-full mx-auto my-2" />');
+  return mdText.replace(
+    /!\[.*?\]\((.*?)\)/g,
+    `<img src="$1" class="w-full max-w-sm md:max-w-2xl mx-auto my-4" style="height:auto;" />`
+  );
 }
+
 
 const rawQ = String(q.question || "");
 const questionHtml = rawQ

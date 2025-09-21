@@ -4,7 +4,10 @@ CMS.init({
   config: {
     backend: {
       name: "git-gateway",
-      branch: "main",
+      branch: "main", // keep your branch here
+      auth_type: "auth0",
+      app_id: "Z7vplcU2vy50rxpgbJeraAlvVBYiuX9k",
+      api_origin: "https://dev-j4qpenzpu3gkkk8j.us.auth0.com", 
     },
     media_folder: "static/uploads",
     public_folder: "/uploads",

@@ -1,7 +1,7 @@
 // ✅ No import line needed. CMS is available globally after script tag in index.html
 
-CMS.init({
-  config: {
+
+    window.CMS_CONFIG = {
     backend: {
       name: "git-gateway",
       branch: "main", // keep your branch here
@@ -483,5 +483,8 @@ CMS.init({
 }
 
 ]
-},
-});
+      
+};
+
+// ✅ Only one CMS.init() call
+CMS.init({ config: window.CMS_CONFIG });

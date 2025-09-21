@@ -338,6 +338,13 @@ saveProgress();
   });
 }
 
+// Helper to resize images in markdown/HTML
+function wrapQuestionImages(html) {
+  return html.replace(
+    /<img\s+([^>]+?)\/?>/g,
+    `<img $1 class="w-full max-w-sm mx-auto my-4" style="height:auto;" />`
+  );
+}
 
   // ---------- RENDER QUESTION (TEST MODE) ----------
   function renderQuestion(idx) {
@@ -358,10 +365,13 @@ console.log("DEBUG_TIME_TRACK:", timeSpent);
 
 
     const rawQ = String(q.question || "");
-    const questionHtml = rawQ
-      .split(/\n\s*\n/)
-      .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
-      .join("");
+  let questionHtml = rawQ
+  .split(/\n\s*\n/)
+  .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+  .join("");
+
+questionHtml = wrapQuestionImages(questionHtml); // ✅ wrap images
+
 
    
     const isInteger = q.question_type === "Integer Type";
@@ -689,7 +699,13 @@ const userMCQ = !isInt && Array.isArray(st.selected) ? st.selected.map(Number) :
     const gotIt = isInt ? (userInt !== "" && userInt === q.numerical_answer) : compareArrays(userMCQ, correctIdxs);
 
     // Question HTML
-    const qHtml = String(q.question || "").split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+   let qHtml = String(q.question || "")
+  .split(/\n\s*\n/)
+  .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+  .join("");
+
+qHtml = wrapQuestionImages(qHtml); // ✅ wrap images in analysis
+
 
     // User answer display
     const userAnsHtml = isInt

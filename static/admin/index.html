@@ -5,30 +5,20 @@
     <title>Admin</title>
   </head>
   <body>
+    <!-- ✅ Prevent Decap CMS from auto-initializing -->
     <script>
-      // ✅ Prevent Decap from auto-initializing and looking for config.yml
       window.CMS_MANUAL_INIT = true;
     </script>
 
-    <!-- Load Decap CMS -->
+    <!-- ✅ Load Decap CMS -->
     <script src="https://unpkg.com/decap-cms@3.1.0/dist/decap-cms.js"></script>
 
-    <!-- ✅ Load our config.js instead -->
- <script src="config.js"></script>
+    <!-- ✅ Load our config.js (with Auth0 backend) -->
+    <script src="config.js"></script>
 
-    <!-- ✅ Netlify Identity Widget for GitHub login -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- ✅ Initialize CMS -->
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-        window.netlifyIdentity.init();
-      }
+      CMS.init({ config: window.CMS_CONFIG });
     </script>
   </body>
 </html>

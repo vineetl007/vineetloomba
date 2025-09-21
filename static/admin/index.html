@@ -5,15 +5,31 @@
     <title>Admin</title>
   </head>
   <body>
-    <!-- Prevent CMS from auto-initializing -->
+    <!-- Prevent auto-initialize -->
     <script>
       window.CMS_MANUAL_INIT = true;
     </script>
 
-    <!-- Load Decap CMS (from jsDelivr to avoid QUIC errors) -->
+    <!-- Load Decap CMS -->
     <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.1.0/dist/decap-cms.js"></script>
 
     <!-- Load your CMS configuration -->
     <script src="config.js"></script>
+
+    <!-- Load Netlify Identity -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        // ✅ Debug: print Identity initialization
+        window.netlifyIdentity.on("init", (user) => {
+          console.log("Netlify Identity initialized", user);
+        });
+        // Initialize Identity
+        window.netlifyIdentity.init();
+      }
+
+      // Initialize CMS after Identity is ready
+      CMS.init({ config: window.CMS_CONFIG });
+    </script>
   </body>
 </html>

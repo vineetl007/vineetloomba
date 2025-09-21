@@ -55,7 +55,7 @@ const tags = (() => {
 
 // ✅ First: prepare questionHtml OUTSIDE the template string
 const rawQ = String(q.question || "");
-const questionHtml = rawQ
+const questionHtml = marked.parse(rawQ); // converts markdown (images, bold, lists, etc.) to HTML
   .split(/\n\s*\n/)                       // split paragraphs on blank lines
   .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`) // convert single newlines to <br>
   .join("");

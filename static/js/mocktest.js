@@ -760,7 +760,7 @@ if (!isInt) {
                     : 'bg-gray-900/40 border-gray-700')}"> <!-- Controls the colour of boxes and borders in analysis -->
 
         <div class="flex justify-between items-center mb-2">
-          <div class="font-bold">Q${i + 1} <span class="text-sm text-yellow-300 ml-2">[${q.subject}]</span></div>
+          <div class="font-bold">Q${i + 1}</div>
           
           ${q.difficulty ? `
   <span class="ml-2 inline-block px-2 py-0.5 text-sm rounded-full font-concert bg-blue-600 text-white">
@@ -768,7 +768,6 @@ if (!isInt) {
   </span>
 ` : ``}
 
-          <div class="text-xs ${st.marked ? 'text-purple-300' : 'text-transparent'}">${st.marked ? 'Marked for Review' : '.'}</div>
         </div>
         <div class="mb-3">${qHtml}</div>
         <div class="mt-3 text-sm space-y-1">

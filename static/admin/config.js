@@ -1,13 +1,10 @@
 // ✅ No import line needed. CMS is available globally after script tag in index.html
 
-
-    window.CMS_CONFIG = {
+CMS.init({
+  config: {
     backend: {
       name: "git-gateway",
-      branch: "main", // keep your branch here
-      auth_type: "auth0",
-      app_id: "Z7vplcU2vy50rxpgbJeraAlvVBYiuX9k",
-      api_origin: "https://dev-j4qpenzpu3gkkk8j.us.auth0.com", 
+      branch: "main",
     },
     media_folder: "static/uploads",
     public_folder: "/uploads",
@@ -483,8 +480,5 @@
 }
 
 ]
-      
-};
-
-// ✅ Only one CMS.init() call
-CMS.init({ config: window.CMS_CONFIG });
+},
+});

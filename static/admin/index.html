@@ -5,15 +5,15 @@
     <title>Admin</title>
   </head>
   <body>
+    <!-- Prevent CMS from auto-initializing -->
     <script>
-      // Prevent auto-initialize
       window.CMS_MANUAL_INIT = true;
     </script>
 
-    <script src="https://unpkg.com/decap-cms@3.1.0/dist/decap-cms.js"></script>
+    <!-- Load Decap CMS (from jsDelivr to avoid QUIC errors) -->
+    <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.1.0/dist/decap-cms.js"></script>
+
+    <!-- Load your CMS configuration -->
     <script src="config.js"></script>
-    <script>
-      CMS.init({ config: window.CMS_CONFIG }); // Or your current CMS.init({ config: {...} })
-    </script>
   </body>
 </html>

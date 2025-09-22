@@ -6,27 +6,21 @@ tags:
   - jeemain
 difficulty: Medium
 question_type: Integer Type
-question: >-
-  $$
+question: |-
+  Problem: If $\alpha$ and $\beta$ are the roots of the equation 
 
+  $$x^2 - 5x + 6 = 0,$$ 
 
-  \text{Problem: If } \alpha \text{ and } \beta \text{ are the roots of the equation } x^2 - 5x + 6 = 0,\;
+  evaluate 
 
-
-  \text{evaluate } \alpha^3 + \beta^3.
-
-
-  $$
+  $$\alpha^3 + \beta^3.$$
 numerical_answer: "20"
-solution: >-
-  $$
+solution: |-
+  Problem: If $\alpha$ and $\beta$ are the roots of the equation 
 
+  $$x^2 - 5x + 6 = 0,$$ 
 
-  \text{Problem: If } \alpha \text{ and } \beta \text{ are the roots of the equation } x^2 - 5x + 6 = 0,\;
+  evaluate 
 
-
-  \text{evaluate } \alpha^3 + \beta^3.
-
-
-  $$
+  $$\alpha^3 + \beta^3.$$
 ---

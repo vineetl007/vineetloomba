@@ -53,7 +53,7 @@ CMS.init({
   folder: "content/questions/jee-math/complexnumbers",
   create: true,
   identifier_field: "title",        // CMS uses title for file name
-  slug: "{{fields.title | slug}}",  // auto-generate URL slug from title
+  slug: "{{fields.question | slug}}",  // URL generated from question text
   fields: [
     { 
       label: "Title (File Name)", 

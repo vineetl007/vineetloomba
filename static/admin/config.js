@@ -75,7 +75,7 @@ CMS.init({
   name: "chapter",
   widget: "select",
   options: ["complexnumbers"],
-  default: "complexnumbers",
+  default: "complexnumbers"
 },
 
 

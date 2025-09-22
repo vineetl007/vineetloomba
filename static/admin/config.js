@@ -52,23 +52,19 @@ CMS.init({
   label: "Questions-Maths-Complex-Numbers",
   folder: "content/questions/jee-math/complexnumbers",
   create: true,
-      // Explicitly set the identifier field.
-   identifier_field: "title",
-   slug: "{{title}}",                  // file name (q1, q2…)
-    path: "{{title}}",   // SEO-friendly URL from question
-    fields: [
+  identifier_field: "title",        // CMS uses title for file name
+  slug: "{{fields.title | slug}}",  // auto-generate URL slug from title
+  fields: [
     { 
       label: "Title (File Name)", 
       name: "title", 
       widget: "string",
-      hint: "Used to name the file (e.g., q1, q2). Won't appear on frontend."
+      hint: "Used to name the file. Won't appear on frontend."
     },
     { 
-      label: "Slug (URL)", 
+      label: "URL Slug", 
       name: "slug", 
-      widget: "string",
-      required: false,
-      hint: "type in manually dont repeat"
+      widget: "hidden"               // auto-generated, no manual typing
     },
 {
   label: "Chapter",

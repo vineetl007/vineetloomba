@@ -70,12 +70,12 @@ CMS.init({
       required: false,
       hint: "type in manually dont repeat"
     },
-    {
-      label: "Chapter",
-      name: "chapter",
-      widget: "hidden",
-      default: "complexnumbers",
-    },
+{
+  label: "Chapter",
+  name: "chapter",
+  widget: "string",
+  default: "complexnumbers",
+},
 
     { 
   label: "DPP", 

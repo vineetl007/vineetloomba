@@ -73,9 +73,10 @@ CMS.init({
     {
       label: "Chapter",
       name: "chapter",
-      widget: "select",
-      options: ["circles", "straight-lines", "parabola","binomial-theorem","indefinite-integration","permutations-combinations","quadratic-equations"],
+      widget: "hidden",
+      default: "complexnumbers",
     },
+
     { 
   label: "DPP", 
   name: "dpp", 

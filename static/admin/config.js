@@ -73,9 +73,11 @@ CMS.init({
 {
   label: "Chapter",
   name: "chapter",
-  widget: "string",
+  widget: "select",
+  options: ["complexnumbers"],
   default: "complexnumbers",
 },
+
 
     { 
   label: "DPP", 

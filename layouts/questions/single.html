@@ -105,49 +105,56 @@
 
 
 
-  <!-- JSON-LD Schema for Question & Video -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "url": "{{ .Permalink }}",
+ <!-- JSON-LD Schema for QAPage with Question, Answer & optional Video -->
+<script type="application/ld+json">
+{{ $hasSolution := .Params.solution }}
+{{ $hasVideo := .Params.video }}
+{
+  "@context": "https://schema.org",
+  "@type": "QAPage",
+  "mainEntity": {
     "@type": "Question",
-
-    "name": "{{ .Params.question | plainify }}",
-    "text": "{{ .Params.question | plainify }}",
-
-    "answerCount": 1,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "{{ with .Params.solution | plainify }}{{ . | safeJS }}{{ end }}"
-    },
-
+    "url": {{ .Permalink | jsonify }},
+    "name": {{ .Params.question | plainify | jsonify }},
+    "text": {{ .Params.question | plainify | jsonify }},
+    "datePublished": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
     "author": {
       "@type": "Person",
       "name": "Vineet Loomba"
-    },
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}"{{ if .Params.video }},{{ end }}
-    {{ if .Params.video }}
-    "suggestedAnswer": {
-      "@type": "VideoObject",
-      "name": "Video Solution for {{ .Params.question | plainify }}",
-      "description": "Video solution for {{ .Params.question | plainify }}",
-      "thumbnailUrl": "https://img.youtube.com/vi/{{ .Params.video }}/hqdefault.jpg",
-      "uploadDate": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-      "contentUrl": "https://www.youtube.com/watch?v={{ .Params.video }}",
-      "embedUrl": "https://www.youtube.com/embed/{{ .Params.video }}",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Vineet Loomba",
-        "url": "https://vineetloomba.com",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://vineetloomba.com/images/logo.png"
+    }{{ if $hasSolution }},
+    "answerCount": 1,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": {{ .Params.solution | plainify | jsonify }},
+      "datePublished": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+      "author": {
+        "@type": "Person",
+        "name": "Vineet Loomba"
+      }{{ if $hasVideo }},
+      "associatedMedia": {
+        "@type": "VideoObject",
+        "name": {{ printf "Video Solution for %s" (.Params.question | plainify) | jsonify }},
+        "description": {{ printf "Video solution for %s" (.Params.question | plainify) | jsonify }},
+        "thumbnailUrl": {{ printf "https://img.youtube.com/vi/%s/hqdefault.jpg" .Params.video | jsonify }},
+        "uploadDate": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+        "contentUrl": {{ printf "https://www.youtube.com/watch?v=%s" .Params.video | jsonify }},
+        "embedUrl": {{ printf "https://www.youtube.com/embed/%s" .Params.video | jsonify }},
+        "publisher": {
+          "@type": "Organization",
+          "name": "Vineet Loomba",
+          "url": "https://vineetloomba.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vineetloomba.com/images/logo.png"
+          }
         }
-      }
+      }{{ end }}
     }
     {{ end }}
   }
-  </script>
+}
+</script>
+
   </div>
 </div>
 </section>

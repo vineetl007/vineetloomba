@@ -11,7 +11,10 @@ module.exports = {
     'bg-green-600',
     'bg-purple-600',
     'text-yellow-300',
-    'text-yellow-400'
+    'text-yellow-400',
+    'outline',
+    'outline-2',
+    'outline-yellow-400'
   ],
   theme: {
     extend: {},

@@ -97,7 +97,13 @@ module.exports = {
 
 // HTML elements
 'details',
-'summary'
+'summary',
+
+   'bg-[#0D163D]',
+'text-[#ffb84d]',
+'mt-10',
+'uppercase'
+
 
 
 ],

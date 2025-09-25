@@ -117,19 +117,22 @@
     "url": {{ .Permalink | jsonify }},
     "name": {{ .Params.question | plainify | jsonify }},
     "text": {{ .Params.question | plainify | jsonify }},
-    "datePublished": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+ "datePublished": {{ (.Date | default .PublishDate).Format `2006-01-02T15:04:05Z07:00` | jsonify }},
     "author": {
       "@type": "Person",
-      "name": "Vineet Loomba"
+      "name": "Vineet Loomba",
+   "url": "https://vineetloomba.com"
     }{{ if $hasSolution }},
     "answerCount": 1,
     "acceptedAnswer": {
       "@type": "Answer",
+    "url": {{ printf "%s#answer" .Permalink | jsonify }},
       "text": {{ .Params.solution | plainify | jsonify }},
-      "datePublished": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+   "datePublished": {{ (.Date | default .PublishDate).Format `2006-01-02T15:04:05Z07:00` | jsonify }},
       "author": {
         "@type": "Person",
-        "name": "Vineet Loomba"
+        "name": "Vineet Loomba",
+     "url": "https://vineetloomba.com"
       }{{ if $hasVideo }},
       "associatedMedia": {
         "@type": "VideoObject",

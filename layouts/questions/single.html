@@ -136,7 +136,6 @@
         "name": {{ printf "Video Solution for %s" (.Params.question | plainify) | jsonify }},
         "description": {{ printf "Video solution for %s" (.Params.question | plainify) | jsonify }},
         "thumbnailUrl": {{ printf "https://img.youtube.com/vi/%s/hqdefault.jpg" .Params.video | jsonify }},
-        "uploadDate": {{ .Date.Format `2006-01-02T15:04:05Z07:00` | jsonify }},
         "contentUrl": {{ printf "https://www.youtube.com/watch?v=%s" .Params.video | jsonify }},
         "embedUrl": {{ printf "https://www.youtube.com/embed/%s" .Params.video | jsonify }},
         "publisher": {

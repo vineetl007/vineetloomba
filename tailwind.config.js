@@ -76,7 +76,29 @@ module.exports = {
 'w-full',
 
 // Additional spacing
-'space-y-1'
+'space-y-1',
+   // New colors
+'bg-gray-800',
+'bg-blue-500',
+'hover:bg-blue-400',
+
+// Font sizes
+'text-3xl',
+'text-2xl',
+'text-xl',
+
+// Margin / padding
+'mt-2',
+'mt-3',
+'ml-4',
+
+// Inline utilities
+'inline-block',
+
+// HTML elements
+'details',
+'summary'
+
 
 ],
 

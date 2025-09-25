@@ -14,7 +14,13 @@ module.exports = {
     'text-yellow-400',
     'outline',
     'outline-2',
-    'outline-yellow-400'
+    'outline-yellow-400',
+    'palette-btn',
+  'w-10',
+  'h-10',
+  'rounded-full',
+  'hover:opacity-90',
+  'transition'
   ],
   theme: {
     extend: {},

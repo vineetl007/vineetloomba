@@ -1,0 +1,13 @@
+{
+  "name": "vineetloomba-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./assets/css/main.css -o ./static/css/output.css --minify",
+    "build": "npm run build:css && hugo --gc --minify",
+    "start": "npm run build:css && hugo server -D"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

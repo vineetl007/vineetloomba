@@ -117,7 +117,7 @@
     "url": {{ .Permalink | jsonify }},
     "name": {{ .Params.question | plainify | jsonify }},
     "text": {{ .Params.question | plainify | jsonify }},
- "datePublished": {{ (.Date | default .PublishDate).Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+ "datePublished": {{ .Params.date | jsonify }},
     "author": {
       "@type": "Person",
       "name": "Vineet Loomba",
@@ -128,7 +128,7 @@
       "@type": "Answer",
     "url": {{ printf "%s#answer" .Permalink | jsonify }},
       "text": {{ .Params.solution | plainify | jsonify }},
-   "datePublished": {{ (.Date | default .PublishDate).Format `2006-01-02T15:04:05Z07:00` | jsonify }},
+ "datePublished": {{ .Params.date | jsonify }},
       "author": {
         "@type": "Person",
         "name": "Vineet Loomba",

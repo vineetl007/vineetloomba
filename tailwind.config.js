@@ -21,6 +21,9 @@ module.exports = {
   // Patterns for background colors used dynamically
   { pattern: /bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
 
+     // Border colors dynamically used in analysis
+   { pattern: /border-(gray|green|red|blue|yellow|purple)-(100|300|400|500|600|700|800)/ },
+
   // Patterns for text colors
   { pattern: /text-(white|black|yellow)-(300|400)/ },
 

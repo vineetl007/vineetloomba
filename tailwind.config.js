@@ -24,6 +24,10 @@ module.exports = {
      // Border colors dynamically used in analysis
    { pattern: /border-(gray|green|red|blue|yellow|purple)-(100|300|400|500|600|700|800)/ },
 
+   // Generic hover background colors for dynamic tags, difficulty, question type
+{ pattern: /hover:bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
+
+
   // Patterns for text colors
   { pattern: /text-(white|black|yellow)-(300|400)/ },
 

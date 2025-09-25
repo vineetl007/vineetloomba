@@ -47,7 +47,37 @@ module.exports = {
   { pattern: /grid(-(cols|rows)-\d+)?/ },
 
   // Responsive variants
-  { pattern: /(sm|md|lg):.*/ }
+  { pattern: /(sm|md|lg):.*/ },
+   // Shadows
+'shadow-md',
+'shadow-lg',
+
+// Rounded variants
+'rounded-lg',
+'rounded-xl',
+
+// Font weights
+'font-semibold',
+
+// Text colors
+'text-gray-300',
+
+// Fixed / z-index / transforms / transitions
+'fixed',
+'z-50',
+'-translate-x-full',
+'transition-transform',
+'duration-300',
+
+// Arbitrary heights / widths
+'min-h-[400px]',
+'max-w-[1800px]',
+'max-w-xl',
+'w-full',
+
+// Additional spacing
+'space-y-1'
+
 ],
 
   theme: {

@@ -149,7 +149,15 @@ CMS.init({
       widget: "number", 
       required: false, 
       hint: "Enter start time in seconds (default 0)" 
-    }
+    },
+      { 
+  label: "Video Upload Date", 
+  name: "videoUploadDate",   // 👈 new field
+  widget: "datetime",          // use "date" if you only want date picker
+  required: false,
+  hint: "Select the actual upload date of the YouTube video" 
+}
+
       ]
     },
 
@@ -257,7 +265,15 @@ CMS.init({
       widget: "number", 
       required: false, 
       hint: "Enter start time in seconds (default 0)" 
-    }
+    },
+      { 
+  label: "Video Upload Date", 
+  name: "videoUploadDate",   // 👈 new field
+  widget: "datetime",          // use "date" if you only want date picker
+  required: false,
+  hint: "Select the actual upload date of the YouTube video" 
+}
+
       ]
     },
 //questions for physics

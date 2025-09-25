@@ -105,7 +105,7 @@
 
 
 
- <!-- JSON-LD Schema for QAPage with Question, Answer & optional Video -->
+<!-- JSON-LD Schema for QAPage with Question, Answer & optional Video -->
 <script type="application/ld+json">
 {{ $hasSolution := .Params.solution }}
 {{ $hasVideo := .Params.video }}
@@ -117,29 +117,31 @@
     "url": {{ .Permalink | jsonify }},
     "name": {{ .Params.question | plainify | jsonify }},
     "text": {{ .Params.question | plainify | jsonify }},
-"datePublished": "{{ with .Params.date }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+    "datePublished": "{{ with .Params.date }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
     "author": {
       "@type": "Person",
       "name": "Vineet Loomba",
-   "url": "https://vineetloomba.com"
+      "url": "https://vineetloomba.com"
     }{{ if $hasSolution }},
     "answerCount": 1,
     "acceptedAnswer": {
       "@type": "Answer",
-    "url": {{ printf "%s#answer" .Permalink | jsonify }},
+      "@id": {{ printf "%s#answer" .Permalink | jsonify }},
+      "url": {{ printf "%s#answer" .Permalink | jsonify }},
       "text": {{ .Params.solution | plainify | jsonify }},
-  "datePublished": "{{ with .Params.date }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+      "datePublished": "{{ with .Params.date }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
       "author": {
         "@type": "Person",
         "name": "Vineet Loomba",
-     "url": "https://vineetloomba.com"
+        "url": "https://vineetloomba.com"
       }{{ if $hasVideo }},
       "associatedMedia": {
         "@type": "VideoObject",
+        "@id": {{ printf "%s#video" .Permalink | jsonify }},
         "name": {{ printf "Video Solution for %s" (.Params.question | plainify) | jsonify }},
         "description": {{ printf "Video solution for %s" (.Params.question | plainify) | jsonify }},
         "thumbnailUrl": {{ printf "https://img.youtube.com/vi/%s/hqdefault.jpg" .Params.video | jsonify }},
-"uploadDate": "{{ with .Params.videoUploadDate }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
+        "uploadDate": "{{ with .Params.videoUploadDate }}{{ time . | dateFormat "2006-01-02T15:04:05Z07:00" }}{{ else }}{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}{{ end }}",
         "contentUrl": {{ printf "https://www.youtube.com/watch?v=%s" .Params.video | jsonify }},
         "embedUrl": {{ printf "https://www.youtube.com/embed/%s" .Params.video | jsonify }},
         "publisher": {
@@ -157,6 +159,7 @@
   }
 }
 </script>
+
 
   </div>
 </div>

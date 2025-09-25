@@ -4,126 +4,77 @@ module.exports = {
     "./content/**/*.md",
     "./themes/**/*.html"
   ],
- safelist: [
-  // Palette buttons
-  'palette-btn',
-  'w-10',
-  'h-10',
-  'rounded-full',
-  'transition',
-  'col-span-full',
-  'text-center',
-  'font-bold',
-  'my-1',
-  'question-text',
-  'font-concert',
+  safelist: [
+    // Palette buttons & general
+    'palette-btn',
+    'question-text',
+    'font-concert',
+    'font-bold',
+    'font-semibold',
+    'text-center',
+    'inline-block',
 
-  // Patterns for background colors used dynamically
-  { pattern: /bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
+    // Layout utilities
+    'flex',
+    'flex-wrap',
+    'items-center',
+    'justify-between',
+    'justify-center',
+    'cursor-pointer',
+    'col-span-full',
 
-     // Border colors dynamically used in analysis
-   { pattern: /border-(gray|green|red|blue|yellow|purple)-(100|300|400|500|600|700|800)/ },
+    // Spacing / sizing
+    'w-10', 'h-10',
+    'mt-2', 'mt-3', 'ml-4', 'my-1',
+    'px-3', 'px-4', 'py-2', 'py-8', 'p-3',
+    'min-h-[400px]',
+    'max-w-[1800px]',
+    'max-w-xl',
+    'w-full',
+    'space-y-1', 'space-y-2', 'space-y-3', 'space-y-4',
+    'gap-1', 'gap-2', 'gap-3',
 
-   // Generic hover background colors for dynamic tags, difficulty, question type
-{ pattern: /hover:bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
+    // Typography / text
+    'text-xl', 'text-2xl', 'text-3xl',
+    'uppercase',
+    'text-gray-300',
+    'text-[#ffb84d]',
 
+    // Backgrounds / colors
+    'bg-gray-800', 'bg-gray-900', 'bg-blue-500', 'hover:bg-blue-400', 'bg-[#0D163D]',
 
-  // Patterns for text colors
-  { pattern: /text-(white|black|yellow)-(300|400)/ },
+    // Borders / outlines
+    { pattern: /border-(gray|green|red|blue|yellow|purple)-(100|300|400|500|600|700|800)/ },
+    { pattern: /outline(-\d+)?/ },
 
-  // Outline styles
-  { pattern: /outline(-\d+)?/ },
+    // Dynamic background / hover colors
+    { pattern: /bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
+    { pattern: /hover:bg-(gray|green|purple|red|blue|white|yellow|black)-(100|300|400|500|600|700|800)/ },
 
-  // Hover and cursor states
-  { pattern: /(hover:)?opacity-\d+/ },
-  { pattern: /(hover:)?bg-gray-(100|700)\/?10?/ },
+    // Text colors patterns
+    { pattern: /text-(white|black|yellow)-(300|400)/ },
 
-  // Layout utilities
-  { pattern: /(px|py|p|m|mt|mb|ml|mr)-\d+/ },
-  { pattern: /(gap|space)-(x|y)?-\d+/ },
-  { pattern: /(flex|items-center|justify-between|justify-center|cursor-pointer)/ },
+    // Hover / opacity
+    { pattern: /(hover:)?opacity-\d+/ },
+    { pattern: /(hover:)?bg-gray-(100|700)\/?10?/ },
 
-  // Grid utilities
-  { pattern: /grid(-(cols|rows)-\d+)?/ },
+    // Grid utilities
+    { pattern: /grid(-(cols|rows)-\d+)?/ },
 
-  // Responsive variants
-  { pattern: /(sm|md|lg):.*/ },
-   // Shadows
-'shadow-md',
-'shadow-lg',
+    // Responsive variants
+    { pattern: /(sm|md|lg):.*/ },
 
-// Rounded variants
-'rounded-lg',
-'rounded-xl',
+    // Shadows / rounding / positioning / transforms
+    'shadow-md', 'shadow-lg',
+    'rounded-full', 'rounded-lg', 'rounded-xl',
+    'fixed', 'z-50',
+    '-translate-x-full',
+    'transition', 'transition-transform', 'duration-300',
 
-// Font weights
-'font-semibold',
-
-// Text colors
-'text-gray-300',
-
-// Fixed / z-index / transforms / transitions
-'fixed',
-'z-50',
-'-translate-x-full',
-'transition-transform',
-'duration-300',
-
-// Arbitrary heights / widths
-'min-h-[400px]',
-'max-w-[1800px]',
-'max-w-xl',
-'w-full',
-
-// Additional spacing
-'space-y-1',
-   // New colors
-'bg-gray-800',
-'bg-blue-500',
-'hover:bg-blue-400',
-
-// Font sizes
-'text-3xl',
-'text-2xl',
-'text-xl',
-
-// Margin / padding
-'mt-2',
-'mt-3',
-'ml-4',
-
-// Inline utilities
-'inline-block',
-
-// HTML elements
-'details',
-'summary',
-
-   'bg-[#0D163D]',
-'text-[#ffb84d]',
-'mt-10',
-'uppercase',
-   'text-3xl',
-'font-semibold',
-'py-8',
-'p-3',
-'mt-3',
-'mt-2',
-'ml-4',
-'space-y-4',
-'space-y-2',
-'max-w-5xl',
-     'flex',
-  'flex-wrap',
-  'gap-1',
-  'gap-2',
-  'gap-3',
-  'space-y-1',
-  'space-y-3'
-
-
-
-],
+    // HTML elements
+    'details', 'summary',
+    'p-4', 'py-4', 'px-6', 'py-6', 'px-2', 'py-2', 'p-2', 'mb-4', 'mb-3'
+  ],
 
   theme: {
     extend: {},

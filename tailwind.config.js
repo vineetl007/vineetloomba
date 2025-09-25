@@ -5,7 +5,13 @@ module.exports = {
     "./themes/**/*.html"
   ],
   safelist: [
-    'font-concert'
+    'font-concert',
+    'bg-gray-700',
+    'bg-white',
+    'bg-green-600',
+    'bg-purple-600',
+    'text-yellow-300',
+    'text-yellow-400'
   ],
   theme: {
     extend: {},

@@ -4,6 +4,9 @@ module.exports = {
     "./content/**/*.md",
     "./themes/**/*.html"
   ],
+  safelist: [
+    'font-concert'
+  ],
   theme: {
     extend: {},
   },

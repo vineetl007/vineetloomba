@@ -69,6 +69,13 @@ CMS.init({
       required: false,
       hint: "type in manually dont repeat"
     },
+      {
+  label: "Date Published",
+  name: "date",
+  widget: "datetime",
+  required: false,
+  hint: "Automatically used as datePublished for JSON-LD"
+},
 {
   label: "Chapter",
   name: "chapter",

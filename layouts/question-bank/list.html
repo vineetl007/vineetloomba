@@ -23,7 +23,7 @@
         <details class="bg-gray-800 rounded-lg p-3 mt-3 ml-4">
           <summary class="cursor-pointer text-xl font-semibold">{{ $chapter | title }}</summary>
 
-          <div class="mt-2 ml-4 space-y-2">
+   <div class="mt-2 ml-4 flex flex-wrap gap-2">
             {{/* collect unique dpps for this chapter */}}
             {{ $dpps := slice }}
             {{ range where $maths "Params.chapter" $chapter }}

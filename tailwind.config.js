@@ -102,7 +102,18 @@ module.exports = {
    'bg-[#0D163D]',
 'text-[#ffb84d]',
 'mt-10',
-'uppercase'
+'uppercase',
+   'text-3xl',
+'font-semibold',
+'py-8',
+'p-3',
+'mt-3',
+'mt-2',
+'ml-4',
+'space-y-4',
+'space-y-2',
+'max-w-5xl'
+
 
 
 

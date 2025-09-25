@@ -112,8 +112,14 @@ module.exports = {
 'ml-4',
 'space-y-4',
 'space-y-2',
-'max-w-5xl'
-
+'max-w-5xl',
+     'flex',
+  'flex-wrap',
+  'gap-1',
+  'gap-2',
+  'gap-3',
+  'space-y-1',
+  'space-y-3'
 
 
 
